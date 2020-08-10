@@ -1,0 +1,1 @@
+<view class="index data-v-57280228"><tools vue-id="8dd740cc-1" class="data-v-57280228" bind:__l="__l"></tools><map style="width:100%;" class="data-v-57280228"></map><view data-event-opts="{{[['tap',[['login',['$event']]]]]}}" class="login-btn data-v-57280228" bindtap="__e"><text class="data-v-57280228">登录</text></view></view>

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "途咪导游机",
+  "usingComponents": {
+    "tools": "/pages/index/components/tools"
+  }
+}
