@@ -97,7 +97,11 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   },
   onHide: function onHide() {
     console.log('App Hide');
-  } };exports.default = _default;
+  },
+  globalData: {
+    userInfo: {},
+    latitude: '',
+    longitude: '' } };exports.default = _default;
 
 /***/ }),
 /* 8 */

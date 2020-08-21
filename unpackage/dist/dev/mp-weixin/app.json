@@ -1,7 +1,14 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/login/login"
+    "pages/fence/fence",
+    "pages/personal/personal",
+    "pages/login/login",
+    "pages/sos/sos",
+    "pages/info/info",
+    "pages/publish/publish",
+    "pages/group/group",
+    "pages/myGroup/myGroup"
   ],
   "subPackages": [],
   "window": {
@@ -9,6 +16,11 @@
     "navigationBarTitleText": "途咪导游机",
     "navigationBarBackgroundColor": "#fff",
     "backgroundColor": "#fff"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将展示在地图上"
+    }
   },
   "usingComponents": {}
 }

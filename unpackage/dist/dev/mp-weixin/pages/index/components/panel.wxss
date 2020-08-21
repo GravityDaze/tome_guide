@@ -1,0 +1,168 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.panel .scenery.data-v-8110c5be {
+  background: white;
+  box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+  border-radius: 15rpx 15rpx 0 0;
+  padding: 25rpx;
+}
+.panel .scenery .header.data-v-8110c5be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 25rpx;
+}
+.panel .scenery .header .name.data-v-8110c5be {
+  color: #4D4C4B;
+  font-weight: 400;
+  font-size: 36rpx;
+  padding: 0 18rpx;
+  border-left: 6rpx solid #FFCB3E;
+}
+.panel .scenery .header .distance.data-v-8110c5be {
+  color: #999999;
+  font-size: 24rpx;
+}
+.panel .scenery .body.data-v-8110c5be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+.panel .scenery .body .img.data-v-8110c5be {
+  width: 180rpx;
+  height: 180rpx;
+  margin-right: 25rpx;
+}
+.panel .scenery .body .right.data-v-8110c5be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: column;
+          flex-flow: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+.panel .scenery .body .right .desc.data-v-8110c5be {
+  display: -webkit-box;
+  overflow: hidden;
+  view-overflow: ellipsis;
+  white-space: pre-wrap;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: #999896;
+  font-size: 30rpx;
+}
+.panel .scenery .body .right .btn-area.data-v-8110c5be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+.panel .scenery .body .right .btn-area view.data-v-8110c5be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  padding: 12rpx 20rpx;
+  background: #ffcb3e;
+  box-shadow: 0px 4rpx 9rpx 1rpx rgba(246, 191, 42, 0.39);
+  border-radius: 29rpx;
+  color: #4D4C4B;
+  font-size: 28rpx;
+  margin-right: 35rpx;
+}
+.panel .scenery .body .right .btn-area view image.data-v-8110c5be {
+  width: 35rpx;
+  height: 35rpx;
+  margin-right: 12rpx;
+}
+.panel .toilet.data-v-8110c5be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  border: 2rpx solid #FFCB3E;
+  box-shadow: 0px 4rpx 9rpx 1rpx rgba(0, 0, 0, 0.14);
+  border-radius: 20rpx 20rpx 0 0;
+  font-size: 28rpx;
+  color: #999;
+  padding: 19rpx 25rpx;
+  background: #fff;
+}
+.panel .toilet .distance.data-v-8110c5be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  border-left: 6rpx solid #FFCB3E;
+  padding-left: 8rpx;
+  height: 30rpx;
+  margin-right: 16rpx;
+}
+.panel .toilet .go-there.data-v-8110c5be {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 12rpx 16rpx;
+  background: #FFCB3E;
+  box-shadow: 0px 4rpx 9rpx 1rpx rgba(246, 191, 42, 0.3);
+  border-radius: 23rpx;
+  color: #4D4C4B;
+  font-size: 22rpx;
+}
+.panel .toilet .go-there image.data-v-8110c5be {
+  width: 29rpx;
+  height: 16rpx;
+  margin-right: 3rpx;
+}
+

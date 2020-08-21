@@ -7,16 +7,56 @@
 			}
 		},
 		{
+            "path" : "pages/fence/fence",
+            "style" : {
+				"navigationBarTitleText": "景区围栏"
+			}
+        },
+		{
+            "path" : "pages/personal/personal",
+            "style" : {
+				"navigationBarTitleText": "个人中心"
+			}
+        },
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
-		}
-	],
+		},
+		{
+			"path": "pages/sos/sos",
+			"style": {
+				"navigationBarTitleText": "SOS求救信息"
+			}
+		},
+		{
+            "path" : "pages/info/info",
+            "style" : {
+				"navigationBarTitleText": "个人资料"
+			}
+        }
+        ,{
+            "path" : "pages/publish/publish",
+            "style" : {
+				"navigationBarTitleText": "发布消息"
+			}
+        }
+        ,{
+            "path" : "pages/group/group",
+            "style" : {
+				"navigationBarTitleText": "我的团"
+			}
+        }
+        ,{
+            "path" : "pages/myGroup/myGroup",
+            "style" : {}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "途咪导游机",
 		"navigationBarBackgroundColor": "#fff",
-		"backgroundColor": "#fff"
+		"backgroundColor":"#fff"
 	}
 }

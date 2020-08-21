@@ -7,15 +7,15 @@
 			</view>
 
 			<view class="operation">
-				<image src="../../../static/sos@2x.png"></image>
-				<image src="../../../static/sos@2x.png" @click="openMenu"></image>
+				<image src="../../../static/sos@2x.png" @click="sos"></image>
+				<image src="../../../static/menu.png" @click="openMenu"></image>
 			</view>
 		</view>
 
 		<!-- 工具栏菜单 -->
 		<uni-popup ref="popup" type="top">
 			<view class="menu">
-				<view class="menu-item" v-for="(item,index) in menuItems" :key="index">
+				<view class="menu-item" v-for="(item,index) in menuItems" :key="index" @click="navigate(item.url)">
 					<image :src="require(`../../../static/${item.icon}.png`)"></image>
 					<text>{{item.name}}</text>
 				</view>
@@ -53,11 +53,13 @@
 					},
 					{
 						name: '组团',
-						icon: 'icon_quanbuzutuan@2x'
+						icon: 'icon_quanbuzutuan@2x',
+						url:'/pages/group/group'
 					},
 					{
 						name: '个人中心',
-						icon: 'icon_quanbugerenzhongxin@2x'
+						icon: 'icon_quanbugerenzhongxin@2x',
+						url:'/pages/personal/personal'
 					},
 					{
 						name: '关闭围栏',
@@ -65,7 +67,8 @@
 					},
 					{
 						name: '发布消息',
-						icon: 'icon_quanbufabuxiaoxi@2x'
+						icon: 'icon_quanbufabuxiaoxi@2x',
+						url:'/pages/publish/publish'
 					}
 				]
 			}
@@ -73,6 +76,19 @@
 		methods: {
 			openMenu() {
 				this.$refs.popup.open()
+			},
+			
+			navigate(url){
+				uni.navigateTo({
+					url
+				})
+			},
+			
+			sos(){
+				uni.navigateTo({
+					url:'/pages/sos/sos'
+				})
+				
 			}
 		}
 	}
@@ -82,6 +98,7 @@
 	.tools {
 		box-shadow: 0px 1px 37px 3px rgba(44, 44, 42, 0.19);
 		padding: 0 35rpx;
+		background: #fff;
 
 		.tools-panel {
 			display: flex;

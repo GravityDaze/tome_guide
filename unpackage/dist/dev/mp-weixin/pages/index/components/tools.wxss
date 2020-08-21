@@ -27,6 +27,7 @@
 .tools.data-v-00149978 {
   box-shadow: 0px 1px 37px 3px rgba(44, 44, 42, 0.19);
   padding: 0 35rpx;
+  background: #fff;
 }
 .tools .tools-panel.data-v-00149978 {
   display: -webkit-box;

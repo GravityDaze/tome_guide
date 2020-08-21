@@ -13,11 +13,12 @@
 
 		<text class="msg">温馨提示：尚未注册途咪账号的手机号，登录时将自动注册</text>
 		
-		<view class="login-btn">登录</view>
+		<view class="login-btn" @click="login">登录</view>
 	</view>
 </template>
 
 <script>
+	import { login } from '@/api/api.js'
 	export default {
 		data(){
 			return{
@@ -28,12 +29,28 @@
 			}
 		},
 		methods:{
+			// 获取验证码
 			getCode(){
 				if(this.sendMsg)return
 				this.sendMsg = true
 				this.timer = setInterval( ()=>{
 					this.count--
 				},1000 )
+			},
+			async login(){
+				const res = await login({
+					sceneryNo:'',
+					phone:'13541058150',
+					code:'',
+					imageBase64:'',
+					deviceToken:'1',
+					imei:'123'
+				}) 
+				uni.setStorageSync('token', res.value.access_token )
+				uni.redirectTo({
+					url:'../index/index'
+				})
+				
 			}
 		},
 		watch:{
