@@ -8,7 +8,8 @@
     "pages/info/info",
     "pages/publish/publish",
     "pages/group/group",
-    "pages/myGroup/myGroup"
+    "pages/myGroup/myGroup",
+    "pages/sosDetail/sosDetail"
   ],
   "subPackages": [],
   "window": {
@@ -19,8 +20,9 @@
   },
   "permission": {
     "scope.userLocation": {
-      "desc": "你的位置信息将展示在地图上"
+      "desc": "需要获取您的位置"
     }
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap18.json"
 }

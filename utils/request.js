@@ -3,19 +3,13 @@ export const http = new Request()
 // 全局配置
 http.setConfig(config => {
 	config.baseURL = 'https://tome3pay.zhihuiquanyu.com',
-		// config.baseUrl = 'http://192.168.0.112:8881',
+		// config.baseURL = 'http://192.168.0.117:8088',
 	config.timeout = 10000
 	return config
 })
 
-console.log(http)
 // 请求拦截器
 http.interceptors.request.use((config, cancel) => {
-	// 显示加载效果
-	uni.showLoading({
-		title: '加载中',
-		mask: true
-	})
 	const token = uni.getStorageSync('token')
 	config.header = {
 		"Authorization": `Bearer ${token}`
@@ -25,7 +19,6 @@ http.interceptors.request.use((config, cancel) => {
 
 // 响应拦截器
 http.interceptors.response.use(res => {
-	uni.hideLoading()
 	const {
 		resultCode
 	} = res.data.resultStatus
@@ -35,11 +28,13 @@ http.interceptors.response.use(res => {
 	} else {
 		return Promise.reject(new Error(res.data.resultStatus.resultMessage))
 	}
-} , err=>{
-	const { resultCode } = err.data.resultStatus
-	if(resultCode === '0007'){
-		uni.clearStorageSync()
-		uni.redirectTo({
+}, err => {
+	const {
+		resultCode
+	} = err.data.resultStatus
+	if (resultCode === '0007') {
+		const token = uni.getStorageSync('token')
+		token && uni.redirectTo({
 			url: '../login/login',
 			success: () => {
 				uni.showToast({
@@ -48,7 +43,8 @@ http.interceptors.response.use(res => {
 				})
 			}
 		})
-	}else{
+		uni.clearStorageSync()
+	} else {
 		return Promise.reject(new Error(err.data.resultStatus.resultMessage))
 	}
 })

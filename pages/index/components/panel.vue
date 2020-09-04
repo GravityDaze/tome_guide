@@ -1,26 +1,25 @@
 <template>
 	<view class="panel">
-		<view v-if="markerInfo.type === 0" class="scenery">
+		<view v-if="markerInfo.type === 'j'" class="scenery">
 			<view class="header">
 				<view class="name">{{markerInfo.name}}</view>
-				<view class="distance">距离您<text style="color:#FF6239">{{markerInfo.distance}}</text>m</view>
+				<view class="distance">{{ markerInfo.distance == -1?`起终点过长`:`距离您${markerInfo.distance}m`}}</view>
 			</view>
 			
 			<view class="body">
-				<image class="img" :src="markerInfo.img" mode=""></image>
+				<image class="img" :src="markerInfo.coverUrl" mode="center"></image>
 				<view class="right">
-					<view class="desc">{{markerInfo.desc}}</view>
+					<view class="desc">{{markerInfo.describe}}</view>
 					<view class="btn-area">
-						<view class="video"><image src="../../../static/景点-视频@2x.png" mode=""></image>视频</view>
-						<view class="go-there"><image src="../../../static/景点-去这里@2x.png" mode=""></image>去这里</view>
+						<view class="go-there" @click="navigation(markerInfo)"><image src="../../../static/gohere.png" mode=""></image>去这里</view>
 					</view>
 				</view>
 			</view>
 		</view>
 		
 		<view v-else class="toilet">
-			<view class="distance"><view style="color:#FF704B">厕所</view>距离您{{markerInfo.distance}}m</view>
-			<view class="go-there" @click.self="go"><image src="../../../static/景点-去这里@2x.png" mode=""></image>去这里</view>
+			<view class="distance"><view style="color:#FF704B">{{markerInfo.name}}</view>{{ markerInfo.distance == -1?`（起终点过长）`:`距离您${markerInfo.distance}m`   }}</view>
+			<view class="go-there" @click="navigation(markerInfo)"><image src="../../../static/gohere.png" mode=""></image>去这里</view>
 		</view>
 	</view>
 </template>
@@ -29,8 +28,16 @@
 	export default {
 		props:['markerInfo'],
 		methods:{
-			go(){
-				console.log(123)
+			// 调用导航
+			navigation({lon,lat,name}){
+				// 调用app的导航服务
+				wx.openLocation({
+					latitude: parseFloat(lat),
+					longitude: parseFloat(lon),
+					name, // 位置名
+					address: '测试说明', // 要去的地址详情说明
+					scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
+				});
 			}
 		}
 	}
@@ -41,7 +48,7 @@
 		.scenery{
 			background:rgba(255,255,255,1);
 			box-shadow:0px 6rpx 13rpx 3rpx rgba(33,33,32,0.18);
-			border-radius:15rpx 15rpx 0 0;
+			border-radius:0 0 15rpx 15rpx;
 			padding:25rpx;
 			
 			.header{
@@ -125,12 +132,11 @@
 		.toilet{
 			display:flex;
 			align-items:center;
-			border:2rpx solid $base-color;
 			box-shadow:0px 4rpx 9rpx 1rpx rgba(0, 0, 0, 0.14);
-			border-radius:20rpx 20rpx 0 0;
+			border-radius: 0 0 10rpx 10rpx;
 			font-size:28rpx;
 			color:#999;
-			padding:19rpx 25rpx;
+			padding:25rpx;
 			background: #fff;
 		
 			.distance{

@@ -100,6 +100,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
   },
   globalData: {
     userInfo: {},
+    sceneryNum: '',
     latitude: '',
     longitude: '' } };exports.default = _default;
 

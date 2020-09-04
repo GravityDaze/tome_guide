@@ -11,6 +11,7 @@
 		},
 		globalData: {  
 			userInfo: {},
+			sceneryNum:'',
 			latitude:'',
 			longitude:''
 			

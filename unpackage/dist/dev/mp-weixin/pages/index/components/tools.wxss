@@ -24,12 +24,12 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.tools.data-v-00149978 {
+.tools {
   box-shadow: 0px 1px 37px 3px rgba(44, 44, 42, 0.19);
   padding: 0 35rpx;
   background: #fff;
 }
-.tools .tools-panel.data-v-00149978 {
+.tools .tools-panel {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -41,7 +41,7 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
 }
-.tools .tools-panel .location.data-v-00149978 {
+.tools .tools-panel .location {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -49,29 +49,29 @@
   -webkit-align-items: center;
           align-items: center;
 }
-.tools .tools-panel .location image.data-v-00149978 {
+.tools .tools-panel .location image {
   width: 36rpx;
   height: 30rpx;
   margin-right: 8rpx;
 }
-.tools .tools-panel .location text.data-v-00149978 {
+.tools .tools-panel .location text {
   font-size: 38rpx;
   font-family: PingFang SC;
   color: #333332;
 }
-.tools .tools-panel .operation image.data-v-00149978 {
+.tools .tools-panel .operation image {
   width: 60rpx;
   height: 60rpx;
   margin-left: 25rpx;
 }
-.tools .menu.data-v-00149978 {
+.tools .menu {
   height: 350rpx;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, 1fr);
   background: #fff;
 }
-.tools .menu .menu-item.data-v-00149978 {
+.tools .menu .menu-item {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -86,12 +86,12 @@
   -webkit-justify-content: center;
           justify-content: center;
 }
-.tools .menu .menu-item image.data-v-00149978 {
+.tools .menu .menu-item image {
   width: 90rpx;
   height: 90rpx;
   margin-bottom: 12rpx;
 }
-.tools .menu .menu-item text.data-v-00149978 {
+.tools .menu .menu-item text {
   font-size: 26rpx;
   font-family: Source Han Sans CN;
   font-weight: 400;

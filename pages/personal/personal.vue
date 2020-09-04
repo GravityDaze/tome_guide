@@ -42,12 +42,12 @@
 						url:'fence',
 						params:'read'
 					},
-					{
-						icon:'自定义围栏@2x.png',
-						text:'自定义围栏',
-						url:'fence',
-						params:'edit'
-					},
+					// {
+					// 	icon:'自定义围栏@2x.png',
+					// 	text:'自定义围栏',
+					// 	url:'fence',
+					// 	params:'edit'
+					// },
 					{
 						icon:'退出@2x.png',
 						text:'退出'

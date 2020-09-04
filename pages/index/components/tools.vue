@@ -3,7 +3,7 @@
 		<view class="tools-panel">
 			<view class="location">
 				<image src="../../../static/location.png" mode=""></image>
-				<text>青城山</text>
+				<text>{{ scenery }}</text>
 			</view>
 
 			<view class="operation">
@@ -33,6 +33,12 @@
 			uniPopup,
 			uniPopupMessage,
 			uniPopupDialog
+		},
+		props:{
+			scenery:{
+				type: String,
+				default: '未定位'
+			}
 		},
 		data() {
 			return {
@@ -94,7 +100,7 @@
 	}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 	.tools {
 		box-shadow: 0px 1px 37px 3px rgba(44, 44, 42, 0.19);
 		padding: 0 35rpx;

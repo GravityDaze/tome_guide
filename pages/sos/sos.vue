@@ -1,6 +1,6 @@
 <template>
 	<view class="sos">
-		<view class="msg-panel">
+		<view class="msg-panel" @click="go">
 			<view class="date">2019-11-18 19:37</view>
 			<view class="sos-info">
 				<view class='tourist'>游客夏天SOS求救</view>
@@ -19,6 +19,13 @@
 		data(){
 			return{
 				
+			}
+		},
+		methods:{
+			go(){
+				uni.navigateTo({
+					url:"/pages/sosDetail/sosDetail"
+				})
 			}
 		}
 	}

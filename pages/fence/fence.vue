@@ -1,19 +1,19 @@
 <template>
 	<view class="fence">
-		<swiper class="swiper" v-if="!addMode && showPanel">
-			<swiper-item>
+		<swiper class="swiper" v-if="!addMode && showPanel" @change="change">
+			<swiper-item v-for="(item,index) in fenceInfo" :key="item.id">
 				<view class="swiper-item">
 					<view class="num">
-						{{ '0' + (curIndex+1) }}
+						{{ '0' + (index+1) }}
 					</view>
 					<view class="desc">
-						<view class="title">{{ fenceInfo.name }}</view>
+						<view class="title">{{ item.name }}</view>
 						<view class="tips">
-							<view>触发方式：{{warnTypeMap.get(fenceInfo.warnType)}}</view>
-							<view>提醒方式：{{remindTypeMap.get(fenceInfo.remindType)}}</view>
-							<view :style="{ color:fenceInfo.status === 0 ? 'red':'#999896' }">当前状态：{{statusMap.get(fenceInfo.status)}}</view>
+							<view>触发方式：{{warnTypeMap.get(item.warnType)}}</view>
+							<view>提醒方式：{{remindTypeMap.get(item.remindType)}}</view>
+							<!-- <view :style="{ color:fenceInfo.status === 0 ? 'red':'#999896' }">当前状态：{{statusMap.get(fenceInfo.status)}}</view> -->
 						</view>
-						<view class="btn">
+<!-- 						<view class="btn">
 							<view class="enable" @click="changeFenceStatus">
 								<image src="../../static/启用@2x.png" mode=""></image>
 								{{ fenceInfo.status===0?'启用':'禁用' }}
@@ -23,7 +23,7 @@
 								<image src="../../static/删除@2x.png" mode=""></image>
 								删除
 							</view>
-						</view>
+						</view> -->
 					</view>
 
 				</view>
@@ -33,12 +33,12 @@
 		<map id="map" :latitude="latitude" :longitude="longitude" :polygons="polygons" :polyline="polyline" @tap="drawPolyline" :markers="markers" @markertap="closeLine"></map>
 		
 		<!-- 新增围栏按钮 -->
-		<view class="add-fench" @click="addFench">
+	<!-- 	<view class="add-fench" @click="addFench">
 			<image :src="require(`../../static/${addMode?'清除':'新建'}@2x.png`)" mode=""></image>
-		</view>
+		</view> -->
 		
 		<!-- 新增围栏面板 -->
-		<view class="add-panel" v-if="addMode">
+		<!-- <view class="add-panel" v-if="addMode">
 			<view class="title">
 				<input type="text" value="" placeholder="请输入围栏标题" placeholder-class="phcolor" />
 			</view>
@@ -53,12 +53,12 @@
 					<image src="../../static/icon-shaixuan@2x.png" mode=""></image>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		
 		<!-- 保存围栏 -->
-		<view class="save-fence" @click="saveFence" v-if="addMode">
+	<!-- 	<view class="save-fence" @click="saveFence" v-if="addMode">
 			保存
-		</view>
+		</view> -->
 		
 	</view>
 </template>
@@ -109,15 +109,13 @@
 				])
 			}
 		},
-		onLoad(options) {
+		onLoad() {
 			this.getFence()
-			this.pageType = options.type
 		},
 		methods: {
 			async getFence() {
 				const res = await queryFence({
-					imei: 'd',
-					sceneryNo: 'S0001'
+					sceneryNo: getApp().globalData.sceneryNo
 				})
 				if (!res.value.list || !res.value.list.length) {
 					// 不存在景区围栏时, 返回导游当前的位置
@@ -128,41 +126,52 @@
 						icon: 'none'
 					});
 				}
-				const fence = res.value.list[this.curIndex]
-				// 显示景区围栏面板
+				
 				this.showPanel = true
-				this.fenceInfo = {
-					id: fence.id, // 围栏id
-					name: fence.name, //围栏名
-					warnType: fence.warnType, //触发条件 
-					remindType: fence.remindType, //提醒方式
-					status: fence.status //当前状态
-				}
+				// 生成所有电子围栏
+				this.fenceInfo = res.value.list.map( v=>({
+						id: v.id, // 围栏id
+						name: v.name, //围栏名
+						warnType: v.warnType, //触发条件 
+						remindType: v.remindType, //提醒方式
+						status: v.status ,//当前状态
+						scope:v.scope // 经纬度集合
+				}) ) 
+				
+				this.getPolygon()	
+			},
+			
+			// 绘制多边形
+			getPolygon(){
+				
+				const { scope } = this.fenceInfo[this.curIndex]
 				// 获取到经纬度数组
-				const latLng = res.value.list.map(v => {
-					const points = v.scope.split(';')
-					points.pop()
-					// 将获得的经纬度数组转换为浮点数
-					const floatPoint = points.map(v => v.split(',').map(v => parseFloat(v)))
-					// 交换经纬度
-					return floatPoint.map(v => [v[1], v[0]])
-				}).flat()
+				const latLng = scope.split(';')
+				const floatlatLng = latLng.map(v => v.split(',').map(v => parseFloat(v))).map(v => [v[1], v[0]])
 				// 获取到中心经纬度
-				this.latitude = getLatLngCenter(latLng)[0]
-				this.longitude = getLatLngCenter(latLng)[1]
-				// 生成闭合多边形
-				const points = latLng.map(v => ({
+				this.latitude = getLatLngCenter(floatlatLng)[0]
+				this.longitude = getLatLngCenter(floatlatLng)[1]
+				
+				// 绘制多边形
+				const points = floatlatLng.map(v => ({
 					latitude: v[0],
 					longitude: v[1]
 				}))
-				this.polygons.push({
+				this.polygons=[{
 					points,
 					strokeColor: "#0DC392",
 					strokeWidth: 2,
 					fillColor: "#07C28F26"
-				})
+				}]
+				
 			},
-
+			
+			
+			change({detail}){
+				this.curIndex = detail.current
+				this.getPolygon()
+			},
+			
 			// 新增围栏
 			addFench() {
 				this.addMode = !this.addMode

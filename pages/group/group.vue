@@ -16,6 +16,7 @@
 </template>
 
 <script>
+	import { group } from '@/api/api'
 	export default {
 		data() {
 			return {
@@ -23,7 +24,17 @@
 			};
 		},
 		methods:{
-			createMyGroup(){
+			async createMyGroup(){
+				const res = await group({
+					"sceneryNo":"S0001",
+					    	"imei":"123456",
+					    	"travelAgencyId":1,
+					    	"lon":"39.256325",
+					    	"lat":"99.326365",
+					    	"address":"峨眉山山脚底"
+				})
+				return console.log(res)
+				
 				uni.navigateTo({
 					url:"/pages/myGroup/myGroup"
 				})

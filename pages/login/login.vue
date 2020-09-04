@@ -2,12 +2,12 @@
 	<view class="login">
 		<view class="phone">
 			<text>+86</text>
-			<input type="text" placeholder="请输入手机号" value="" />
+			<input type="text" placeholder="请输入手机号" v-model="phone" />
 		</view>
 		
 		<view class="code">
 			<text>验证码</text>
-			<input type="text" placeholder="请输入验证码" value="" />
+			<input type="text" placeholder="请输入验证码" v-model="code" />
 			<view class="code-btn" :class="{send:sendMsg}" @click="getCode">{{ !sendMsg?btnText:`已发送(${count})` }}</view>
 		</view>
 
@@ -18,44 +18,79 @@
 </template>
 
 <script>
-	import { login } from '@/api/api.js'
+	import { login, getCode, validateCode } from '@/api/api.js'
 	export default {
 		data(){
 			return{
 				sendMsg:false,
 				count:60,
-				timer:null,
-				btnText:'获取验证码'
+				btnText:'获取验证码',
+				phone:'',
+				code:''
 			}
 		},
 		methods:{
+			
 			// 获取验证码
-			getCode(){
+			async getCode(){
 				if(this.sendMsg)return
 				this.sendMsg = true
+				const res = await getCode({phone:this.phone})
 				this.timer = setInterval( ()=>{
 					this.count--
 				},1000 )
 			},
+			
+			// 校验验证码
+			async validate(code){
+				try{
+					const res = await validateCode({
+						code,
+						phone:this.phone
+					})
+					return new Promise( reslove => reslove(true) )
+				}catch(err){
+					return new Promise( reslove => reslove(false) )
+				}	
+				
+			},
+			
+			
 			async login(){
-				const res = await login({
-					sceneryNo:'',
-					phone:'13541058150',
-					code:'',
-					imageBase64:'',
-					deviceToken:'1',
-					imei:'123'
-				}) 
-				uni.setStorageSync('token', res.value.access_token )
-				uni.redirectTo({
-					url:'../index/index'
-				})
+					if( await this.validate(this.code) ){
+						
+						try{
+							const res = await login({
+								code:this.code,
+								ip: "127.0.0.1",
+								phone: this.phone,
+								sceneryNo: "S0001"
+							}) 
+							uni.setStorageSync('token', res.value.access_token )
+							uni.redirectTo({
+								url:'../index/index'
+							})
+						}catch(err){
+							uni.showToast({
+								title:err.toString(),
+								icon:'none'
+							})
+						}
+
+					}else{
+						uni.showToast({
+							title:'验证码输入错误',
+							icon:'none'
+						})
+					}
+					
+				
 				
 			}
 		},
 		watch:{
 			count(num){
-				if(num < 50){
+				if(num < 0){
 					clearInterval(this.timer)
 					this.sendMsg = false
 					this.count = 60

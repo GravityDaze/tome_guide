@@ -52,6 +52,12 @@
             "path" : "pages/myGroup/myGroup",
             "style" : {}
         }
+        ,{
+            "path" : "pages/sosDetail/sosDetail",
+            "style" : {
+            	"navigationBarTitleText": "SOS救援详情"
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

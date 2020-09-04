@@ -4,13 +4,13 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
-		"es6": true,
+		"urlCheck": true,
+		"es6": false,
 		"enhance": true,
-		"postcss": true,
+		"postcss": false,
 		"preloadBackgroundData": false,
-		"minified": true,
-		"newFeature": false,
+		"minified": false,
+		"newFeature": true,
 		"coverView": true,
 		"nodeModules": false,
 		"autoAudits": false,
@@ -27,7 +27,7 @@
 			"outputPath": ""
 		},
 		"useIsolateContext": true,
-		"useCompilerModule": false,
+		"useCompilerModule": true,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
