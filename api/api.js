@@ -28,4 +28,19 @@ export const queryScenicSpot = data => http.post('/guider/scenice/getScenicSpot'
 export const sendMsg = data => http.post('/guider/message/sendMsg',data)
 
 // 导游建团
-export const group = data => http.post('/guider/touristTeam/add',data)
+export const createTeam = data => http.post('/guider/touristTeam/creatTeam',data)
+
+// 查询导游是否建团
+export const isCreateTeam = data => http.post('/guider/touristTeam/getTeam',data)
+
+// 查询旅行社列表
+export const queryTravelAgencyList = data => http.post('/mis/travelAgency/query',data)
+
+// 查询团信息
+export const queryTeamInfo = data => http.post('/guider/touristTeam/queryTeamInfo',data)
+
+// 删除团员
+export const delMember = data => http.post('/guider/touristTeam/deleteMember',{},{ params:data })
+
+// 解散团队
+export const dismiss = data => http.post('/guider/touristTeam/dismiss',data)

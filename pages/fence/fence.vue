@@ -152,11 +152,20 @@
 				this.latitude = getLatLngCenter(floatlatLng)[0]
 				this.longitude = getLatLngCenter(floatlatLng)[1]
 				
+				
 				// 绘制多边形
 				const points = floatlatLng.map(v => ({
 					latitude: v[0],
 					longitude: v[1]
 				}))
+				
+				// 缩放以完整显示marker
+				const mapContext = uni.createMapContext('map', this)
+				mapContext.includePoints({
+					points: points,
+					padding: [100, 100, 100, 100],
+				})
+				
 				this.polygons=[{
 					points,
 					strokeColor: "#0DC392",

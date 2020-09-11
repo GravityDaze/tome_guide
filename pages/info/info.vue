@@ -11,14 +11,14 @@
 			<view class="name">
 				<text>姓名：</text>
 				<view class="right-content">
-					<input placeholder-class="phcolor" type="text" :value="userInfo.realName" placeholder="请输入姓名" />
+					<input placeholder-class="phcolor" type="text" v-model="userInfo.realName" placeholder="请输入姓名" />
 					<image class="more" src="../../static/个人资料更多@2x.png" mode=""></image>
 				</view>
 			</view>
 			<view class="nick-name">
 				<text>昵称：</text>
 				<view class="right-content">
-					<input placeholder-class="phcolor" type="text" :value="userInfo.nickName" placeholder="请输入昵称" />
+					<input placeholder-class="phcolor" type="text" v-model="userInfo.nickName" placeholder="请输入昵称" />
 					<image class="more" src="../../static/个人资料更多@2x.png" mode=""></image>
 				</view>
 			</view>
@@ -39,7 +39,7 @@
 			<view class="email">
 				<text>邮箱：</text>
 				<view class="right-content">
-					<input placeholder-class="phcolor" type="text" :value="userInfo.email" placeholder="请输入邮箱" />
+					<input placeholder-class="phcolor" type="text" v-model="userInfo.email" placeholder="请输入邮箱" />
 					<image class="more" src="../../static/个人资料更多@2x.png" mode=""></image>
 				</view>
 			</view>
@@ -75,7 +75,11 @@
 	export default {
 		data() {
 			return {
-				userInfo:{},
+				userInfo:{
+					realName:'',
+					nickName:'',
+					email:''
+				},
 				isCollapse:false
 			};
 		},
@@ -117,6 +121,7 @@
 				    count: 1, //默认9
 				    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 				    success: function (res) {
+						
 				        console.log(JSON.stringify(res.tempFilePaths));
 				    }
 				});

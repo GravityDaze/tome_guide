@@ -306,10 +306,19 @@ var _polygon = __webpack_require__(/*! @/utils/polygon.js */ 45);function _inter
       this.latitude = (0, _getLatLngCenter.getLatLngCenter)(floatlatLng)[0];
       this.longitude = (0, _getLatLngCenter.getLatLngCenter)(floatlatLng)[1];
 
+
       // 绘制多边形
       var points = floatlatLng.map(function (v) {return {
           latitude: v[0],
           longitude: v[1] };});
+
+
+      // 缩放以完整显示marker
+      var mapContext = uni.createMapContext('map', this);
+      mapContext.includePoints({
+        points: points,
+        padding: [100, 100, 100, 100] });
+
 
       this.polygons = [{
         points: points,

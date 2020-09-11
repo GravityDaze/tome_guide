@@ -122,6 +122,10 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
+.my-group .member-list .ani.data-v-09fa7124 {
+  -webkit-animation: mymove-data-v-09fa7124 ease-in-out .5s infinite alternate;
+          animation: mymove-data-v-09fa7124 ease-in-out .5s infinite alternate;
+}
 .my-group .member-list .member.data-v-09fa7124 {
   position: relative;
   display: -webkit-box;
@@ -136,35 +140,59 @@
           align-items: center;
   margin-top: 90rpx;
 }
-.my-group .member-list .member image.data-v-09fa7124 {
+.my-group .member-list .member > image.data-v-09fa7124 {
   width: 116rpx;
   height: 116rpx;
   margin-bottom: 30rpx;
 }
-.my-group .member-list .member text.data-v-09fa7124 {
+.my-group .member-list .member .name.data-v-09fa7124 {
   font-size: 26rpx;
   font-weight: 500;
   color: #999999;
+}
+.my-group .member-list .member .show.data-v-09fa7124 {
+  -webkit-transform: scale(1) !important;
+          transform: scale(1) !important;
+  opacity: 1 !important;
 }
 .my-group .member-list .member .mask.data-v-09fa7124 {
   position: absolute;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  top: -120rpx;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 15rpx;
+  box-shadow: 1rpx 6rpx 18rpx 0px rgba(36, 36, 35, 0.11);
+  border-radius: 25rpx;
+  white-space: nowrap;
+  -webkit-transition: .3s;
+  transition: .3s;
+  -webkit-transform: scale(0);
+          transform: scale(0);
+  opacity: 0;
+}
+.my-group .member-list .member .mask view.data-v-09fa7124 {
+  padding: 0 15rpx;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: column;
+          flex-flow: column;
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-  font-size: 26rpx;
-  font-weight: 500;
-  color: white;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.47);
+}
+.my-group .member-list .member .mask view text.data-v-09fa7124 {
+  font-size: 24rpx;
+  color: #8a8a8a;
+}
+.my-group .member-list .member .mask view image.data-v-09fa7124 {
+  width: 35rpx;
+  height: 35rpx;
+  margin-bottom: 5rpx;
 }
 .my-group .dismiss.data-v-09fa7124 {
   position: absolute;
@@ -176,5 +204,25 @@
 .my-group .dismiss image.data-v-09fa7124 {
   height: 100%;
   width: 100%;
+}
+@-webkit-keyframes mymove-data-v-09fa7124 {
+from {
+    -webkit-transform: translateY(5rpx);
+            transform: translateY(5rpx);
+}
+to {
+    -webkit-transform: translateY(-5rpx);
+            transform: translateY(-5rpx);
+}
+}
+@keyframes mymove-data-v-09fa7124 {
+from {
+    -webkit-transform: translateY(5rpx);
+            transform: translateY(5rpx);
+}
+to {
+    -webkit-transform: translateY(-5rpx);
+            transform: translateY(-5rpx);
+}
 }
 

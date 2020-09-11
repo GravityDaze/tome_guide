@@ -1,6 +1,6 @@
 <template>
 	<view class="index">
-		<tools class="tools" :scenery="scenery" />
+		<tools class="tools" :scenery="scenery" @changeMarker="changeMarker" :menuItems="menuItems"  v-if="isLogin" />
 		<map id="map" :latitude="latitude" :longitude="longitude" :polygons="polygons" show-location show-compass :markers="markers"
 		 @markertap="markertap"></map>
 
@@ -30,35 +30,80 @@
 		querySceneryNum,
 		queryFence,
 		queryFacilities,
-		queryScenicSpot
+		queryScenicSpot,
+		isCreateTeam
 	} from '../../api/api.js'
 	export default {
 		data() {
 			return {
-				isLogin: false,
-				timer: null,
-				latitude: 36.026226,
+				isLogin: false, //当前是否登录
+				timer: null, // 定时器
+				latitude: 36.026226, 
 				longitude: 103.75202,
-				scenery: '未定位到景区',
-				polygons: [],
-				curMarkerId: 0,
-				markerInfo: {},
-				markers: [],
-				iconPath: new Map([
+				scenery: '未定位到景区', //当前景区
+				polygons: [], //围栏
+				markerType:'scenicSpot',//当前应当显示哪种类型的type
+				curMarkerId: 0, 
+				manual:false, // marker是否处于手动切换模式
+				markerInfo: {}, // marker信息
+				markers: [], // marker数据
+				menuItems: [{
+						name: '景点',
+						icon: 'icon_quanbujingdian@2x',
+						type:'scenicSpot'
+					},
+					{
+						name: '设施',
+						icon: 'icon_jingdiansheshi@2x',
+						type:'facilities'
+					}, {
+						name: '店铺',
+						icon: 'icon_quanbudianpu@2x',
+						type:'shop'
+					},
+					{
+						name: '消息',
+						icon: 'icon_quanbuxiaoxi@2x',
+						url:'/pages/message/message'
+					},
+					{
+						name: '组团',
+						icon: 'icon_quanbuzutuan@2x',
+						url:'/pages/group/group'
+					},
+					{
+						name: '个人中心',
+						icon: 'icon_quanbugerenzhongxin@2x',
+						url:'/pages/personal/personal'
+					},
+					{
+						name: '关闭围栏',
+						icon: 'icon_quanbuguanbiweilan@2x'
+					},
+					{
+						name: '发布消息',
+						icon: 'icon_quanbufabuxiaoxi@2x',
+						url:'/pages/publish/publish'
+					}
+				],//工具栏数据
+				iconPath: new Map([ 
 					["FAC_ALM", "alm"],
 					["FAC_WC", "toilet"],
 					["FAC_DOOR", "door"],
 					["FAC_SELL", "shop"],
 					["FAC_SERVICE", "servicestation"],
 				]),
-				facilitiesData: [],
-				sceneryData: []
+				facilitiesData: [], //设施数据
+				sceneryData: [] // 景点数据
+				
 			}
 		},
 
 		onShow() {
 			// 查询是否登录
 			uni.getStorageSync('token') && (this.isLogin = true)
+			// 查询是否建团
+			this.queryGroup()
 		},
 
 		onLoad() {
@@ -81,6 +126,37 @@
 					url: '../login/login'
 				})
 			},
+			
+			// 进首页时查询是否建团动态切换菜单栏数据
+			async queryGroup(){
+				const {value} = await isCreateTeam()
+				if( value === 1){
+					this.menuItems = this.menuItems.map( v=>{
+						if(v.name === "组团"){
+							v.name = '我的团'
+							v.url = '/pages/myGroup/myGroup'
+						}
+						return v
+					} ) 
+				}
+			},
+			
+			// 手动marker的显示状态
+			changeMarker(type){
+				this.manual = true;
+				this.markerType = type
+				this.getMarkers(this.markerType)
+			},
+			
+			// 
+			getMarkers(type){
+				// 当前处于手动切换模式
+				if(type === 'scenicSpot'){
+					this.getScenicSpot()
+				}else{
+					this.getFacilities()
+				}
+			},
 
 			// 获取到景区
 			async getScenery() {
@@ -94,9 +170,8 @@
 				getApp().globalData.sceneryNo = res.value.no
 				// 获取到围栏
 				this.getFence()
-				// 获取到景点及设施
-				this.getFacilities()
-				this.getScenicSpot()
+				// 获取到标记信息
+				this.getMarkers(this.markerType)
 			},
 
 			// 获取到设施
@@ -104,10 +179,12 @@
 				const res = await queryFacilities({
 					sceniceNo: getApp().globalData.sceneryNo
 				})
-				if (JSON.stringify(res.value) === JSON.stringify(this.facilitiesData)) {
+				
+				if (JSON.stringify(res.value) === JSON.stringify(this.facilitiesData) && !this.manual) {
 					return console.log('重复数据不予添加')
 				}
-
+				this.manual = false
+				this.markers = []
 				// 储存标记点信息
 				this.facilitiesData = res.value
 				res.value.forEach(v => {
@@ -120,16 +197,20 @@
 						width: 65
 					})
 				})
+				
 			},
 			async getScenicSpot() {
 				const res = await queryScenicSpot({
 					sceniceNo: getApp().globalData.sceneryNo
 				})
+
 				// 和原来的信息进行对比
-				if (JSON.stringify(res.value) === JSON.stringify(this.sceneryData)) {
+				console.log(this.manual)
+				if (JSON.stringify(res.value) === JSON.stringify(this.sceneryData) && !this.manual) {
 					return console.log('重复数据不予添加')
 				}
-
+				this.manual = false
+				this.markers = []
 				// 储存标记点信息
 				this.sceneryData = res.value
 				res.value.forEach(v => {

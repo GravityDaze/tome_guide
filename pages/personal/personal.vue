@@ -32,7 +32,7 @@
 			return {
 				listItem:[
 					{
-						icon:'个人资料@2x.png',
+						icon:'info.png',
 						text:'个人资料',
 						url:'info'
 					},

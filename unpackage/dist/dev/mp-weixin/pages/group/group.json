@@ -1,4 +1,6 @@
 {
-  "navigationBarTitleText": "我的团",
-  "usingComponents": {}
+  "navigationBarTitleText": "组团",
+  "usingComponents": {
+    "my-select": "/components/my-select/my-select"
+  }
 }

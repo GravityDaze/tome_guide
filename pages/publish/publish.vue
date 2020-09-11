@@ -5,7 +5,7 @@
 		</view>
 		<view class="tips">
 			<view class="tips-text">
-				*此消息将通知全部组员
+				*此消息将通知{{ !mode?'全部组员':'该组员'}}
 			</view>
 			
 			<view class="word-num">
@@ -22,10 +22,14 @@
 <script>
 	import { sendMsg } from '@/api/api.js'
 	export default {
+		onLoad(options){
+			this.mode = options.mode
+		},
 		data() {
 			return {
 				num:0,
-				message:''
+				message:'',
+				mode:''
 			};
 		},
 		methods:{

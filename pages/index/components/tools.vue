@@ -15,7 +15,7 @@
 		<!-- 工具栏菜单 -->
 		<uni-popup ref="popup" type="top">
 			<view class="menu">
-				<view class="menu-item" v-for="(item,index) in menuItems" :key="index" @click="navigate(item.url)">
+				<view class="menu-item" v-for="(item,index) in menuItems" :key="index" @click="navigate(item.url,item.type)">
 					<image :src="require(`../../../static/${item.icon}.png`)"></image>
 					<text>{{item.name}}</text>
 				</view>
@@ -38,45 +38,14 @@
 			scenery:{
 				type: String,
 				default: '未定位'
+			},
+			menuItems:{
+				type:Array
 			}
 		},
 		data() {
 			return {
-				menuItems: [{
-						name: '景点',
-						icon: 'icon_quanbujingdian@2x'
-					},
-					{
-						name: '设施',
-						icon: 'icon_jingdiansheshi@2x'
-					}, {
-						name: '店铺',
-						icon: 'icon_quanbudianpu@2x'
-					},
-					{
-						name: '消息',
-						icon: 'icon_quanbuxiaoxi@2x'
-					},
-					{
-						name: '组团',
-						icon: 'icon_quanbuzutuan@2x',
-						url:'/pages/group/group'
-					},
-					{
-						name: '个人中心',
-						icon: 'icon_quanbugerenzhongxin@2x',
-						url:'/pages/personal/personal'
-					},
-					{
-						name: '关闭围栏',
-						icon: 'icon_quanbuguanbiweilan@2x'
-					},
-					{
-						name: '发布消息',
-						icon: 'icon_quanbufabuxiaoxi@2x',
-						url:'/pages/publish/publish'
-					}
-				]
+				
 			}
 		},
 		methods: {
@@ -84,10 +53,14 @@
 				this.$refs.popup.open()
 			},
 			
-			navigate(url){
-				uni.navigateTo({
-					url
-				})
+			navigate(url,type){
+				if(url){
+					return uni.navigateTo({
+						url
+					})
+				}
+				
+				this.$emit('changeMarker',type)
 			},
 			
 			sos(){

@@ -8,7 +8,7 @@
 		<view class="code">
 			<text>验证码</text>
 			<input type="text" placeholder="请输入验证码" v-model="code" />
-			<view class="code-btn" :class="{send:sendMsg}" @click="getCode">{{ !sendMsg?btnText:`已发送(${count})` }}</view>
+			<view class="code-btn" :class="{send:disabled}" @click="getCode">{{ !sendMsg?btnText:`已发送(${count})` }}</view>
 		</view>
 
 		<text class="msg">温馨提示：尚未注册途咪账号的手机号，登录时将自动注册</text>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-	import { login, getCode, validateCode } from '@/api/api.js'
+	import { login, getCode, validateCode , isCreateTeam } from '@/api/api.js'
 	export default {
 		data(){
 			return{
@@ -29,16 +29,28 @@
 				code:''
 			}
 		},
+		computed:{
+			disabled(){
+				return !(/^1[3456789]\d{9}$/.test(this.phone)) || this.sendMsg
+			}
+		},
 		methods:{
 			
 			// 获取验证码
 			async getCode(){
-				if(this.sendMsg)return
+				if(this.disabled)return
 				this.sendMsg = true
-				const res = await getCode({phone:this.phone})
 				this.timer = setInterval( ()=>{
 					this.count--
 				},1000 )
+				try{
+					const res = await getCode({phone:this.phone})
+				}catch(err){
+					clearInterval(this.timer)
+					this.sendMsg = false
+					this.count = 60
+					this.btnText = '重新获取'
+				}
 			},
 			
 			// 校验验证码
@@ -63,10 +75,10 @@
 							const res = await login({
 								code:this.code,
 								ip: "127.0.0.1",
-								phone: this.phone,
-								sceneryNo: "S0001"
+								phone: this.phone
 							}) 
 							uni.setStorageSync('token', res.value.access_token )
+							// uni.setStorageSync('travelAgency')
 							uni.redirectTo({
 								url:'../index/index'
 							})
@@ -83,9 +95,6 @@
 							icon:'none'
 						})
 					}
-					
-				
-				
 			}
 		},
 		watch:{

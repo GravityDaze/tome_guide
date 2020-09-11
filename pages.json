@@ -45,17 +45,31 @@
         ,{
             "path" : "pages/group/group",
             "style" : {
-				"navigationBarTitleText": "我的团"
+				"navigationBarTitleText": "组团"
 			}
         }
         ,{
             "path" : "pages/myGroup/myGroup",
-            "style" : {}
+            "style" : {
+            	"navigationBarTitleText": "我的团"
+            }
         }
         ,{
             "path" : "pages/sosDetail/sosDetail",
             "style" : {
             	"navigationBarTitleText": "SOS救援详情"
+            }
+        }
+        ,{
+            "path" : "pages/message/message",
+            "style" : {
+           	    "navigationBarTitleText": "消息"
+            }
+        }
+        ,{
+            "path" : "pages/msgDetail/msgDetail",
+            "style" : {
+                "navigationBarTitleText": "消息详情"
             }
         }
     ],
