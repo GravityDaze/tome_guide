@@ -1,0 +1,1 @@
+<view class="msg-detail data-v-628768c8"><view class="msg-box data-v-628768c8"><view class="title data-v-628768c8"><view class="type data-v-628768c8">{{''+$root.g0+''}}</view><view class="date data-v-628768c8">{{''+msg.publishDateTime+''}}</view></view><view class="content data-v-628768c8">{{''+msg.content+''}}</view></view></view>

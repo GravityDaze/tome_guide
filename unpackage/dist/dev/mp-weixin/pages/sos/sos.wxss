@@ -27,12 +27,23 @@
 .sos.data-v-1259b594 {
   padding: 15rpx;
 }
+.sos .msg.data-v-1259b594 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  color: #999896;
+  font-size: 26rpx;
+}
 .sos .msg-panel.data-v-1259b594 {
   position: relative;
   background: white;
   box-shadow: 0 6rpx 18rpx 0 rgba(36, 36, 35, 0.1);
   border-radius: 20rpx;
   padding: 30rpx 60rpx 30rpx 60rpx;
+  margin-bottom: 20rpx;
 }
 .sos .msg-panel .more.data-v-1259b594 {
   position: absolute;

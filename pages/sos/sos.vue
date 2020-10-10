@@ -1,12 +1,15 @@
 <template>
 	<view class="sos">
-		<view class="msg-panel" @click="go">
-			<view class="date">2019-11-18 19:37</view>
+		<view class="msg" v-if="showMsg">
+			<text>SOS列表为空！</text>
+		</view>
+		<view v-else class="msg-panel" @click="check(item.id)" v-for="item in sosList" :key="item.id">
+			<view class="date">{{ item.sosDateTime }}</view>
 			<view class="sos-info">
-				<view class='tourist'>游客夏天SOS求救</view>
+				<view class='tourist'>游客{{item.nickName}}SOS求救</view>
 				<view class="sos-location">
 					<view class="point"></view>
-					<view class="location">求救地址：北纬:30°36′37.83″ 东经:104°3′38.20″</view>
+					<view class="location">求救地址：{{item.seat}}</view>
 				</view>
 			</view>
 			<image class="more" src="../../static/更多@2x.png" mode=""></image>
@@ -15,16 +18,44 @@
 </template>
 
 <script>
+	import { sosQuery } from '../../api/api.js'
 	export default {
+		onShow(){
+			// 未建团时返回首页
+			if(!getApp().globalData.touristTeamNo){
+				uni.showToast({
+					icon:'none',
+					title:'请先组团',
+					duration:1000,
+					mask:true
+				})
+				return setTimeout( ()=>{
+					uni.navigateBack()
+				},1000 )
+			}
+			this.getSosInfo()
+		},
 		data(){
 			return{
-				
+				showMsg:false,
+				sosList:[]
 			}
 		},
 		methods:{
-			go(){
+			async getSosInfo(){
+				try{
+					const { value } = await sosQuery()
+					this.sosList = value 
+				}catch(err){
+					if(err.toString() === 'Error: SOS列表为空'){
+						this.showMsg = true
+					}
+				}
+			},
+			
+			check(id){
 				uni.navigateTo({
-					url:"/pages/sosDetail/sosDetail"
+					url:`/pages/sosDetail/sosDetail?id=${id}`
 				})
 			}
 		}
@@ -34,6 +65,13 @@
 <style lang="scss" scoped>
 	.sos{
 		
+		.msg{
+			display:flex;
+			justify-content: center;
+			color:#999896;
+			font-size:26rpx;
+		}
+		
 		padding:15rpx;
 		
 		.msg-panel{
@@ -42,6 +80,7 @@
 			box-shadow:0 6rpx 18rpx 0 rgba(36,36,35,0.1);
 			border-radius:20rpx;
 			padding:30rpx 60rpx 30rpx 60rpx;
+			margin-bottom:20rpx;
 			
 			.more{
 				position:absolute;

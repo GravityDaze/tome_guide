@@ -16,10 +16,17 @@
 			</view>
 			<text>{{travelAgency}}</text>
 		</view>
-
-		<view class="dismiss" @click="dismiss">
-			<image src="../../static/dismiss.png"></image>
+		
+		<view class="tools">
+			<view class="scan" @click="scanCode">
+				<image src="../../static/scan.png"></image>
+			</view>
+			<view class="dismiss" @click="dismiss">
+				<image src="../../static/dismiss.png"></image>
+			</view>
+			
 		</view>
+		
 
 		<view class="member-list">
 			<!-- 导游 -->
@@ -31,14 +38,14 @@
 			<!-- 游客 -->
 			<view class="member" @longpress="showMask(item.id)" v-for="item in member" :key="item.id">
 				<image :class="{ani: curId === item.id}" src="../../static/member.png"></image>
-				<view class="name">{{item.nickName}}</view>
+				<view class="name">{{item.no}}</view>
 				<view :class="[{ show: curId === item.id }, 'mask']">
 					<view @click.stop="call(item.phone)">
 						<image src="../../static/phone.png" mode=""></image>
 						<text>电话</text>
 					</view>
 
-					<view @click.stop="msg">
+					<view @click.stop="msg(item.no)">
 						<image src="../../static/msg.png" mode=""></image>
 						<text>信息</text>
 					</view>
@@ -87,28 +94,53 @@
 					this.getTeamInfo();
 					return count;
 				};
-				this.timer = setInterval(count(), 3000);
+				this.timer = setInterval(count(), 5000);
 			},
 
 			async getTeamInfo() {
 				const {
 					value
 				} = await queryTeamInfo({})
-				this.code = value.guider.touristTeamCode
-				this.travelAgency = value.guider.travelAgency
-				this.member = value.member
+				try{
+					this.code = value.guider.touristTeamCode
+					this.travelAgency = value.guider.travelAgency
+					uni.setNavigationBarTitle({
+					      title: `我的团(${value.member.length+1 || 1})` 
+					})
+					this.member = value.member
+				}finally{
+					uni.hideLoading()
+					uni.stopPullDownRefresh()
+				}
+				
+				
 			},
 
 			showMask(id) {
 				this.curId = id
-				uni.vibrateShort({
-					success: function() {
+				wx.vibrateShort({
+					success: function(res) {
+						console.log(res)
 					}
 				});
 			},
 			hideMask() {
 				this.curId = ''
 			},
+			
+			// 扫描二维码
+			scanCode(){
+				uni.scanCode({
+					onlyFromCamera:true,
+					scanType:['qrCode'],
+					success:res => {
+						const params = res.result.split('?')[1]
+						console.log(params)
+					}
+				})
+				
+			},
+			
 			del(id) {
 				uni.showModal({
 					content: '是否删除团员',
@@ -136,18 +168,24 @@
 			},
 
 			call(phoneNumber) {
-				uni.makePhoneCall({
-					phoneNumber
-				})
+				if(!phoneNumber){
+					uni.showModal({
+						content:'该游客未记录手机号码,请发送信息'
+					})
+				}else{
+					uni.makePhoneCall({
+						phoneNumber
+					})
+				}
 			},
 			
-			msg(){
-				uni.navigateTo({
-					url:"/pages/publish/publish?mode=personal"	
-				})
+			msg(no){
+					uni.navigateTo({
+						url:`/pages/publish/publish?mode=personal&no=${no}`	
+					})
 			},
 			
-			// 结算团队
+			// 解散团队
 			dismiss() {
 				uni.showModal({
 					content: '解散后团队成员将不能听到导游讲解,确定解散吗?',
@@ -156,6 +194,12 @@
 							try{
 								await dismiss()
 								this.getTeamInfo()
+								uni.showToast({
+									title:'解散失败',
+									icon:'none'
+								})
+								uni.navigateBack()
+										
 							}catch(err){
 								uni.showToast({
 									title:'解散失败',
@@ -166,7 +210,11 @@
 					}
 				})
 			}
-		}
+		},
+		onPullDownRefresh: function() {
+			uni.showLoading()
+		    this.getTeamInfo()
+		},
 	}
 </script>
 
@@ -331,13 +379,42 @@
 			}
 
 		}
+		
+		
+		.tools{
+			position: absolute;
+			right: 15rpx;
+			bottom: 120rpx;
+			display: flex;
+			flex-flow: column;
+			align-items: center;
+			
+		}
+		
+		.scan{
+			width: 86rpx;
+			height: 86rpx;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 50%;
+			background:#fff;
+			padding:20rpx;
+			box-sizing: border-box;
+			box-shadow: 0px 8rpx 8px 2rpx rgba(184, 180, 180, 0.68);
+			
+		
+			image {
+				height: 100%;
+				width: 100%;
+			}
+		}
 
 		.dismiss {
-			position: absolute;
+			margin-top:15rpx;
 			width: 110rpx;
 			height: 110rpx;
-			right: 15rpx;
-			bottom: 100rpx;
+			
 
 			image {
 				height: 100%;

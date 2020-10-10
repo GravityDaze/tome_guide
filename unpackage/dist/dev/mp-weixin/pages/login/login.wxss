@@ -30,6 +30,8 @@
 .login .msg.data-v-b237504c {
   font-size: 24rpx;
   color: grey;
+  color: #FFCB3E;
+  text-align: right;
 }
 .login .login-btn.data-v-b237504c {
   display: -webkit-box;
@@ -47,7 +49,7 @@
   margin-top: 25rpx;
   border-radius: 8rpx;
 }
-.login .phone.data-v-b237504c, .login .code.data-v-b237504c {
+.login .admin > view.data-v-b237504c, .login .tourist > view.data-v-b237504c {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -58,11 +60,11 @@
   margin-bottom: 25rpx;
   border-radius: 0 8rpx 8rpx 0;
 }
-.login .phone input.data-v-b237504c, .login .code input.data-v-b237504c {
+.login .admin > view input.data-v-b237504c, .login .tourist > view input.data-v-b237504c {
   height: 100%;
   background: #f2f2f2;
 }
-.login .phone text.data-v-b237504c, .login .code text.data-v-b237504c {
+.login .admin > view text.data-v-b237504c, .login .tourist > view text.data-v-b237504c {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -78,10 +80,13 @@
   background: #f2f2f2;
   border-radius: 8rpx 0 0 8rpx;
 }
-.login .phone.data-v-b237504c {
+.login .admin .phone.data-v-b237504c, .login .admin .account.data-v-b237504c, .login .admin .password.data-v-b237504c, .login .tourist .phone.data-v-b237504c, .login .tourist .account.data-v-b237504c, .login .tourist .password.data-v-b237504c {
   background: #f2f2f2;
 }
-.login .code .code-btn.data-v-b237504c {
+.login .admin .phone input.data-v-b237504c, .login .admin .account input.data-v-b237504c, .login .admin .password input.data-v-b237504c, .login .tourist .phone input.data-v-b237504c, .login .tourist .account input.data-v-b237504c, .login .tourist .password input.data-v-b237504c {
+  width: 100%;
+}
+.login .admin .code .code-btn.data-v-b237504c, .login .tourist .code .code-btn.data-v-b237504c {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -101,14 +106,35 @@
   border-radius: 8rpx;
   font-size: 28rpx;
 }
-.login .code .send.data-v-b237504c {
+.login .admin .code .send.data-v-b237504c, .login .tourist .code .send.data-v-b237504c {
   background: #f2f2f2;
   color: grey;
 }
-.login .code input.data-v-b237504c {
+.login .admin .code input.data-v-b237504c, .login .tourist .code input.data-v-b237504c {
   -webkit-box-flex: 2;
   -webkit-flex: 2;
           flex: 2;
   border-radius: 0 8rpx 8rpx 0;
+}
+.login .change.data-v-b237504c {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-flow: column;
+          flex-flow: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-top: 500rpx;
+}
+.login .change image.data-v-b237504c {
+  width: 51rpx;
+  height: 50rpx;
+  margin-bottom: 12rpx;
+}
+.login .change text.data-v-b237504c {
+  font-size: 22rpx;
 }
 

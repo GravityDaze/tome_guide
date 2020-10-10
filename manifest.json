@@ -57,7 +57,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxe5e2de6366ee42b9",
+        "appid" : "wxe4d7695dfe8096bf",
         "permission" : {
             "scope.userLocation" : {
                 "desc" : "需要获取您的位置"

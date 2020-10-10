@@ -1,6 +1,6 @@
 <template>
 	<view class="fence">
-		<swiper class="swiper" v-if="!addMode && showPanel" @change="change">
+		<swiper class="swiper" v-if="showPanel" @change="change">
 			<swiper-item v-for="(item,index) in fenceInfo" :key="item.id">
 				<view class="swiper-item">
 					<view class="num">
@@ -30,7 +30,7 @@
 			</swiper-item>
 		</swiper>
 		
-		<map id="map" :latitude="latitude" :longitude="longitude" :polygons="polygons" :polyline="polyline" @tap="drawPolyline" :markers="markers" @markertap="closeLine"></map>
+		<map id="map" :latitude="latitude" :longitude="longitude" :polygons="polygons" :polyline="polyline" :markers="markers"></map>
 		
 		<!-- 新增围栏按钮 -->
 	<!-- 	<view class="add-fench" @click="addFench">
@@ -70,6 +70,7 @@
 		disableFence,
 		enableFnece
 	} from '@/api/api.js'
+	import gcoord from '../../utils/gcoord.js'
 	import {
 		getLatLngCenter
 	} from '@/utils/getLatLngCenter.js'
@@ -82,10 +83,10 @@
 				id:0, //自定义绘制围栏marker的id
 				allowDrawing:false, // 是否允许在地图上绘制polyline
 				showPanel: false,  //是否展示电子围栏面板
-				pageType: '', // 页面参数 'read' => 导游从'景区围栏'选项进入 , 'edit' => 导游从'自定义围栏'选项进入
-				addMode: false, // 是否处于新增或编辑电子围栏模式
+				// pageType: '', // 页面参数 'read' => 导游从'景区围栏'选项进入 , 'edit' => 导游从'自定义围栏'选项进入
+				// addMode: false, // 是否处于新增或编辑电子围栏模式
 				polygons: [], 
-				polyline:[],
+				// polyline:[],
 				markers:[],
 				fenceInfo: {}, //从服务器查询到的电子围栏信息
 				latitude: '', 
@@ -110,6 +111,15 @@
 			}
 		},
 		onLoad() {
+			if(!getApp().globalData.sceneryNo) {
+				uni.showToast({
+					icon:'none',
+					title:'您不在任何景区',
+					mask:true,
+					duration:1000
+				})
+				return setTimeout( _=>uni.navigateBack(),1000 )
+			}
 			this.getFence()
 		},
 		methods: {
@@ -117,12 +127,12 @@
 				const res = await queryFence({
 					sceneryNo: getApp().globalData.sceneryNo
 				})
-				if (!res.value.list || !res.value.list.length) {
+				if (!res.value.list.length) {
 					// 不存在景区围栏时, 返回导游当前的位置
 					this.latitude = getApp().globalData.latitude
 					this.longitude = getApp().globalData.longitude
 					return uni.showToast({
-						title: '没有找到景区围栏',
+						title: '该景区没有围栏',
 						icon: 'none'
 					});
 				}
@@ -152,12 +162,21 @@
 				this.latitude = getLatLngCenter(floatlatLng)[0]
 				this.longitude = getLatLngCenter(floatlatLng)[1]
 				
-				
 				// 绘制多边形
-				const points = floatlatLng.map(v => ({
-					latitude: v[0],
-					longitude: v[1]
-				}))
+				const points = floatlatLng.map(v => {
+					
+					// 将经纬度转换为GCJ02坐标系
+					const [ longitude , latitude ] = gcoord.transform(
+					  [v[1],v[0]],    // 经纬度坐标
+					  gcoord.BD09,               // 当前坐标系
+					  gcoord.GCJ02                 // 目标坐标系
+					)
+					
+					return {
+						latitude,
+						longitude
+					}
+				})
 				
 				// 缩放以完整显示marker
 				const mapContext = uni.createMapContext('map', this)
@@ -175,149 +194,148 @@
 				
 			},
 			
-			
 			change({detail}){
 				this.curIndex = detail.current
 				this.getPolygon()
 			},
 			
 			// 新增围栏
-			addFench() {
-				this.addMode = !this.addMode
-				this.allowDrawing = this.addMode
-				!this.addMode && this.clearMapCover()
-			},
+			// addFench() {
+			// 	this.addMode = !this.addMode
+			// 	this.allowDrawing = this.addMode
+			// 	!this.addMode && this.clearMapCover()
+			// },
 
 			// 改变围栏状态
-			async changeFenceStatus() {
-				if (this.fenceInfo.status === 0) {
-					// 启用电子围栏
-					const res = await enableFence({
-						id: this.fenceInfo.id
-					})
-					this.fenceInfo.status = 1
-				} else {
-					const res = await disableFence({
-						id: this.fenceInfo.id
-					})
-					this.fenceInfo.status = 0
-				}
+			// async changeFenceStatus() {
+			// 	if (this.fenceInfo.status === 0) {
+			// 		// 启用电子围栏
+			// 		const res = await enableFence({
+			// 			id: this.fenceInfo.id
+			// 		})
+			// 		this.fenceInfo.status = 1
+			// 	} else {
+			// 		const res = await disableFence({
+			// 			id: this.fenceInfo.id
+			// 		})
+			// 		this.fenceInfo.status = 0
+			// 	}
 
-			},
+			// },
 			
-			// 选择报警方式
-			chooseWarnType(){
-				uni.showActionSheet({
-					 itemList: ['出围栏报警', '进围栏报警', '进出围栏报警'],
-					 success: ({tapIndex}) => {
-						// this.userInfo.sex = tapIndex
-					 }
-				})
-			},
+			// // 选择报警方式
+			// chooseWarnType(){
+			// 	uni.showActionSheet({
+			// 		 itemList: ['出围栏报警', '进围栏报警', '进出围栏报警'],
+			// 		 success: ({tapIndex}) => {
+			// 			// this.userInfo.sex = tapIndex
+			// 		 }
+			// 	})
+			// },
 			
-			// 选择提醒类型
-			chooseRemindType(){
-				uni.showActionSheet({
-					 itemList: ['不提示', '震动', '语音','语音+震动'],
-					 success: ({tapIndex}) => {
-						// this.userInfo.sex = tapIndex
-					 }
-				})
-			},
+			// // 选择提醒类型
+			// chooseRemindType(){
+			// 	uni.showActionSheet({
+			// 		 itemList: ['不提示', '震动', '语音','语音+震动'],
+			// 		 success: ({tapIndex}) => {
+			// 			// this.userInfo.sex = tapIndex
+			// 		 }
+			// 	})
+			// },
 			
 			// 清除地图上所有标记物
-			clearMapCover(){
-				this.polygons = []
-				this.polyline = []
-				this.markers = []
-				this.id = 0 
-			},
+			// clearMapCover(){
+			// 	this.polygons = []
+			// 	this.polyline = []
+			// 	this.markers = []
+			// 	this.id = 0 
+			// },
 			
 			// 绘制围栏
-			drawPolyline(e){
-				if(!this.allowDrawing) return
+			// drawPolyline(e){
+			// 	if(!this.allowDrawing) return
 				
-				// 点击地图时 在地图上创建marker
-				const { latitude, longitude } = e.detail
-				this.markers.push({
-					id:this.id++,
-					latitude,
-					longitude,
-					iconPath:'/static/定位@2x.png'
-				})
-				// 根据marker的坐标绘制polyline
-				const points = this.markers.map( v=>({
-					latitude:v.latitude,
-					longitude:v.longitude
-				}) )
-				this.polyline = [{
-					points,
-					width:2,
-					color:'#0DC392',
-					dottedLine:true
-				}]
-			},
+			// 	// 点击地图时 在地图上创建marker
+			// 	const { latitude, longitude } = e.detail
+			// 	this.markers.push({
+			// 		id:this.id++,
+			// 		latitude,
+			// 		longitude,
+			// 		iconPath:'/static/定位@2x.png'
+			// 	})
+			// 	// 根据marker的坐标绘制polyline
+			// 	const points = this.markers.map( v=>({
+			// 		latitude:v.latitude,
+			// 		longitude:v.longitude
+			// 	}) )
+			// 	this.polyline = [{
+			// 		points,
+			// 		width:2,
+			// 		color:'#0DC392',
+			// 		dottedLine:true
+			// 	}]
+			// },
 			
 			// 点击第一个marker时将polyline闭合为polygon
-			closeLine(e){
-				if(!this.allowDrawing) return
-				if( e.markerId !== 0 ){
-					uni.showToast({
-						title:'请选择第一个标记进行闭合',
-						icon:'none'
-					})
-				}else{
+	// 		closeLine(e){
+	// 			if(!this.allowDrawing) return
+	// 			if( e.markerId !== 0 ){
+	// 				uni.showToast({
+	// 					title:'请选择第一个标记进行闭合',
+	// 					icon:'none'
+	// 				})
+	// 			}else{
 					
-					const points = this.markers.map( v=>({
-						latitude:v.latitude,
-						longitude:v.longitude
-					}) )
+	// 				const points = this.markers.map( v=>({
+	// 					latitude:v.latitude,
+	// 					longitude:v.longitude
+	// 				}) )
 	
-					if( points.length <= 2 ){
-						return uni.showToast({
-							title:'请至少绘制三个点',
-							icon:'none'
-						})
-					}
+	// 				if( points.length <= 2 ){
+	// 					return uni.showToast({
+	// 						title:'请至少绘制三个点',
+	// 						icon:'none'
+	// 					})
+	// 				}
 					
-					// 判断绘制出来的是否是规则多边形
-					if( !isPolygon(points)){
-						this.clearMapCover()
-						return uni.showToast({
-							title:'请绘制规则的多边形',
-							icon:'none'
-						})
-					}
-					// 形成闭合多边形
-					this.polygons = [{
-						points,
-						strokeColor: "#0DC392",
-						strokeWidth: 2,
-						fillColor: "#07C28F26"
-					}]
-					// 清除polyLine
-					this.polyline = []
-					this.markers = []
-					this.id = 0 
-					uni.showToast({
-						title:'电子围栏绘制成功',
-						icon:'none'
-					})
-					this.allowDrawing = false
-				}
-			},
+	// 				// 判断绘制出来的是否是规则多边形
+	// 				if( !isPolygon(points)){
+	// 					this.clearMapCover()
+	// 					return uni.showToast({
+	// 						title:'请绘制规则的多边形',
+	// 						icon:'none'
+	// 					})
+	// 				}
+	// 				// 形成闭合多边形
+	// 				this.polygons = [{
+	// 					points,
+	// 					strokeColor: "#0DC392",
+	// 					strokeWidth: 2,
+	// 					fillColor: "#07C28F26"
+	// 				}]
+	// 				// 清除polyLine
+	// 				this.polyline = []
+	// 				this.markers = []
+	// 				this.id = 0 
+	// 				uni.showToast({
+	// 					title:'电子围栏绘制成功',
+	// 					icon:'none'
+	// 				})
+	// 				this.allowDrawing = false
+	// 			}
+	// 		},
 			
 			// 创建围栏
-			async saveFence(){
-				const res = await createFence({
-					sceneryNo: "S0001",
-					name: "测试围栏",
-					scope:"103.57289155100398_30.91334920379188,103.57642189165819_30.913597063584852",
-					warnType:1,
-					remindType:1
-				})
-				console.log(res)
-			}
+			// async saveFence(){
+			// 	const res = await createFence({
+			// 		sceneryNo: "S0001",
+			// 		name: "测试围栏",
+			// 		scope:"103.57289155100398_30.91334920379188,103.57642189165819_30.913597063584852",
+			// 		warnType:1,
+			// 		remindType:1
+			// 	})
+			// 	console.log(res)
+			// }
 			 
 		}
 	}

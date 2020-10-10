@@ -102,7 +102,8 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
     userInfo: {},
     sceneryNum: '',
     latitude: '',
-    longitude: '' } };exports.default = _default;
+    longitude: '',
+    touristTeamNo: '' } };exports.default = _default;
 
 /***/ }),
 /* 8 */

@@ -1,20 +1,21 @@
 <template>
 	<view class="message">
-		<view class="message-box" @click="check">
-			<image src="../../static/icon_daoyouitixing.png" mode=""></image>
+		<view class="message-box" @click="check(item)" v-for="item in msgList" :key="item.id">
+			<image v-if="!item.isRead" :src="require(`../../static/${ iconMap.get(item.sendType) }.png`)"></image>
+			<image v-else :src="require(`../../static/${ iconReadMap.get(item.sendType) }.png`)"></image>
 			<view class="text">
 				<view class="title">
 					<view class="type">
-						导游提醒
+						{{ msgTypeMap.get(item.sendType) }}
 					</view>
 					
 					<view class="date">
-						2019-6-03 9:37
+						{{ item.publishDateTime }}
 					</view>
 				</view>
 				
 				<view class="bottom-text">
-					各位团友,四点来大门集合
+					{{item.content}}
 				</view>
 			</view>
 		</view>
@@ -22,19 +23,59 @@
 </template>
 
 <script>
+	import { queryMsg,read } from '../../api/api.js'
 	export default {
+		onShow(){
+			this.getMsg()
+		},
 		data() {
 			return {
-				
+				msgList:[],
+				msgTypeMap:new Map([
+					[1, "平台消息"],
+					[2, "导游提醒"],
+					[3, "景区消息"]
+				]),
+				iconMap:new Map([
+					[1, "icon_tumitixing"],
+					[2, "icon_daoyouitixing"],
+					[3, "icon_jingqutixing"],
+					]
+				),
+				iconReadMap:new Map([
+					[1, "icon_tumitixingyidu"],
+					[2, "icon_daoyoutixingyidu"],
+					[3, "icon_jingquitixingyidu"],
+					]
+				),
 			};
 		},
 		methods:{
-			check(params){
+			async getMsg(){
+				try{
+					const { value } = await queryMsg({
+						pageNum:1,
+						pageSize:10
+					})
+					this.msgList = value.list
+				}finally{
+					uni.hideLoading()
+					uni.stopPullDownRefresh()
+				}
+				
+			},
+			async check(params){
+				uni.setStorageSync('msg',JSON.stringify(params))
+				await read({id:params.id})
 				uni.navigateTo({
-					url:"/pages/msgDetail/msgDetail"
+					url:`/pages/msgDetail/msgDetail`
 				})
 			}
-		}
+		},
+		onPullDownRefresh: function() {
+			uni.showLoading()
+		    this.getMsg()
+		},
 	}
 </script>
 
@@ -48,6 +89,7 @@
 			background:#fff;
 			padding:30rpx 20rpx;
 			border-radius:15rpx;
+			margin-bottom:20rpx;
 			
 			image{
 				width:120rpx;
@@ -59,6 +101,9 @@
 				display:flex;
 				flex-flow:column;
 				flex:1;
+				overflow:hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
 				
 				.title{
 					display:flex;

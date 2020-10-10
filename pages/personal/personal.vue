@@ -6,7 +6,7 @@
 		
 		<view class="guide-panel">
 			<view class="guide-avatar">
-				<image src="../../static/我的团_导游@2x.png" mode=""></image>
+				<image src="../../static/guide.png" mode=""></image>
 			</view>
 			
 			<view class="guide-name">
@@ -19,7 +19,7 @@
 			<view class="list-item" v-for="(item,index) in listItem" :key="index" @click="handler(item)">
 				<image class="icon" :src="require(`../../static/${item.icon}`)" ></image>
 				<text>{{item.text}}</text>
-				<image v-show="item.text !== '退出'" class="arrow" src="../../static/个人资料更多@2x.png" mode=""></image>
+				<image v-show="item.text !== '退出'" class="arrow" src="../../static/more.png" mode=""></image>
 			</view>
 		</view>
 	</view>
@@ -37,7 +37,7 @@
 						url:'info'
 					},
 					{
-						icon:'景区围栏@2x.png',
+						icon:'fence.png',
 						text:'景区围栏',
 						url:'fence',
 						params:'read'
@@ -49,7 +49,7 @@
 					// 	params:'edit'
 					// },
 					{
-						icon:'退出@2x.png',
+						icon:'logout.png',
 						text:'退出'
 					}
 				],
@@ -61,9 +61,7 @@
 		},
 		methods:{
 			async getUserInfo(){
-				const res = await queryUserInfo({imei:'866174271271823'})
-				this.userInfo = {...res.value} 
-				getApp().globalData.userInfo = this.userInfo
+				this.userInfo = JSON.parse( uni.getStorageSync('customerInfo') )
 			},
 			handler(item){
 				if(!item.url){
@@ -73,7 +71,8 @@
 						success:({confirm}) => {
 							if(confirm){
 								uni.clearStorageSync()
-								return uni.redirectTo({
+								getApp().globalData = {}
+								return uni.reLaunch({
 									url:'../login/login'
 								}) 
 							}

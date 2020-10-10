@@ -11,7 +11,8 @@
     "pages/myGroup/myGroup",
     "pages/sosDetail/sosDetail",
     "pages/message/message",
-    "pages/msgDetail/msgDetail"
+    "pages/msgDetail/msgDetail",
+    "pages/list/list"
   ],
   "subPackages": [],
   "window": {
@@ -26,5 +27,5 @@
     }
   },
   "usingComponents": {},
-  "sitemapLocation": "sitemap81.json"
+  "sitemapLocation": "sitemap13.json"
 }

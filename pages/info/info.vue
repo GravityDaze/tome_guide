@@ -65,7 +65,7 @@
 				</view>
 			</view>
 			<view class="agency" v-show="isCollapse">
-				<view class="agency-name">{{userInfo.travelAgency}}</view>
+				<view class="agency-name" v-for="item in userInfo.travelAgencys">{{item.travelAgencyName}}</view>
 			</view>
 		</view>
 	</view>
@@ -99,10 +99,11 @@
 			// save()
 		},
 		onLoad(){
-			this.userInfo = getApp().globalData.userInfo
+			this.userInfo = JSON.parse( uni.getStorageSync('customerInfo') )
 		},
 		methods:{
 			changeGender(){
+				return
 				uni.showActionSheet({
 					 itemList: ['保密', '男', '女'],
 					 success: ({tapIndex}) => {
@@ -117,6 +118,7 @@
 				this.isCollapse = !this.isCollapse
 			},
 			changeAvatar(){
+				return
 				uni.chooseImage({
 				    count: 1, //默认9
 				    sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
@@ -145,12 +147,14 @@
 				margin-top:40rpx;
 				color:#fff;
 				
+				
 				.agency-name{
 					font-size:28rpx;
 					display:inline-block;
 					padding:8rpx 15rpx;
 					background:rgba(230,229,227,1);
 					border-radius:5px;
+					margin-right:20rpx;
 				}
 			}
 

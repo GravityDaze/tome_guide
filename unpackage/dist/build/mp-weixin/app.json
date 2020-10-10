@@ -1,0 +1,30 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/fence/fence",
+    "pages/personal/personal",
+    "pages/login/login",
+    "pages/sos/sos",
+    "pages/info/info",
+    "pages/publish/publish",
+    "pages/group/group",
+    "pages/myGroup/myGroup",
+    "pages/sosDetail/sosDetail",
+    "pages/message/message",
+    "pages/msgDetail/msgDetail"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "途咪导游机",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#fff"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "需要获取您的位置"
+    }
+  },
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
+}

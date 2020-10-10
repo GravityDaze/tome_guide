@@ -27,6 +27,7 @@
 .group {
   padding: 55rpx 15rpx;
   position: relative;
+  height: 100%;
 }
 .group .tips {
   font-size: 32rpx;

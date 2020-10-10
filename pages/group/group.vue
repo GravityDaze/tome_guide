@@ -26,14 +26,26 @@
 			};
 		},
 		onLoad() {
+			if(!getApp().globalData.sceneryNo) {
+				uni.showToast({
+					icon:'none',
+					title:'您不在任何景区',
+					mask:true,
+					duration:1000
+				})
+				return setTimeout( _=>uni.navigateBack(),1000 )
+			}
 			// 查询旅行团列表
 			this.getList()
+			
 		},
 		methods: {
 			async getList() {
 				const res = await queryTravelAgencyList({})
 				this.list = res.value.list
 				this.items = this.list.map(v => v.name)
+				// 初始对旅行社id赋值
+				this.travelAgencyId = this.list[0].id
 			},
 
 			// 切换多选框状态
@@ -67,14 +79,13 @@
 
 			async createMyGroup() {
 				const res = await createTeam({
-					sceneryNo: "S0001",
 					travelAgencyId: this.travelAgencyId,
-					// sceneryNo:getApp().globalData.sceneryNo,
+					sceneryNo:getApp().globalData.sceneryNo,
 					lon: getApp().globalData.longitude,
 					lat: getApp().globalData.latitude
 				})
 				
-				uni.navigateTo({
+				uni.redirectTo({
 					url: "/pages/myGroup/myGroup"
 				})
 				
@@ -91,6 +102,7 @@
 	.group {
 		padding: 55rpx 15rpx;
 		position: relative;
+		height:100%;
 
 		.tips {
 			font-size: 32rpx;

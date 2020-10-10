@@ -5,7 +5,7 @@
 			<image src="../../static/icon-shaixuan@2x.png"></image>
 		</view>
 			
-		<scroll-view scroll-y style="height:300rpx" class="select-box" v-if="isOpenSelect">
+		<scroll-view scroll-y style="max-height:300rpx" class="select-box" v-if="isOpenSelect">
 			<view @click.stop="select(item)" class="select-item" :style="{background:index === 0? '#f0f0f0':'#fff'}" v-for="(item,index) in items" :key="index">
 				{{item}}
 			</view>

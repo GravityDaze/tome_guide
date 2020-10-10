@@ -13,8 +13,8 @@
 			userInfo: {},
 			sceneryNum:'',
 			latitude:'',
-			longitude:''
-			
+			longitude:'',
+			touristTeamNo:''
 		}
 	}
 </script>

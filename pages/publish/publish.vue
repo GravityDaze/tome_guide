@@ -20,16 +20,32 @@
 </template>
 
 <script>
-	import { sendMsg } from '@/api/api.js'
+	import { publish,sendMsg } from '@/api/api.js'
 	export default {
+		onShow(){
+			// 未建团时返回首页
+			if(!getApp().globalData.touristTeamNo){
+				uni.showToast({
+					icon:'none',
+					title:'请先组团',
+					duration:1000,
+					mask:true
+				})
+				setTimeout( ()=>{
+					uni.navigateBack()
+				},1000 )
+			}
+		},
 		onLoad(options){
 			this.mode = options.mode
+			this.no = options.no
 		},
 		data() {
 			return {
 				num:0,
 				message:'',
-				mode:''
+				mode:'',
+				no:''
 			};
 		},
 		methods:{
@@ -44,26 +60,52 @@
 						icon:'none'
 					})
 				}
-				uni.showModal({
-					content:'此消息发布将通知全体团队成员，确认发布吗？',
-					success:async r =>{
-						if(r.confirm){
-							try{
-								const res = await sendMsg({
-								 message:this.message
-								})
-								this.num = 0
-								this.message = ''
-								uni.showToast({
-									title:'发布成功',
-									icon:'none'
-								})
-							}catch(err){
-								console.log(err)
+				
+				// 判断是发布给所有团员还是指定团员
+				if( !this.mode ){
+					uni.showModal({
+						content:'此消息发布将通知全体团队成员，确认发布吗？',
+						success:async r =>{
+							if(r.confirm){
+								try{
+									const res = await publish({
+									 message:this.message
+									})
+									this.num = 0
+									this.message = ''
+									uni.showToast({
+										title:'发布成功',
+										icon:'none'
+									})
+								}catch(err){
+									console.log(err)
+								}
 							}
 						}
-					}
-				})
+					})
+				}else{
+					uni.showModal({
+						content:'此消息将通知该组员，确认发布吗？',
+						success:async r =>{
+							if(r.confirm){
+								try{
+									const res = await sendMsg({
+									 message:this.message,
+									 receiver:this.no
+									})
+									this.num = 0
+									this.message = ''
+									uni.showToast({
+										title:'发送成功',
+										icon:'none'
+									})
+								}catch(err){
+									console.log(err)
+								}
+							}
+						}
+					})
+				}
 			}
 		}
 	}

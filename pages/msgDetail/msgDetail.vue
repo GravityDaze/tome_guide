@@ -3,14 +3,14 @@
 		<view class="msg-box">
 			<view class="title">
 				<view class="type">
-					导游提醒
+					{{ msgTypeMap.get(msg.sendType) }}
 				</view>
 				<view class="date">
-					2019-6-19 9:32
+					{{msg.publishDateTime}}
 				</view>
 			</view>
 			<view class="content">
-				各位团友现在我们自由活动一直活动到中午12点半的时候然后去吃烤肉 吃完烤肉以后午休2小时然后下午上山
+				{{msg.content}}
 			</view>
 		</view>
 	</view>
@@ -18,9 +18,17 @@
 
 <script>
 	export default {
+		onLoad(options){
+			this.msg = JSON.parse(uni.getStorageSync('msg'))
+		},
 		data() {
 			return {
-				
+				msg:{},
+				msgTypeMap:new Map([
+					[1, "平台消息"],
+					[2, "导游提醒"],
+					[3, "景区消息"]
+				])
 			};
 		}
 	}

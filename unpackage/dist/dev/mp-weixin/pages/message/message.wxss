@@ -37,6 +37,7 @@
   background: #fff;
   padding: 30rpx 20rpx;
   border-radius: 15rpx;
+  margin-bottom: 20rpx;
 }
 .message .message-box image.data-v-a91f51d4 {
   width: 120rpx;
@@ -54,6 +55,9 @@
   -webkit-box-flex: 1;
   -webkit-flex: 1;
           flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .message .message-box .text .title.data-v-a91f51d4 {
   display: -webkit-box;

@@ -6,8 +6,11 @@ export const getCode = data => http.post('/sys/getVerificationCode',{},{ params:
 // 验证码是否正确
 export const validateCode = data => http.post('/sys/validateCode', data)
 
-// 登录
+// 导游登录
 export const login = data => http.post('/sys/loginWxApp',data)
+
+// 管理员登录
+export const loginAdmin = data => http.post('/sys/a3AdminLogin',data)
 
 // 通过经纬度查询到景区编号
 export const querySceneryNum = data => http.post('/guider/scenice/getSceneryBylon',data)
@@ -25,10 +28,22 @@ export const queryFacilities = data => http.post('/guider/scenice/getFacilities'
 export const queryScenicSpot = data => http.post('/guider/scenice/getScenicSpot',{},{ params:data })
 
 // 导游发送信息
-export const sendMsg = data => http.post('/guider/message/sendMsg',data)
+export const publish = data => http.post('/guider/message/sendMsg',data)
+
+// 导游对指定游客发送消息
+export const sendMsg = data => http.post('/guider/message/sendMsgToCustomer',data)
+
+// 导游查询消息
+export const queryMsg = data => http.post('/guider/message/queryListByCustomerId',{})
+
+// 将查询到的消息改为已读
+export const read = data => http.post('/guider/message/read',data)
 
 // 导游建团
 export const createTeam = data => http.post('/guider/touristTeam/creatTeam',data)
+
+// 二维码建团
+export const createTeamQr = data => http.post('/guider/touristTeam/joinQR',data)
 
 // 查询导游是否建团
 export const isCreateTeam = data => http.post('/guider/touristTeam/getTeam',data)
@@ -43,4 +58,16 @@ export const queryTeamInfo = data => http.post('/guider/touristTeam/queryTeamInf
 export const delMember = data => http.post('/guider/touristTeam/deleteMember',{},{ params:data })
 
 // 解散团队
-export const dismiss = data => http.post('/guider/touristTeam/dismiss',data)
+export const dismiss = data => http.post('/guider/touristTeam/dissTeam')
+
+// 查询sos求救信息
+export const sosQuery = data => http.post('/guider/sos/query')
+
+// 查询单条sos求救信息
+export const querySingleSos = data => http.post('/guider/sos/get',{},{ params:data })
+
+// 解决sos求救信息
+export const sosResolve = data => http.post('/guider/sos/deal',{},{ params:data })
+
+// 实时上传导游位置
+export const uploadLocation = data => http.post('/gather/uploadTerminalTrackInfo',data)

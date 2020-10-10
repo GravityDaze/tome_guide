@@ -4,8 +4,10 @@
 		<!-- 面板 -->
 		<view class="panel">
 			<view class="title">
-				<text>游客夏天SOS求救</text>
-				<image src="../../static/jiuyuanxiangqingsos@2x.png" mode=""></image>
+				<text>游客{{ sosInfo.nickName }}SOS求救</text>
+				<view class="navigation">
+					<image @click="navigation(sosInfo.nickName)" src="../../static/navigation.png" mode=""></image>
+				</view>
 			</view>
 			<view class="content">
 				<view class="dl">
@@ -13,7 +15,7 @@
 						游客昵称：
 					</view>
 					<view class="dd">
-						夏天
+						{{sosInfo.nickName}}
 					</view>
 				</view>
 				<view class="dl">
@@ -21,7 +23,7 @@
 						游客手机：
 					</view>
 					<view class="dd">
-						18200001234
+						{{ sosInfo.phone }}
 					</view>
 				</view>
 				<view class="dl">
@@ -29,7 +31,7 @@
 						求救方式：
 					</view>
 					<view class="dd">
-						对讲机
+						{{ sosTypeMap.get(sosInfo.sosType) }}
 					</view>
 				</view>
 				<view class="dl">
@@ -37,7 +39,7 @@
 						求救时间：
 					</view>
 					<view class="dd">
-						2019-7-10 17:33:30
+						{{ sosInfo.sosDateTime }}
 					</view>
 				</view>
 				<view class="dl">
@@ -45,29 +47,29 @@
 						求救坐标：
 					</view>
 					<view class="dd">
-						103.4562451,40.3555
+						{{ sosInfo.lat + '，' + sosInfo.lon }}
 					</view>
 				</view>
-				<view class="dl">
+				<!-- <view class="dl">
 					<view class="dt">
 						海拔高度：
 					</view>
 					<view class="dd">
 						1200
 					</view>
-				</view>
+				</view> -->
 				<view class="dl">
 					<view class="dt">
 						求救地址：
 					</view>
 					<view class="dd">
-						上清宫小卖部
+						{{ sosInfo.seat }}
 					</view>
 				</view>
 
 			</view>
-			<view class="btn" @click="navigation">
-				导航
+			<view class="btn" @click="reslove">
+				已处理
 			</view>
 		</view>
 	</view>
@@ -79,20 +81,29 @@
 	import {
 		getLatLngCenter
 	} from '@/utils/getLatLngCenter.js'
+	import { querySingleSos,sosResolve } from '../../api/api.js'
 	export default {
-		onLoad() {
+		onLoad(options) {
 			// 获取到panel的高度
 			const query = uni.createSelectorQuery().in(this);
 			query.select('.panel').boundingClientRect(data => {
 			  this.mapHeight = data.height
 			}).exec();
 			
-			this.getSOSLocation()
+			this.getSOSLocation(options.id)
 		},
 		data() {
 			return {
 				longitude: '',
 				latitude: '',
+				sosInfo:{},
+				sosTypeMap:new Map([
+					[0,'紧急语音'],
+					[1,'网络视频'],
+					[2,'导游电话'],
+					[3,'景区电话'],
+					
+				]),
 				markers: [],
 				polyline: [],
 				includePoints: [],
@@ -101,9 +112,11 @@
 			};
 		},
 		methods: {
-			getSOSLocation() {
+			async getSOSLocation(sosId) {
+				const { value } = await querySingleSos({sosId})
+				this.sosInfo = value
 				// 模拟游客位置
-				this.touristLocal = [30.715819, 104.112577]
+				this.touristLocal = [value.lat, value.lon]
 				// 获取到导游的位置
 				uni.getLocation({
 					type: 'gcj02',
@@ -130,6 +143,7 @@
 							points: [touristLngLat,guideLngLat],
 							padding: [100, 100, 100, 100],
 							success: res => {
+								console.log(res)
 								// 路径规划
 								const qqmapsdk = new QQMapWX({
 									key: '56LBZ-OKVCW-TP3RL-RVH7P-RDRIQ-4EB2T'
@@ -138,6 +152,12 @@
 									mode: 'walking',
 									from: guideLngLat,
 									to: touristLngLat,
+									fail:res=>{
+										uni.showToast({
+											icon:'none',
+											title:'起终点距离过长'
+										})
+									},
 									success: res => {
 										const { distance } = res.result.routes[0]
 										const coors = res.result.routes[0].polyline,
@@ -204,15 +224,39 @@
 				});
 			},
 
-			navigation() {
+			navigation(nickName) {
 				// 调用app的导航服务
 				wx.openLocation({
-					latitude: this.touristLocal[0],
-					longitude: this.touristLocal[1],
-					name: '终点位置', // 位置名
-					address: '测试说明', // 要去的地址详情说明
+					latitude: parseFloat(this.touristLocal[0]),
+					longitude: parseFloat(this.touristLocal[1]),
+					name: `游客${nickName}的求救位置`, // 位置名
+					address: '', // 要去的地址详情说明
 					scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
 				});
+			},
+			
+			reslove(){
+				uni.showModal({
+					content:'请确认该条SOS信息是否已经被处理',
+					success:async res=>{
+						if(res.confirm){
+							try{
+								const res = await sosResolve({sosId:this.sosInfo.id})
+								uni.showToast({
+									icon:'none',
+									title:'已成功处理'
+								})
+								uni.navigateBack()
+							}catch(err){
+								console.log(err)
+								uni.showToast({
+									icon:'none',
+									title:'处理失败'
+								})
+							}
+						}
+					}
+				})
 			}
 		}
 	}
@@ -240,20 +284,35 @@
 			
 
 			.title {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
+				position:relative;
+				margin-bottom:37rpx;
 
 				text {
 					font-size: 36rpx;
 					font-weight: bold;
 					color: rgba(51, 50, 49, 1);
 				}
-
-				image {
-					width: 76rpx;
-					height: 80rpx;
+				
+				.navigation{
+					position:absolute;
+					right:0;
+					top:0;
+					width:100rpx;
+					height:100rpx;
+					display:flex;
+					justify-content: center;
+					align-items:center;
+					background:#ffcb3d;
+					border-radius:50%;
+					box-shadow: 0px 8rpx 16rpx 0px rgba(158, 116, 1, 0.18);
+					
+					image {
+						width: 60%;
+						height: 60%;
+						
+					}
 				}
+				
 			}
 
 			.content {

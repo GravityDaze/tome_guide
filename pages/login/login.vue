@@ -1,30 +1,48 @@
 <template>
 	<view class="login">
-		<view class="phone">
-			<text>+86</text>
-			<input type="text" placeholder="请输入手机号" v-model="phone" />
+		
+		<!-- 导游登录 -->
+		<view class="tourist" v-if="!loginAsAdmin">
+			<view class="phone">
+				<text>+86</text>
+				<input type="text" placeholder="请输入手机号" v-model="phone" />
+			</view>
+			<view class="code">
+				<text>验证码</text>
+				<input type="text" placeholder="请输入验证码" v-model="code" />
+				<view class="code-btn" :class="{send:disabled}" @click="getCode">{{ !sendMsg?btnText:`已发送(${count})` }}</view>
+			</view>
 		</view>
 		
-		<view class="code">
-			<text>验证码</text>
-			<input type="text" placeholder="请输入验证码" v-model="code" />
-			<view class="code-btn" :class="{send:disabled}" @click="getCode">{{ !sendMsg?btnText:`已发送(${count})` }}</view>
-		</view>
-
-		<text class="msg">温馨提示：尚未注册途咪账号的手机号，登录时将自动注册</text>
 		
-		<view class="login-btn" @click="login">登录</view>
+		<!-- 管理员登录 -->
+		<view class="admin" v-else>
+			<view class="account">
+				<text>账号</text>
+				<input type="text" placeholder="请输入账号" v-model="account" />
+			</view>
+			<view class="password">
+				<text>密码</text>
+				<input type="password" placeholder="请输入密码" v-model="password" />
+			</view>
+		</view>
+		
+		<view class="msg"><text @click="loginAsAdmin = !loginAsAdmin">切换至{{text}}登录 > </text></view>
+		<view class="login-btn" @click="submit">登录</view>
 	</view>
 </template>
 
 <script>
-	import { login, getCode, validateCode , isCreateTeam } from '@/api/api.js'
+	import { login, getCode, validateCode , isCreateTeam, loginAdmin } from '@/api/api.js'
 	export default {
 		data(){
 			return{
 				sendMsg:false,
 				count:60,
 				btnText:'获取验证码',
+				loginAsAdmin:false,
+				account:'',
+				password:'',
 				phone:'',
 				code:''
 			}
@@ -32,7 +50,14 @@
 		computed:{
 			disabled(){
 				return !(/^1[3456789]\d{9}$/.test(this.phone)) || this.sendMsg
-			}
+			},
+			text(){
+				if(!this.loginAsAdmin){
+					return '管理员'
+				}else{
+					return '导游'
+				}
+			},
 		},
 		methods:{
 			
@@ -67,35 +92,65 @@
 				
 			},
 			
+			submit(){
+				
+				if( this.loginAsAdmin ){
+					this.adminLogin()
+				}else{
+					this.guideLogin()
+				}
+			},
 			
-			async login(){
-					if( await this.validate(this.code) ){
-						
-						try{
-							const res = await login({
-								code:this.code,
-								ip: "127.0.0.1",
-								phone: this.phone
-							}) 
-							uni.setStorageSync('token', res.value.access_token )
-							// uni.setStorageSync('travelAgency')
-							uni.redirectTo({
-								url:'../index/index'
-							})
-						}catch(err){
-							uni.showToast({
-								title:err.toString(),
-								icon:'none'
-							})
-						}
-
-					}else{
-						uni.showToast({
-							title:'验证码输入错误',
-							icon:'none'
+			// 管理员登录
+			async adminLogin(){
+				const res = await loginAdmin({name:this.account,password:this.password})
+				// 保存token
+				uni.setStorageSync('token', res.value.tokenInfo.access_token )
+				// 跳转至导游列表
+				uni.redirectTo({
+					url:'../list/list'
+				})
+			},
+			
+			// 导游登陆
+			async guideLogin(){
+				if( await this.validate(this.code) ){
+					try{
+						uni.showLoading()
+						const res = await login({
+							code:this.code,
+							ip: "127.0.0.1",
+							phone: this.phone
+						}) 
+						// 保存token
+						uni.setStorageSync('token', res.value.tokenInfo.access_token )
+						// 保存用户信息
+						uni.setStorageSync('customerInfo',JSON.stringify(res.value.customerInfo))
+						uni.redirectTo({
+							url:'../index/index'
 						})
+					}catch(err){
+						// uni.showToast({
+						// 	title:err.toString(),
+						// 	icon:'none'
+						// })
+						uni.showModal({
+							content:err.toString()
+						})
+					}finally{
+						uni.hideLoading()
 					}
-			}
+				
+				}else{
+					uni.showToast({
+						title:'验证码输入错误',
+						icon:'none'
+					})
+				}
+			},
+			
+			
+			
 		},
 		watch:{
 			count(num){
@@ -109,7 +164,10 @@
 		},
 		onHide(){
 			clearInterval(this.timer)
-		}
+			this.sendMsg = false
+			this.count = 60
+			this.btnText = '重新获取'
+		},
 	}
 </script>
 
@@ -117,9 +175,13 @@
 	.login{
 		padding:25rpx;
 		
+		
+		
 		.msg{
 			font-size:24rpx;
 			color:grey;
+			color:#FFCB3E;
+			text-align: right;
 		}
 		
 		.login-btn{
@@ -134,60 +196,85 @@
 			
 		}
 		
-		.phone,.code{
+		.admin,.tourist{
+			&>view{
+				display:flex;
+				align-items: center;
+				height:80rpx;
+				margin-bottom:25rpx;
+				border-radius: 0 8rpx 8rpx 0;
+				
+				input{
+						height:100%;
+						background:rgb(242,242,242);
+					}
+					
+					text{
+						display:flex;
+						align-items: center;
+						justify-content: center;
+						width:100rpx;
+						font-size:24rpx;
+						height:100%;
+						background:rgb(242,242,242);
+						border-radius: 8rpx 0 0 8rpx;
+					}
+				}
+				
+				.phone,.account,.password{
+					background:rgb(242,242,242);
+				
+					input{
+						width:100%;
+					}
+				}
+				
+				.code{
+					
+					.code-btn{
+						display:flex;
+						justify-content: center;
+						align-items: center;
+						height:100%;
+						background:$base-color;
+						flex:1;
+						color:#fff;
+						margin-left:12rpx;
+						border-radius: 8rpx;
+						font-size:28rpx;
+					}
+					
+					.send{
+						background:rgb(242,242,242);
+						color: grey;
+					}
+					
+					input{
+						flex:2;
+						border-radius: 0 8rpx 8rpx 0;
+					}
+				
+			}
+		
+		}
+		
+		.change{
 			display:flex;
-			align-items: center;
-			height:80rpx;
-			margin-bottom:25rpx;
-			border-radius: 0 8rpx 8rpx 0;
-			
-			input{
-				height:100%;
-				background:rgb(242,242,242);
+			flex-flow: column;
+			align-items:center;	
+			margin-top:500rpx;
+				
+			image{
+				width:51rpx;
+				height:50rpx;
+				margin-bottom:12rpx;
 			}
 			
 			text{
-				display:flex;
-				align-items: center;
-				justify-content: center;
-				width:100rpx;
-				font-size:24rpx;
-				height:100%;
-				background:rgb(242,242,242);
-				border-radius: 8rpx 0 0 8rpx;
-			}
-		}
-		
-		.phone{
-			background:rgb(242,242,242);
-		}
-		
-		.code{
-			
-			.code-btn{
-				display:flex;
-				justify-content: center;
-				align-items: center;
-				height:100%;
-				background:$base-color;
-				flex:1;
-				color:#fff;
-				margin-left:12rpx;
-				border-radius: 8rpx;
-				font-size:28rpx;
+				font-size:22rpx;
 			}
 			
-			.send{
-				background:rgb(242,242,242);
-				color: grey;
-			}
-			
-			input{
-				flex:2;
-				border-radius: 0 8rpx 8rpx 0;
-			}
-			
-			
+
 		}
 	}
 	
