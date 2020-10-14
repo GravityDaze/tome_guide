@@ -1,5 +1,15 @@
 <template>
 	<view class="my-group clearfix" @click="hideMask">
+		
+		<!-- 手动输入框 该功能暂未开启 -->
+		<!-- <neil-modal :show="show" @confirm="manual" title="手动输入设备码" confirm-text="确定" cancel-text="取消">
+		    <view style="min-height: 90upx;padding: 32upx 24upx;">
+		        <view>1. 修复标题颜色不对的问题</view>
+		        <view>2. 增加支付宝支付功能</view>
+		        <view>3. 增加更多示例</view>
+		    </view>
+		</neil-modal> -->
+		
 		<view class="bg">
 			<image src="../../static/bg.png" mode=""></image>
 		</view>
@@ -37,7 +47,7 @@
 
 			<!-- 游客 -->
 			<view class="member" @longpress="showMask(item.id)" v-for="item in member" :key="item.id">
-				<image :class="{ani: curId === item.id}" src="../../static/member.png"></image>
+				<image :class="{ani: curId === item.id}" :src="require(`../../static/${ item.phone?'member':'member2' }.png`)"></image>
 				<view class="name">{{item.no}}</view>
 				<view :class="[{ show: curId === item.id }, 'mask']">
 					<view @click.stop="call(item.phone)">
@@ -67,8 +77,10 @@
 	import {
 		queryTeamInfo,
 		dismiss,
-		delMember
+		delMember,
+		joinTeamQr
 	} from '@/api/api.js'
+	import neilModal from '@/components/neil-modal/neil-modal.vue'
 	export default {
 		data() {
 			return {
@@ -76,16 +88,24 @@
 				travelAgency: '',
 				curId: '',
 				member: [],
-				timer: null
+				timer: null,
+				show:true,
+				id:null
 			};
 		},
-		onLoad() {
+		onLoad(options) {
+			if(options.id){
+				this.id = options.id
+			}
 			// 查询团信息
 			this.startTimer()
 
 		},
 		onUnload() {
 			clearInterval(this.timer)
+		},
+		components:{
+			neilModal
 		},
 		methods: {
 			// 定时获取团员数据
@@ -100,12 +120,14 @@
 			async getTeamInfo() {
 				const {
 					value
-				} = await queryTeamInfo({})
+				} = await queryTeamInfo({
+					customerId:parseInt(this.id)
+				})
 				try{
 					this.code = value.guider.touristTeamCode
 					this.travelAgency = value.guider.travelAgency
 					uni.setNavigationBarTitle({
-					      title: `我的团(${value.member.length+1 || 1})` 
+					     title: `我的团(${value.member.length+1 || 1})` 
 					})
 					this.member = value.member
 				}finally{
@@ -117,6 +139,7 @@
 			},
 
 			showMask(id) {
+				if (this.id !== null) return 
 				this.curId = id
 				wx.vibrateShort({
 					success: function(res) {
@@ -133,12 +156,33 @@
 				uni.scanCode({
 					onlyFromCamera:true,
 					scanType:['qrCode'],
-					success:res => {
-						const params = res.result.split('?')[1]
-						console.log(params)
+					success:async res => {
+						const params = res.result
+						try{
+							await joinTeamQr({
+								imei:res.result,
+								code:this.code
+							})
+							this.getTeamInfo()
+						}catch(err){
+							this.show = true
+						}
+						
+					},
+					fail:async _ =>{
+						// 弹出手动输入框
 					}
 				})
 				
+			},
+			
+			async manual(){
+				return console.log('起飞')
+				await joinTeamQr({
+					imei:res.result,
+					code:this.code
+				})
+				this.getTeamInfo()
 			},
 			
 			del(id) {
@@ -192,13 +236,18 @@
 					success:async res=>{
 						if(res.confirm){
 							try{
-								await dismiss()
-								this.getTeamInfo()
-								uni.showToast({
-									title:'解散失败',
-									icon:'none'
+								await dismiss({
+									customerId:this.id
 								})
-								uni.navigateBack()
+								this.getTeamInfo()
+								// 
+								if(this.id !== null){
+									uni.reLaunch({
+										url:'/pages/list/list'
+									})
+								}else{
+									uni.navigateBack()
+								}
 										
 							}catch(err){
 								uni.showToast({

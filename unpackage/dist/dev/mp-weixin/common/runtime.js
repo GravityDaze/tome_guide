@@ -105,11 +105,11 @@
 /******/
 /******/
 /******/ 		// mini-css-extract-plugin CSS loading
-/******/ 		var cssChunks = {"components/uni-popup/uni-popup":1,"pages/index/components/tools":1,"pages/index/components/panel":1,"components/my-select/my-select":1,"components/uni-transition/uni-transition":1,"components/uni-popup/uni-popup-dialog":1,"components/uni-popup/uni-popup-message":1};
+/******/ 		var cssChunks = {"components/uni-popup/uni-popup":1,"pages/index/components/tools":1,"pages/index/components/panel":1,"components/my-select/my-select":1,"components/neil-modal/neil-modal":1,"components/uni-nav-bar/uni-nav-bar":1,"components/uni-transition/uni-transition":1,"components/uni-popup/uni-popup-dialog":1,"components/uni-popup/uni-popup-message":1,"components/uni-icons/uni-icons":1,"components/uni-status-bar/uni-status-bar":1};
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/uni-popup/uni-popup":"components/uni-popup/uni-popup","pages/index/components/tools":"pages/index/components/tools","pages/index/components/panel":"pages/index/components/panel","components/my-select/my-select":"components/my-select/my-select","components/uni-transition/uni-transition":"components/uni-transition/uni-transition","components/uni-popup/uni-popup-dialog":"components/uni-popup/uni-popup-dialog","components/uni-popup/uni-popup-message":"components/uni-popup/uni-popup-message"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"components/uni-popup/uni-popup":"components/uni-popup/uni-popup","pages/index/components/tools":"pages/index/components/tools","pages/index/components/panel":"pages/index/components/panel","components/my-select/my-select":"components/my-select/my-select","components/neil-modal/neil-modal":"components/neil-modal/neil-modal","components/uni-nav-bar/uni-nav-bar":"components/uni-nav-bar/uni-nav-bar","components/uni-transition/uni-transition":"components/uni-transition/uni-transition","components/uni-popup/uni-popup-dialog":"components/uni-popup/uni-popup-dialog","components/uni-popup/uni-popup-message":"components/uni-popup/uni-popup-message","components/uni-icons/uni-icons":"components/uni-icons/uni-icons","components/uni-status-bar/uni-status-bar":"components/uni-status-bar/uni-status-bar"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

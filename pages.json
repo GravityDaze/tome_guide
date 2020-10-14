@@ -78,7 +78,7 @@
         ,{
             "path" : "pages/list/list",
             "style" : {
-                "navigationBarTitleText": "选择导游"
+                "navigationStyle":"custom"
             }
         }
     ],

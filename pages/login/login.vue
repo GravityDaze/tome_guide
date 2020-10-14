@@ -93,7 +93,6 @@
 			},
 			
 			submit(){
-				
 				if( this.loginAsAdmin ){
 					this.adminLogin()
 				}else{
@@ -106,41 +105,66 @@
 				const res = await loginAdmin({name:this.account,password:this.password})
 				// 保存token
 				uni.setStorageSync('token', res.value.tokenInfo.access_token )
-				// 跳转至导游列表
-				uni.redirectTo({
-					url:'../list/list'
+				// 获取到管理员当前位置
+				uni.getLocation({
+					type:'gcj02',
+					success:res=>{
+						const { latitude,longitude } = res 
+						getApp().globalData.longitude = longitude,
+						getApp().globalData.latitude = latitude
+						// 跳转至导游列表
+						uni.redirectTo({
+							url:'../list/list'
+						})
+					}
 				})
 			},
 			
 			// 导游登陆
 			async guideLogin(){
 				if( await this.validate(this.code) ){
-					try{
-						uni.showLoading()
-						const res = await login({
-							code:this.code,
-							ip: "127.0.0.1",
-							phone: this.phone
-						}) 
-						// 保存token
-						uni.setStorageSync('token', res.value.tokenInfo.access_token )
-						// 保存用户信息
-						uni.setStorageSync('customerInfo',JSON.stringify(res.value.customerInfo))
-						uni.redirectTo({
-							url:'../index/index'
-						})
-					}catch(err){
-						// uni.showToast({
-						// 	title:err.toString(),
-						// 	icon:'none'
-						// })
-						uni.showModal({
-							content:err.toString()
-						})
-					}finally{
-						uni.hideLoading()
-					}
-				
+					// 订阅模板信息
+					uni.requestSubscribeMessage({
+						tmplIds:['40DLebQyZfsu_hhPfy5jXjXSXNOgLjnqs696an3AdQI'],
+						success:async result=>{
+							if( result['40DLebQyZfsu_hhPfy5jXjXSXNOgLjnqs696an3AdQI'] ===  'reject' ){
+								return uni.showModal({
+									content:'请订阅游客求救提醒'
+								})
+							}
+							try{
+								uni.showLoading()
+								// 获取到open_id
+								const [err,res] = await uni.login()
+								const {code} = res
+								const r = await login({
+									code:this.code,//验证码
+									ip: "127.0.0.1",
+									phone: this.phone,
+								}) 
+								// 保存token
+								uni.setStorageSync('token', r.value.tokenInfo.access_token )
+								// 保存用户信息
+								uni.setStorageSync('customerInfo',JSON.stringify(r.value.customerInfo))
+								uni.redirectTo({
+									url:'../index/index'
+								})
+							}catch(err){
+								// uni.showToast({
+								// 	title:err.toString(),
+								// 	icon:'none'
+								// })
+								uni.showModal({
+									content:err.toString()
+								})
+							}finally{
+								uni.hideLoading()
+							}
+						},
+						fail :err=>{
+							console.log(err)
+						}
+					})
 				}else{
 					uni.showToast({
 						title:'验证码输入错误',
@@ -163,11 +187,15 @@
 			}
 		},
 		onHide(){
-			clearInterval(this.timer)
-			this.sendMsg = false
-			this.count = 60
-			this.btnText = '重新获取'
+			// clearInterval(this.timer)
+			// this.sendMsg = false
+			// this.count = 60
+			// this.btnText = '重新获取'
 		},
+		onLoad(){
+			// 模板消息授权框
+			
+		}
 	}
 </script>
 

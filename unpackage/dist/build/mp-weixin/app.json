@@ -11,7 +11,8 @@
     "pages/myGroup/myGroup",
     "pages/sosDetail/sosDetail",
     "pages/message/message",
-    "pages/msgDetail/msgDetail"
+    "pages/msgDetail/msgDetail",
+    "pages/list/list"
   ],
   "subPackages": [],
   "window": {

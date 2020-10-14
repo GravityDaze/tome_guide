@@ -158,6 +158,7 @@
 				const {
 					value
 				} = await isCreateTeam()
+				console.log(value)
 				if (value) {
 					this.menuItems = this.menuItems.map(v => {
 						if (v.name === "组团") {
@@ -222,8 +223,8 @@
 				for( const v of member ){
 					const [ lon,lat ] = gcoord.transform(
 					  [parseFloat(v.lon),parseFloat(v.lat)],    // 经纬度坐标
-					  gcoord.BD09,               // 当前坐标系
-					  gcoord.GCJ02                 // 目标坐标系
+					  gcoord.BD09,     // 当前坐标系
+					  gcoord.GCJ02     // 目标坐标系
 					)
 					v.lon = lon
 					v.lat = lat

@@ -22,10 +22,16 @@
 			return {
 				list: [],
 				items: [],
-				isOpenSelect: false
+				isOpenSelect: false,
+				id:null
 			};
 		},
-		onLoad() {
+		onLoad(options) {
+			// 如果是管理员建团,则需要导游id
+			if (options.id){
+				this.id = options.id
+			} 
+			
 			if(!getApp().globalData.sceneryNo) {
 				uni.showToast({
 					icon:'none',
@@ -35,6 +41,7 @@
 				})
 				return setTimeout( _=>uni.navigateBack(),1000 )
 			}
+			
 			// 查询旅行团列表
 			this.getList()
 			
@@ -79,14 +86,16 @@
 
 			async createMyGroup() {
 				const res = await createTeam({
+					customerId:parseInt(this.id),
 					travelAgencyId: this.travelAgencyId,
 					sceneryNo:getApp().globalData.sceneryNo,
 					lon: getApp().globalData.longitude,
 					lat: getApp().globalData.latitude
 				})
-				
+				console.log(res)
+				getApp().globalData.touristTeamNo = res.value.no
 				uni.redirectTo({
-					url: "/pages/myGroup/myGroup"
+					url: `/pages/myGroup/myGroup?id=${this.id}`
 				})
 				
 				return console.log(res)

@@ -188,8 +188,8 @@
 /* 景区选择区域 */
 .around-scenery {
   position: absolute;
-  top: 256rpx;
-  bottom: 0;
+  top: 220rpx;
+  bottom: 120rpx;
   padding: 0 56rpx;
   box-sizing: border-box;
 }
@@ -223,6 +223,19 @@
   font-weight: 500;
   color: #333332;
 }
+.top .name {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+.top .name .status {
+  margin-left: 10rpx;
+  font-size: 20rpx;
+  color: red;
+}
 .bottom {
   font-size: 26rpx;
   font-family: San Francisco Display;
@@ -232,7 +245,7 @@
 .bottom image {
   width: 22rpx;
   height: 22rpx;
-  margin-right: 9rpx;
+  margin-right: 5rpx;
 }
 /* 修改默认单选框样式 */
 radio .wx-radio-input {

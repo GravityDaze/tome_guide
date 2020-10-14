@@ -42,8 +42,11 @@ export const read = data => http.post('/guider/message/read',data)
 // 导游建团
 export const createTeam = data => http.post('/guider/touristTeam/creatTeam',data)
 
-// 二维码建团
-export const createTeamQr = data => http.post('/guider/touristTeam/joinQR',data)
+// 查询导游列表
+export const queryGuide = data => http.post('/guider/touristTeam/getGuiders',{},{ params:data })
+
+// 二维码加团
+export const joinTeamQr = data => http.post('/guider/touristTeam/joinQR',data)
 
 // 查询导游是否建团
 export const isCreateTeam = data => http.post('/guider/touristTeam/getTeam',data)
@@ -52,13 +55,13 @@ export const isCreateTeam = data => http.post('/guider/touristTeam/getTeam',data
 export const queryTravelAgencyList = data => http.post('/mis/travelAgency/query',data)
 
 // 查询团信息
-export const queryTeamInfo = data => http.post('/guider/touristTeam/queryTeamInfo',data)
+export const queryTeamInfo = data => http.post('/guider/touristTeam/queryTeamInfo',{},{ params:data })
 
 // 删除团员
 export const delMember = data => http.post('/guider/touristTeam/deleteMember',{},{ params:data })
 
 // 解散团队
-export const dismiss = data => http.post('/guider/touristTeam/dissTeam')
+export const dismiss = data => http.post('/guider/touristTeam/dissTeam',{},{ params:data })
 
 // 查询sos求救信息
 export const sosQuery = data => http.post('/guider/sos/query')
