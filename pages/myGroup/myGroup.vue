@@ -1,15 +1,12 @@
 <template>
 	<view class="my-group clearfix" @click="hideMask">
-		
-		<!-- 手动输入框 该功能暂未开启 -->
-		<!-- <neil-modal :show="show" @confirm="manual" title="手动输入设备码" confirm-text="确定" cancel-text="取消">
-		    <view style="min-height: 90upx;padding: 32upx 24upx;">
-		        <view>1. 修复标题颜色不对的问题</view>
-		        <view>2. 增加支付宝支付功能</view>
-		        <view>3. 增加更多示例</view>
-		    </view>
-		</neil-modal> -->
-		
+		<!-- 解散弹框 -->
+		<neil-modal :show="show" title="通知" @cancel="bindBtn('cancel')" @confirm="bindBtn('confirm')"  @close="closeModal" >
+			 <view style="min-height: 90rpx;padding: 32rpx 24rpx;">
+			    <view>解散旅行团时请确认设备数量准确无误并且无损坏情况，否则请点击<text @click="exception" style="color:red;font-weight:bold;text-decoration: underline;">异常申报</text></view>
+			</view>
+		</neil-modal>
+
 		<view class="bg">
 			<image src="../../static/bg.png" mode=""></image>
 		</view>
@@ -26,7 +23,7 @@
 			</view>
 			<text>{{travelAgency}}</text>
 		</view>
-		
+
 		<view class="tools">
 			<view class="scan" @click="scanCode">
 				<image src="../../static/scan.png"></image>
@@ -34,21 +31,21 @@
 			<view class="dismiss" @click="dismiss">
 				<image src="../../static/dismiss.png"></image>
 			</view>
-			
+
 		</view>
-		
+
 
 		<view class="member-list">
 			<!-- 导游 -->
 			<view class="member">
-				<image src="../../static/img_touxiangdaoyou@2x.png"></image>
+				<image src="../../static/guide.png"></image>
 				<view class="name">导游</view>
 			</view>
 
 			<!-- 游客 -->
 			<view class="member" @longpress="showMask(item.id)" v-for="item in member" :key="item.id">
 				<image :class="{ani: curId === item.id}" :src="require(`../../static/${ item.phone?'member':'member2' }.png`)"></image>
-				<view class="name">{{item.no}}</view>
+				<view class="name">{{item.phone || item.no}}</view>
 				<view :class="[{ show: curId === item.id }, 'mask']">
 					<view @click.stop="call(item.phone)">
 						<image src="../../static/phone.png" mode=""></image>
@@ -78,9 +75,11 @@
 		queryTeamInfo,
 		dismiss,
 		delMember,
-		joinTeamQr
+		joinTeamQr,
+		getCount
 	} from '@/api/api.js'
-	import neilModal from '@/components/neil-modal/neil-modal.vue'
+	import neilModal from '@/components/neil-modal/neil-modal.vue';
+	import { parseQueryString } from "@/utils/parseQs.js"
 	export default {
 		data() {
 			return {
@@ -88,58 +87,42 @@
 				travelAgency: '',
 				curId: '',
 				member: [],
-				timer: null,
-				show:true,
-				id:null
+				show: false, // 解散提示框状态
+				id: null
 			};
 		},
+		onShow(){
+			// 查询团信息
+			this.getTeamInfo();
+		},
 		onLoad(options) {
-			if(options.id){
+			if (options.id) {
 				this.id = options.id
 			}
-			// 查询团信息
-			this.startTimer()
-
-		},
-		onUnload() {
-			clearInterval(this.timer)
-		},
-		components:{
-			neilModal
 		},
 		methods: {
-			// 定时获取团员数据
-			startTimer() {
-				const count = () => {
-					this.getTeamInfo();
-					return count;
-				};
-				this.timer = setInterval(count(), 5000);
-			},
-
 			async getTeamInfo() {
+				console.log(this.timer)
 				const {
 					value
 				} = await queryTeamInfo({
-					customerId:parseInt(this.id)
+					customerId: parseInt(this.id) || ''
 				})
-				try{
+				try {
 					this.code = value.guider.touristTeamCode
 					this.travelAgency = value.guider.travelAgency
 					uni.setNavigationBarTitle({
-					     title: `我的团(${value.member.length+1 || 1})` 
+						title: `我的团(${value.member.length+1 || 1})`
 					})
 					this.member = value.member
-				}finally{
+				} finally {
 					uni.hideLoading()
 					uni.stopPullDownRefresh()
 				}
-				
-				
 			},
 
 			showMask(id) {
-				if (this.id !== null) return 
+				if (this.id !== null) return
 				this.curId = id
 				wx.vibrateShort({
 					success: function(res) {
@@ -150,60 +133,62 @@
 			hideMask() {
 				this.curId = ''
 			},
-			
+
 			// 扫描二维码
-			scanCode(){
+			scanCode() {
 				uni.scanCode({
-					onlyFromCamera:true,
-					scanType:['qrCode'],
-					success:async res => {
-						const params = res.result
-						try{
+					onlyFromCamera: true,
+					scanType: ['qrCode'],
+					success: async res => {
+						// 从url中解析出参数
+						uni.showLoading({
+							mask:true
+						})
+						const params = parseQueryString(res.result)
+						try {
 							await joinTeamQr({
-								imei:res.result,
-								code:this.code
+								imei:(params && params.imei) || '',
+								code: this.code
 							})
 							this.getTeamInfo()
-						}catch(err){
-							this.show = true
+							uni.hideLoading()
+							uni.showToast({
+								title:'加团成功'
+							})
+						} catch (err) {
+							uni.showModal({
+								content:'无效的二维码,请检查是否是途咪导游机二维码',
+								showCancel:false
+							})
+							uni.hideLoading()
 						}
-						
+
 					},
-					fail:async _ =>{
-						// 弹出手动输入框
+					fail: _ => {
+						
 					}
 				})
-				
+
 			},
-			
-			async manual(){
-				return console.log('起飞')
-				await joinTeamQr({
-					imei:res.result,
-					code:this.code
-				})
-				this.getTeamInfo()
-			},
-			
+
 			del(id) {
 				uni.showModal({
 					content: '是否删除团员',
-					success:async res =>{
-						if(res.confirm){
-							try{
+					success: async res => {
+						if (res.confirm) {
+							try {
 								await delMember({
-									memberId:id
+									memberId: id
 								})
 								uni.showToast({
-									title:'删除成功',
-									icon:'none'
+									title: '删除成功',
+									icon: 'none'
 								})
-							}catch(err){
-								uni.showToast({
-									title:'删除失败',
-									icon:'none'
+							} catch (err) {
+								uni.showModal({
+									content:err.toString()
 								})
-							}finally{
+							} finally {
 								this.getTeamInfo()
 							}
 						}
@@ -211,58 +196,84 @@
 				})
 			},
 
+
 			call(phoneNumber) {
-				if(!phoneNumber){
+				if (!phoneNumber) {
 					uni.showModal({
-						content:'该游客未记录手机号码,请发送信息'
+						content: '该游客未记录手机号码，请发送信息'
 					})
-				}else{
+				} else {
 					uni.makePhoneCall({
 						phoneNumber
 					})
 				}
 			},
-			
-			msg(no){
-					uni.navigateTo({
-						url:`/pages/publish/publish?mode=personal&no=${no}`	
-					})
+
+			msg(no) {
+				uni.navigateTo({
+					url: `/pages/publish/publish?mode=personal&no=${no}`
+				})
 			},
-			
+
 			// 解散团队
 			dismiss() {
-				uni.showModal({
-					content: '解散后团队成员将不能听到导游讲解,确定解散吗?',
-					success:async res=>{
-						if(res.confirm){
-							try{
-								await dismiss({
-									customerId:this.id
-								})
-								this.getTeamInfo()
-								// 
-								if(this.id !== null){
-									uni.reLaunch({
-										url:'/pages/list/list'
-									})
-								}else{
-									uni.navigateBack()
-								}
-										
-							}catch(err){
-								uni.showToast({
-									title:'解散失败',
-									icon:'none'
-								})
-							}
+				this.show = true
+			},
+			async bindBtn(status) {
+				if (status === 'confirm') {
+					uni.showLoading({
+						mask:true
+					})
+					try {
+						// 解散前获取到导游机的数量
+						const {value} = await getCount({
+							customerId:this.id || '',
+						})
+						await dismiss({
+							customerId: this.id || '',
+							faultCount:0,
+							readyCount:value.memberCount,
+							remark:''
+						})
+						// this.getTeamInfo()
+						// 
+						if (this.id !== null) {
+							uni.reLaunch({
+								url: '/pages/list/list'
+							})
+						} else {
+							uni.navigateBack()
 						}
+
+					} catch (err) {
+						uni.showModal({
+							content:err.toString()
+						})
+					}finally{
+						uni.hideLoading()
 					}
+				}else{
+					this.show = false
+				}
+			},
+			
+			closeModal(){
+				this.show = false
+			},
+			// 异常申报
+			exception(){
+				uni.navigateTo({
+					url:`/pages/exception/exception?id=${this.id || ''}`
 				})
-			}
+			},
+
+		},
+		components: {
+			neilModal
 		},
 		onPullDownRefresh: function() {
 			uni.showLoading()
-		    this.getTeamInfo()
+			this.getTeamInfo()
 		},
 	}
 </script>
@@ -428,31 +439,31 @@
 			}
 
 		}
-		
-		
-		.tools{
+
+
+		.tools {
 			position: absolute;
 			right: 15rpx;
 			bottom: 120rpx;
 			display: flex;
 			flex-flow: column;
 			align-items: center;
-			
+
 		}
-		
-		.scan{
+
+		.scan {
 			width: 86rpx;
 			height: 86rpx;
 			display: flex;
 			justify-content: center;
 			align-items: center;
 			border-radius: 50%;
-			background:#fff;
-			padding:20rpx;
+			background: #fff;
+			padding: 20rpx;
 			box-sizing: border-box;
 			box-shadow: 0px 8rpx 8px 2rpx rgba(184, 180, 180, 0.68);
-			
-		
+
+
 			image {
 				height: 100%;
 				width: 100%;
@@ -460,10 +471,10 @@
 		}
 
 		.dismiss {
-			margin-top:15rpx;
+			margin-top: 15rpx;
 			width: 110rpx;
 			height: 110rpx;
-			
+
 
 			image {
 				height: 100%;

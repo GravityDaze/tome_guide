@@ -41,14 +41,17 @@
 		queryScenicSpot,
 		isCreateTeam,
 		queryTeamInfo,
-		uploadLocation
+		uploadLocation,
+		getSos,
+		delSos
 	} from '../../api/api.js'
 	import gcoord from '../../utils/gcoord.js'
 	export default {
 		data() {
 			return {
 				isLogin: false, //当前是否登录
-				timer: null, // 定时器
+				timer: null, // 景区设施定时器
+				timer2:null, // sos求救信息定时器
 				latitude: 36.026226,
 				longitude: 103.75202,
 				scenery: '未定位到景区', //当前景区
@@ -142,7 +145,9 @@
 		onUnload() {
 			// 清除定时器
 			clearInterval(this.timer)
+			clearInterval(this.timer2)
 			this.timer = null
+			this.timer2 = null
 		},
 		methods: {
 			// 登录
@@ -158,7 +163,6 @@
 				const {
 					value
 				} = await isCreateTeam()
-				console.log(value)
 				if (value) {
 					this.menuItems = this.menuItems.map(v => {
 						if (v.name === "组团") {
@@ -171,6 +175,8 @@
 					
 					// 已建团时查询游客位置并生成标记
 					this.getTourist()
+					// 已建团时查询是否有新的sos信息
+					this.startTimer2()
 				} else {
 					getApp().globalData.touristTeamNo = ''
 					this.menuItems = this.menuItems.map(v => {
@@ -188,6 +194,35 @@
 						}
 					}
 
+				}
+			},
+			
+			
+			// 开启sos定时器
+			startTimer2() {
+				if( !this.isLogin || this.timer2  ) return
+				const count = () => {
+					this.getSos();
+					return count;
+				};
+				this.timer2 = setInterval(count(), 5000);
+			},
+			
+			// 获取新的sos信息
+			async getSos(){
+				const res = await getSos()
+				if(res.value === 1){
+					await delSos()
+					uni.showModal({
+						content:'您收到一条新的sos消息，请查看',
+						success:async res=>{
+							if(res.confirm){
+								uni.navigateTo({
+									url:'/pages/sos/sos'
+								})
+							}
+						}
+					})
 				}
 			},
 
@@ -215,7 +250,9 @@
 			//  获取到游客
 			async getTourist() {
 				// 在地图上显示游客数据
-				const res = await queryTeamInfo()
+				const res = await queryTeamInfo({
+					customerId:''
+				})
 				const {
 					member
 				} = res.value
@@ -484,7 +521,7 @@
 					mask:true,
 					title:'更新数据中'
 				})
-				this.getLocation()
+				this.getScenery()
 				this.queryGroup()
 				setTimeout( _=>uni.hideLoading(),1000 )
 			},

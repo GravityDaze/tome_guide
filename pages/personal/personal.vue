@@ -72,6 +72,7 @@
 							if(confirm){
 								uni.clearStorageSync()
 								getApp().globalData = {}
+								uni.stopLocationUpdate()
 								return uni.reLaunch({
 									url:'../login/login'
 								}) 

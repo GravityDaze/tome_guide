@@ -12,7 +12,8 @@
     "pages/sosDetail/sosDetail",
     "pages/message/message",
     "pages/msgDetail/msgDetail",
-    "pages/list/list"
+    "pages/list/list",
+    "pages/exception/exception"
   ],
   "subPackages": [],
   "window": {
@@ -26,6 +27,5 @@
       "desc": "需要获取您的位置"
     }
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap53.json"
+  "usingComponents": {}
 }

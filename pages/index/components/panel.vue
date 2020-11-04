@@ -1,6 +1,10 @@
 <template>
 	<view class="panel">
-		<view v-if="markerInfo.type === 'j'" class="scenery">
+		<view v-if="Object.keys(markerInfo).length === 0" class="loading">
+			<text>加载中...</text>
+		</view>
+		
+		<view v-else-if="markerInfo.type === 'j'" class="scenery">
 			<view class="header">
 				<view class="name">{{markerInfo.name || ''}}</view>
 				<view class="distance">{{ markerInfo.distance == -1?`起终点过长`:`距离您${markerInfo.distance}m`}}</view>
@@ -86,6 +90,16 @@
 
 <style lang="scss" scoped>
 	.panel{
+		
+		// 加载面板
+		.loading{
+			color:#999896;
+			background:#fff;
+			padding:20rpx 0;
+			font-size:22rpx;
+			text-align: center;
+		}
+		
 		// 游客信息
 		.tourist{
 			min-width:100rpx;

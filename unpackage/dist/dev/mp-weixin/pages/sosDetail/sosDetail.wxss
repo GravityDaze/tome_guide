@@ -103,4 +103,8 @@
   color: #333231;
   margin-top: 40rpx;
 }
+.sos-detail .panel .disabled {
+  background: #B3B1AF !important;
+  box-shadow: none !important;
+}
 

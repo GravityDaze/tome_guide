@@ -28,6 +28,7 @@
   padding: 55rpx 15rpx;
   position: relative;
   height: 100%;
+  box-sizing: border-box;
 }
 .group .tips {
   font-size: 32rpx;

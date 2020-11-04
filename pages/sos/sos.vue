@@ -3,12 +3,12 @@
 		<view class="msg" v-if="showMsg">
 			<text>SOS列表为空！</text>
 		</view>
-		<view v-else class="msg-panel" @click="check(item.id)" v-for="item in sosList" :key="item.id">
+		<view v-else class="msg-panel" :class="{read:item.isConfirm === 1}" @click="check(item.id)" v-for="item in sosList" :key="item.id">
 			<view class="date">{{ item.sosDateTime }}</view>
 			<view class="sos-info">
 				<view class='tourist'>游客{{item.nickName}}SOS求救</view>
 				<view class="sos-location">
-					<view class="point"></view>
+					<view class="point" v-show="item.isConfirm === 0"></view>
 					<view class="location">求救地址：{{item.seat}}</view>
 				</view>
 			</view>
@@ -74,6 +74,11 @@
 		
 		padding:15rpx;
 		
+		.read{
+			background:rgba(230,230,230,1) !important;
+			// box-shadow:none !important;
+		}
+		
 		.msg-panel{
 			position:relative;
 			background:rgba(255,255,255,1);
@@ -81,6 +86,14 @@
 			border-radius:20rpx;
 			padding:30rpx 60rpx 30rpx 60rpx;
 			margin-bottom:20rpx;
+			
+			.processed{
+				position:absolute;
+				font-size:24rpx;
+				color:green;
+				// right:60rpx;
+				font-weight:bold;
+			}
 			
 			.more{
 				position:absolute;

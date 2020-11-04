@@ -70,7 +70,7 @@
 		},
 		methods: {
 			async getGuides() {
-				this.triggered = true
+				// this.triggered = true
 				uni.showLoading({
 					mask: true,
 					title: '加载中'
@@ -83,6 +83,7 @@
 				uni.hideLoading()
 			},
 			refresh() {
+				this.triggered = true
 				this.getGuides()
 			},
 			// 注销

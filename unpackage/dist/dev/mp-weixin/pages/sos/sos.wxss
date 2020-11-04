@@ -37,6 +37,9 @@
   color: #999896;
   font-size: 26rpx;
 }
+.sos .read.data-v-1259b594 {
+  background: #e6e6e6 !important;
+}
 .sos .msg-panel.data-v-1259b594 {
   position: relative;
   background: white;
@@ -44,6 +47,12 @@
   border-radius: 20rpx;
   padding: 30rpx 60rpx 30rpx 60rpx;
   margin-bottom: 20rpx;
+}
+.sos .msg-panel .processed.data-v-1259b594 {
+  position: absolute;
+  font-size: 24rpx;
+  color: green;
+  font-weight: bold;
 }
 .sos .msg-panel .more.data-v-1259b594 {
   position: absolute;

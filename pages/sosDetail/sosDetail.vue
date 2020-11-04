@@ -23,7 +23,7 @@
 						游客手机：
 					</view>
 					<view class="dd">
-						{{ sosInfo.phone }}
+						{{ sosInfo.phone || '游客未填写' }}
 					</view>
 				</view>
 				<view class="dl">
@@ -68,7 +68,7 @@
 				</view>
 
 			</view>
-			<view class="btn" @click="reslove">
+			<view class="btn" :class="{ disabled:sosInfo.isConfirm === 1 }" @click="reslove">
 				已处理
 			</view>
 		</view>
@@ -81,6 +81,7 @@
 	import {
 		getLatLngCenter
 	} from '@/utils/getLatLngCenter.js'
+	import gcoord from '../../utils/gcoord.js'
 	import { querySingleSos,sosResolve } from '../../api/api.js'
 	export default {
 		onLoad(options) {
@@ -125,25 +126,44 @@
 						longitude
 					}) => {
 						// 计算出中心经纬度
-						const center = getLatLngCenter([this.touristLocal, [latitude, longitude]])
+						const center = getLatLngCenter([gcoord.transform(
+						  [this.touristLocal[0],this.touristLocal[1]],    // 经纬度坐标
+						  gcoord.BD09,     // 当前坐标系
+						  gcoord.GCJ02     // 目标坐标系
+						),[latitude,longitude]
+						])
 						this.longitude = center[1]
 						this.latitude = center[0]
-						// 保存游客和导游所在位置的经纬度
-						const touristLngLat = { 
-							longitude: this.touristLocal[1],
-							latitude: this.touristLocal[0]
+						
+						// 将游客的位置转换为GCJ02坐标系
+						const touristLngLatArr = gcoord.transform(
+						  [this.touristLocal[1],this.touristLocal[0]],    // 经纬度坐标
+						  gcoord.BD09,     // 当前坐标系
+						  gcoord.GCJ02     // 目标坐标系
+						)
+						
+						// const guideLngLatArr = gcoord.transform(
+						//   [longitude,latitude],    // 经纬度坐标
+						//   gcoord.BD09,     // 当前坐标系
+						//   gcoord.GCJ02     // 目标坐标系
+						// )
+						
+						const touristLngLat = {
+							longitude: touristLngLatArr[0],
+							latitude: touristLngLatArr[1]
 						}
+						
 						const guideLngLat = {
-							latitude, 
-							longitude
+							longitude,
+							latitude
 						}
+						
 						// 缩放以完整显示marker
-						const mapContext = uni.createMapContext('map', this)
+						const mapContext = uni.createMapContext('map')
 						mapContext.includePoints({
 							points: [touristLngLat,guideLngLat],
 							padding: [100, 100, 100, 100],
 							success: res => {
-								console.log(res)
 								// 路径规划
 								const qqmapsdk = new QQMapWX({
 									key: '56LBZ-OKVCW-TP3RL-RVH7P-RDRIQ-4EB2T'
@@ -185,7 +205,7 @@
 										const guideMarker = {
 											...guideLngLat,
 											height: 44,
-											iconPath: "/static/导游@2x.png",
+											iconPath: "/static/guide2.png",
 											id: 0,
 											width: 32,
 											label: {
@@ -202,7 +222,7 @@
 												borderWidth: 1
 											}
 										}
-										// 设置游客marker
+										
 										const touristMarker = {
 											...touristLngLat,
 											height: 44,
@@ -225,10 +245,22 @@
 			},
 
 			navigation(nickName) {
+				// 将BD-09坐标系转换为gcj02坐标系
+				// 将游客的位置转换为GCJ02坐标系
+				const touristLngLatArr = gcoord.transform(
+				  [this.touristLocal[1],this.touristLocal[0]],    // 经纬度坐标
+				  gcoord.BD09,     // 当前坐标系
+				  gcoord.GCJ02     // 目标坐标系
+				)
+				
+				const touristLngLat = {
+					longitude: touristLngLatArr[0],
+					latitude: touristLngLatArr[1]
+				}
+				
 				// 调用app的导航服务
 				wx.openLocation({
-					latitude: parseFloat(this.touristLocal[0]),
-					longitude: parseFloat(this.touristLocal[1]),
+					...touristLngLat,
 					name: `游客${nickName}的求救位置`, // 位置名
 					address: '', // 要去的地址详情说明
 					scale: 18, // 地图缩放级别,整形值,范围从1~28。默认为最大
@@ -236,6 +268,7 @@
 			},
 			
 			reslove(){
+				if( this.sosInfo.isConfirm === 1 ) return
 				uni.showModal({
 					content:'请确认该条SOS信息是否已经被处理',
 					success:async res=>{
@@ -340,6 +373,11 @@
 				font-weight: 400;
 				color: rgba(51, 50, 49, 1);
 				margin-top: 40rpx;
+			}
+			
+			.disabled{
+				background: #B3B1AF !important;
+				box-shadow:none !important;
 			}
 
 

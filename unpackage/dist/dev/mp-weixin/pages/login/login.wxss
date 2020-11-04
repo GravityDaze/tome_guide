@@ -33,6 +33,17 @@
   color: #FFCB3E;
   text-align: right;
 }
+.login .wxlogin.data-v-b237504c {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-top: 20rpx;
+  color: #666666;
+  font-size: 24rpx;
+}
 .login .login-btn.data-v-b237504c {
   display: -webkit-box;
   display: -webkit-flex;
@@ -49,7 +60,8 @@
   margin-top: 25rpx;
   border-radius: 8rpx;
 }
-.login .admin > view.data-v-b237504c, .login .tourist > view.data-v-b237504c {
+.login .admin > view.data-v-b237504c,
+.login .tourist > view.data-v-b237504c {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -60,11 +72,13 @@
   margin-bottom: 25rpx;
   border-radius: 0 8rpx 8rpx 0;
 }
-.login .admin > view input.data-v-b237504c, .login .tourist > view input.data-v-b237504c {
+.login .admin > view input.data-v-b237504c,
+.login .tourist > view input.data-v-b237504c {
   height: 100%;
   background: #f2f2f2;
 }
-.login .admin > view text.data-v-b237504c, .login .tourist > view text.data-v-b237504c {
+.login .admin > view text.data-v-b237504c,
+.login .tourist > view text.data-v-b237504c {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -80,13 +94,24 @@
   background: #f2f2f2;
   border-radius: 8rpx 0 0 8rpx;
 }
-.login .admin .phone.data-v-b237504c, .login .admin .account.data-v-b237504c, .login .admin .password.data-v-b237504c, .login .tourist .phone.data-v-b237504c, .login .tourist .account.data-v-b237504c, .login .tourist .password.data-v-b237504c {
+.login .admin .phone.data-v-b237504c,
+.login .admin .account.data-v-b237504c,
+.login .admin .password.data-v-b237504c,
+.login .tourist .phone.data-v-b237504c,
+.login .tourist .account.data-v-b237504c,
+.login .tourist .password.data-v-b237504c {
   background: #f2f2f2;
 }
-.login .admin .phone input.data-v-b237504c, .login .admin .account input.data-v-b237504c, .login .admin .password input.data-v-b237504c, .login .tourist .phone input.data-v-b237504c, .login .tourist .account input.data-v-b237504c, .login .tourist .password input.data-v-b237504c {
+.login .admin .phone input.data-v-b237504c,
+.login .admin .account input.data-v-b237504c,
+.login .admin .password input.data-v-b237504c,
+.login .tourist .phone input.data-v-b237504c,
+.login .tourist .account input.data-v-b237504c,
+.login .tourist .password input.data-v-b237504c {
   width: 100%;
 }
-.login .admin .code .code-btn.data-v-b237504c, .login .tourist .code .code-btn.data-v-b237504c {
+.login .admin .code .code-btn.data-v-b237504c,
+.login .tourist .code .code-btn.data-v-b237504c {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -106,11 +131,13 @@
   border-radius: 8rpx;
   font-size: 28rpx;
 }
-.login .admin .code .send.data-v-b237504c, .login .tourist .code .send.data-v-b237504c {
+.login .admin .code .send.data-v-b237504c,
+.login .tourist .code .send.data-v-b237504c {
   background: #f2f2f2;
   color: grey;
 }
-.login .admin .code input.data-v-b237504c, .login .tourist .code input.data-v-b237504c {
+.login .admin .code input.data-v-b237504c,
+.login .tourist .code input.data-v-b237504c {
   -webkit-box-flex: 2;
   -webkit-flex: 2;
           flex: 2;

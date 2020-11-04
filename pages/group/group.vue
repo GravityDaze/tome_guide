@@ -1,9 +1,6 @@
 <template>
 	<view class="group" @click="close">
-		<view class="tips">
-			选择旅行社
-		</view>
-		<mySelect @change="change" :items="items" @select="select" :isOpenSelect="isOpenSelect" />
+		<mySelect @change="change" @handleInput="handleInput" :items="items" @select="select" :isOpenSelect="isOpenSelect" />
 		<view class="create-btn" @click="createMyGroup">
 			创建我的团队
 		</view>
@@ -20,6 +17,7 @@
 	export default {
 		data() {
 			return {
+				orginList:[],//原始排序
 				list: [],
 				items: [],
 				isOpenSelect: false,
@@ -48,13 +46,25 @@
 		},
 		methods: {
 			async getList() {
-				const res = await queryTravelAgencyList({})
-				this.list = res.value.list
-				this.items = this.list.map(v => v.name)
-				// 初始对旅行社id赋值
-				this.travelAgencyId = this.list[0].id
+				try{
+					const res = await queryTravelAgencyList({
+						name:this.name
+					})
+					this.list = res.value.list
+					this.items = this.list.map(v => v.name)
+				}catch(err){
+					console.log(err)
+				}
 			},
-
+			
+			// 输入时
+			handleInput(key){
+				console.log(key+'打印输入时的key')
+				this.travelAgencyId = ''
+				this.name = key
+				this.getList()
+			},
+			
 			// 切换多选框状态
 			change(status) {
 				this.isOpenSelect = status
@@ -63,13 +73,7 @@
 			// 重新排列多选框
 			select(item) {
 				this.close()
-				for (let i = 0; i < this.items.length; i++) {
-					if (this.items[i] === item) {
-						this.items.splice(i, 1)
-						this.items.unshift(item)
-					}
-				}
-
+				this.items = [item]
 				// 获取参数
 				this.list.forEach(v => {
 					if (item === v.name) {
@@ -85,20 +89,35 @@
 			},
 
 			async createMyGroup() {
+				if( !this.travelAgencyId ){
+					// 对输入的内容进行检索
+					for( const v of this.list ){
+						if( this.name === v.name ){
+							this.travelAgencyId = v.id
+							break
+						}
+					}
+				}
+				
+				if( !this.travelAgencyId ) {
+					return uni.showToast({
+						title:'请选择旅行团',
+						icon:'none'
+					})
+				}
+				
+				
 				const res = await createTeam({
-					customerId:parseInt(this.id),
+					customerId:parseInt(this.id) || '',
 					travelAgencyId: this.travelAgencyId,
 					sceneryNo:getApp().globalData.sceneryNo,
 					lon: getApp().globalData.longitude,
 					lat: getApp().globalData.latitude
 				})
-				console.log(res)
 				getApp().globalData.touristTeamNo = res.value.no
 				uni.redirectTo({
-					url: `/pages/myGroup/myGroup?id=${this.id}`
+					url: `/pages/myGroup/myGroup?id=${ this.id || ''}`
 				})
-				
-				return console.log(res)
 			}
 		},
 		components: {
@@ -112,6 +131,7 @@
 		padding: 55rpx 15rpx;
 		position: relative;
 		height:100%;
+		box-sizing: border-box;
 
 		.tips {
 			font-size: 32rpx;

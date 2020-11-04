@@ -12,6 +12,9 @@ export const login = data => http.post('/sys/loginWxApp',data)
 // 管理员登录
 export const loginAdmin = data => http.post('/sys/a3AdminLogin',data)
 
+// 微信登录
+export const wxLogin = data => http.post('/sys/loginA3WxApp',data)
+
 // 通过经纬度查询到景区编号
 export const querySceneryNum = data => http.post('/guider/scenice/getSceneryBylon',data)
 
@@ -61,7 +64,7 @@ export const queryTeamInfo = data => http.post('/guider/touristTeam/queryTeamInf
 export const delMember = data => http.post('/guider/touristTeam/deleteMember',{},{ params:data })
 
 // 解散团队
-export const dismiss = data => http.post('/guider/touristTeam/dissTeam',{},{ params:data })
+export const dismiss = data => http.post('/guider/touristTeam/dissTeam',data)
 
 // 查询sos求救信息
 export const sosQuery = data => http.post('/guider/sos/query')
@@ -74,3 +77,12 @@ export const sosResolve = data => http.post('/guider/sos/deal',{},{ params:data 
 
 // 实时上传导游位置
 export const uploadLocation = data => http.post('/gather/uploadTerminalTrackInfo',data)
+
+// 获取最新一条sos求救信息
+export const getSos = data => http.post('/guider/sos/newSos',data)
+
+// 消除sos信息
+export const delSos = data => http.post('/guider/sos/readSosmessage',data)
+
+// 获取导游机总数
+export const getCount = data => http.post('/guider/touristTeam/beforeDissTeam',{},{ params:data })
