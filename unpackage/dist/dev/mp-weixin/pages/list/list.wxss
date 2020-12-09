@@ -37,10 +37,13 @@
 }
 .search {
   background-color: white;
-  box-shadow: 5rpx 0 50rpx #c8c8c8;
+  -webkit-box-shadow: 5rpx 0 50rpx #c8c8c8;
+          box-shadow: 5rpx 0 50rpx #c8c8c8;
   margin-top: 20rpx;
-  border-radius: 30px;
-  box-sizing: border-box;
+  -webkit-border-radius: 30px;
+          border-radius: 30px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 0 30rpx;
   height: 78rpx;
   font-size: 24rpx;
@@ -87,7 +90,8 @@
   height: 173rpx;
   font-size: 34rpx;
   font-weight: 700;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   padding: 0 56rpx;
 }
 .all_single_box .single_box:first-child {
@@ -142,14 +146,16 @@
 }
 .right_gouxuan1 {
   /* border:1px solid #999; */
-  border-radius: 18rpx;
+  -webkit-border-radius: 18rpx;
+          border-radius: 18rpx;
   width: 36rpx;
   height: 36rpx;
   background-size: 100% 100%;
 }
 .right_gouxuan2 {
   border: 1px solid #999;
-  border-radius: 18rpx;
+  -webkit-border-radius: 18rpx;
+          border-radius: 18rpx;
   width: 28rpx;
   height: 28rpx;
   background-size: 100% 100%;
@@ -157,7 +163,8 @@
 .btn_box {
   width: 700rpx;
   height: 88rpx;
-  border-radius: 44rpx;
+  -webkit-border-radius: 44rpx;
+          border-radius: 44rpx;
   font-size: 30rpx;
   background-color: #ffc83c;
   display: -webkit-box;
@@ -169,7 +176,8 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
-  box-shadow: 10rpx 0 100rpx gainsboro;
+  -webkit-box-shadow: 10rpx 0 100rpx gainsboro;
+          box-shadow: 10rpx 0 100rpx gainsboro;
   position: fixed;
   left: 0;
   right: 0;
@@ -191,7 +199,8 @@
   top: 220rpx;
   bottom: 120rpx;
   padding: 0 56rpx;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
 .item {
   display: -webkit-box;
@@ -205,7 +214,8 @@
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   border-bottom: 1px solid #d6d7d9;
 }
 .last {
@@ -251,7 +261,8 @@
 radio .wx-radio-input {
   height: 34rpx;
   width: 34rpx;
-  border-radius: 50%;
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   border: 2rpx solid #bfbfbf;
 }
 ::-webkit-scrollbar {

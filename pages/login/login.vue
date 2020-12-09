@@ -98,6 +98,12 @@
 				if (this.disabled) return
 				this.sendMsg = true
 				this.timer = setInterval(() => {
+					if(this.count <= 0){
+						clearInterval(this.timer)
+						this.sendMsg = false
+						this.count = 60
+						this.btnText = '重新获取'
+					}
 					this.count--
 				}, 1000)
 				try {
@@ -260,14 +266,14 @@
 						
 		},
 		watch: {
-			count(num) {
-				if (num < 0) {
-					clearInterval(this.timer)
-					this.sendMsg = false
-					this.count = 60
-					this.btnText = '重新获取'
-				}
-			}
+			// count(num) {
+			// 	if (num < 0) {
+			// 		clearInterval(this.timer)
+			// 		this.sendMsg = false
+			// 		this.count = 60
+			// 		this.btnText = '重新获取'
+			// 	}
+			// }
 		}
 	}
 </script>

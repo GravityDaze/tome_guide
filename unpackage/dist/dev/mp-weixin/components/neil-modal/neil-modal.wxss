@@ -74,7 +74,8 @@
   transition: transform 0.3s;
   transition: transform 0.3s, -webkit-transform 0.3s;
   width: 540rpx;
-  border-radius: 20rpx;
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
   background-color: #fff;
   overflow: hidden;
   opacity: 0;
@@ -85,7 +86,8 @@
   position: relative;
   color: #333;
   font-size: 28rpx;
-  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   line-height: 1.5;
 }
 .neil-modal__content::after {

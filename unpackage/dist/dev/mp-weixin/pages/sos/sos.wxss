@@ -43,8 +43,10 @@
 .sos .msg-panel.data-v-1259b594 {
   position: relative;
   background: white;
-  box-shadow: 0 6rpx 18rpx 0 rgba(36, 36, 35, 0.1);
-  border-radius: 20rpx;
+  -webkit-box-shadow: 0 6rpx 18rpx 0 rgba(36, 36, 35, 0.1);
+          box-shadow: 0 6rpx 18rpx 0 rgba(36, 36, 35, 0.1);
+  -webkit-border-radius: 20rpx;
+          border-radius: 20rpx;
   padding: 30rpx 60rpx 30rpx 60rpx;
   margin-bottom: 20rpx;
 }
@@ -95,7 +97,9 @@
   width: 14rpx;
   height: 14rpx;
   background: #ffcb3e;
-  box-shadow: 0px 2rpx 16rpx 0px rgba(203, 38, 38, 0.26);
-  border-radius: 50%;
+  -webkit-box-shadow: 0px 2rpx 16rpx 0px rgba(203, 38, 38, 0.26);
+          box-shadow: 0px 2rpx 16rpx 0px rgba(203, 38, 38, 0.26);
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
 }
 

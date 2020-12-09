@@ -11,7 +11,7 @@
 			</view>
 			<!-- 刷新 -->
 			<view v-if="isLogin" class="refresh" @click="refresh">
-				<image src="../../static/refresh.png"></image>
+				<image :class="rotate?'active':''" src="../../static/refresh.png"></image>
 			</view>
 		</view>
 		
@@ -49,6 +49,7 @@
 	export default {
 		data() {
 			return {
+				rotate:false,//旋转动画
 				isLogin: false, //当前是否登录
 				timer: null, // 景区设施定时器
 				timer2:null, // sos求救信息定时器
@@ -118,7 +119,7 @@
 		onShow() {
 			// 恢复标题
 			uni.setNavigationBarTitle({
-			      title: "途咪导游机"
+			      title: "途咪导游端"
 			})
 			
 			// 查询是否为导游登录
@@ -270,7 +271,7 @@
 				
 			
 				if (JSON.stringify(member) === JSON.stringify(this.member)) {
-					return console.log('重复数据不予添加')
+					return
 				}
 				
 				// 清除游客数据
@@ -301,17 +302,36 @@
 					lat:  getApp().globalData.latitude,
 					lon:  getApp().globalData.longitude
 				})
-				if(!res.value) return
-				this.scenery = res.value.name
-				getApp().globalData.sceneryNo = res.value.no
-				// 获取到围栏
-				this.getFence()
-				// 获取到标记信息
-				this.getMarkers(this.markerType)
+				if(!res.value){
+					this.scenery = "未定位到景区"
+					console.log(this.scenery)
+					getApp().globalData.sceneryNo = ""
+					// 判断导游在走出景区的时候是否建团,如果未建团则清除地图上的Marker信息,
+					if(!getApp().globalData.touristTeamNo){
+						// 清除围栏数据
+						this.polygons = []
+						// 清除marker数据
+						this.marker = []
+						this.markerInfo = {}
+					}
+					
+				}else{
+					this.scenery = res.value.name
+					console.log(this.scenery)
+					getApp().globalData.sceneryNo = res.value.no
+					// 获取到围栏
+					this.getFence()
+					// 获取到标记信息
+					this.getMarkers(this.markerType)
+				}
 			},
 
 			// 获取到设施
 			async getFacilities() {
+				
+				// 未定位到景区时 不进行查询
+				if(!getApp().globalData.sceneryNo) return
+				
 				const res = await queryFacilities({
 					sceniceNo: getApp().globalData.sceneryNo
 				})
@@ -328,7 +348,7 @@
 				}
 
 				if (JSON.stringify(res.value) === JSON.stringify(this.facilitiesData) && !this.manual) {
-					return console.log('重复数据不予添加')
+					return
 				}
 				// 恢复自动模式
 				this.manual = false
@@ -356,6 +376,8 @@
 
 			// 获取到景点
 			async getScenicSpot() {
+				if(!getApp().globalData.sceneryNo) return
+				
 				const res = await queryScenicSpot({
 					sceniceNo: getApp().globalData.sceneryNo
 				})
@@ -373,7 +395,7 @@
 
 				// 和原来的信息进行对比
 				if (JSON.stringify(res.value) === JSON.stringify(this.scenicSpotData) && !this.manual) {
-					return console.log('重复数据不予添加')
+					return
 				}
 				
 				// 恢复自动模式
@@ -421,11 +443,11 @@
 					if (res.authSetting['scope.userLocation'] === false) {
 						uni.showModal({
 							title: '提示',
-							content: '检测到您拒绝了地理位置授权，这将无法获取到正确的位置，是否重新进行授权 ?',
-							success: async res => {
-								if (res.confirm) {
+							content: '检测到您拒绝了地理位置授权，这将无法获取到正确的位置，请打开设置界面手动开启权限。 ',
+							success: async ({confirm}) => {
+								if (confirm) {
 									const [err, res] = await uni.openSetting()
-									res.authSetting['scope.userLocation'] && this.getLocation()
+									res.authSetting['scope.userLocation'] && this.getLocation()									
 								} else {
 									uni.showToast({
 										title: '授权失败',
@@ -455,8 +477,8 @@
 								  gcoord.GCJ02,               // 当前坐标系
 								  gcoord.BD09                 // 目标坐标系
 								)
-								getApp().globalData.latitude = lon
-								getApp().globalData.longitude = lat
+								getApp().globalData.latitude = lat
+								getApp().globalData.longitude = lon
 								// 实时上传导游位置数据
 								const { no,imei }  = JSON.parse( uni.getStorageSync('customerInfo') ) 
 								if( getApp().globalData.sceneryNo && getApp().globalData.touristTeamNo ){
@@ -511,19 +533,31 @@
 
 			// 回到中心点
 			moveToLocation() {
-				const mapContext = uni.createMapContext('map', this)
+				const mapContext = uni.createMapContext('map')
 				mapContext.moveToLocation()
 			},
 			
 			// 刷新
 			refresh(){
+				this.rotate = true
 				uni.showLoading({
 					mask:true,
 					title:'更新数据中'
 				})
 				this.getScenery()
 				this.queryGroup()
-				setTimeout( _=>uni.hideLoading(),1000 )
+				// 关闭定时器
+				// clearInterval(this.timer)
+				// this.timer = null
+				// // 关闭实时位置监听
+				// uni.offLocationChange()
+				// // 重新获取地理位置
+				// this.getLocation()
+				// this.queryGroup()
+				setTimeout( _=>{
+					this.rotate = false
+					uni.hideLoading()
+				},1000 )
 			},
 
 			// 点击地图标记事件
@@ -587,6 +621,7 @@
 												distance,
 												battery:item.battery,
 												no: item.no,
+												imei:item.imei,
 												phone: item.phone,
 												lon: item.lon,
 												lat: item.lat
@@ -694,12 +729,26 @@
 				box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
 				border-radius: 50%;
 				
-				
+				@keyframes rotate{
+					from{
+						transform:rotate(0);
+						
+					}
+					to{
+						transform:rotate(360deg);
+						
+					}
+				}
 				
 				image{
 					width: 55%;
 					height: 55%;
 				}
+				
+				.active{
+					animation:rotate 1s infinite linear;
+				}
+				
 			}
 			
 			

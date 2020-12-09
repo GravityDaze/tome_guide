@@ -27,6 +27,16 @@
 .message.data-v-a91f51d4 {
   padding: 20rpx;
 }
+.message .msg.data-v-a91f51d4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  color: #999896;
+  font-size: 26rpx;
+}
 .message .message-box.data-v-a91f51d4 {
   display: -webkit-box;
   display: -webkit-flex;
@@ -36,7 +46,8 @@
           align-items: center;
   background: #fff;
   padding: 30rpx 20rpx;
-  border-radius: 15rpx;
+  -webkit-border-radius: 15rpx;
+          border-radius: 15rpx;
   margin-bottom: 20rpx;
 }
 .message .message-box image.data-v-a91f51d4 {

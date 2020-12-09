@@ -197,8 +197,9 @@
 										// 生成polyline
 										this.polyline = [{
 											points: pl,
-											color: "#74C0F7",
-											width: 5
+											color: "#00cc99",
+											width: 5,
+											colorList:[]
 										}]
 
 										// 设置导游marker
@@ -212,14 +213,6 @@
 												content: '我',
 												anchorX: -8
 
-											},
-											callout: {
-												content: `距离您当前位置${distance}m`,
-												borderRadius: 18,
-												borderColor: '#FFCE0B',
-												padding: 6,
-												display: 'ALWAYS',
-												borderWidth: 1
 											}
 										}
 										
@@ -232,6 +225,14 @@
 											label: {
 												content: '游客',
 												anchorX: -12
+											},
+											callout: {
+												content: `距离您当前位置${distance}m`,
+												borderRadius: 18,
+												borderColor: '#FFCE0B',
+												padding: 6,
+												display: 'ALWAYS',
+												borderWidth: 1
 											}
 										}
 										// 生成marker
@@ -356,6 +357,10 @@
 				.dl {
 					display: flex;
 					margin-bottom: 12rpx;
+					
+					.dt{
+						flex-shrink: 0
+					}
 				}
 
 			}

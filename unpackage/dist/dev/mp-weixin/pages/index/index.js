@@ -94,7 +94,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components = {
   uniPopup: function() {
-    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 208))
+    return Promise.all(/*! import() | components/uni-popup/uni-popup */[__webpack_require__.e("common/vendor"), __webpack_require__.e("components/uni-popup/uni-popup")]).then(__webpack_require__.bind(null, /*! @/components/uni-popup/uni-popup.vue */ 207))
   }
 }
 var render = function() {
@@ -181,10 +181,11 @@ var _api = __webpack_require__(/*! ../../api/api.js */ 21);
 
 
 
-var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.js */ 36));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _iterableToArrayLimit(arr, i) {if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function _createForOfIteratorHelper(o, allowArrayLike) {var it;if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e2) {throw _e2;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e3) {didErr = true;err = _e3;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var panel = function panel() {__webpack_require__.e(/*! require.ensure | pages/index/components/panel */ "pages/index/components/panel").then((function () {return resolve(__webpack_require__(/*! ./components/panel.vue */ 217));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tools = function tools() {Promise.all(/*! require.ensure | pages/index/components/tools */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/index/components/tools")]).then((function () {return resolve(__webpack_require__(/*! ./components/tools.vue */ 224));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.js */ 36));function _interopRequireDefault(obj) {return obj && obj.__esModule ? obj : { default: obj };}function _slicedToArray(arr, i) {return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();}function _nonIterableRest() {throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}function _iterableToArrayLimit(arr, i) {if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;var _arr = [];var _n = true;var _d = false;var _e = undefined;try {for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) {_arr.push(_s.value);if (i && _arr.length === i) break;}} catch (err) {_d = true;_e = err;} finally {try {if (!_n && _i["return"] != null) _i["return"]();} finally {if (_d) throw _e;}}return _arr;}function _arrayWithHoles(arr) {if (Array.isArray(arr)) return arr;}function _createForOfIteratorHelper(o, allowArrayLike) {var it;if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {if (it) o = it;var i = 0;var F = function F() {};return { s: F, n: function n() {if (i >= o.length) return { done: true };return { done: false, value: o[i++] };}, e: function e(_e2) {throw _e2;}, f: F };}throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");}var normalCompletion = true,didErr = false,err;return { s: function s() {it = o[Symbol.iterator]();}, n: function n() {var step = it.next();normalCompletion = step.done;return step;}, e: function e(_e3) {didErr = true;err = _e3;}, f: function f() {try {if (!normalCompletion && it.return != null) it.return();} finally {if (didErr) throw err;}} };}function _unsupportedIterableToArray(o, minLen) {if (!o) return;if (typeof o === "string") return _arrayLikeToArray(o, minLen);var n = Object.prototype.toString.call(o).slice(8, -1);if (n === "Object" && o.constructor) n = o.constructor.name;if (n === "Map" || n === "Set") return Array.from(o);if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);}function _arrayLikeToArray(arr, len) {if (len == null || len > arr.length) len = arr.length;for (var i = 0, arr2 = new Array(len); i < len; i++) {arr2[i] = arr[i];}return arr2;}function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {try {var info = gen[key](arg);var value = info.value;} catch (error) {reject(error);return;}if (info.done) {resolve(value);} else {Promise.resolve(value).then(_next, _throw);}}function _asyncToGenerator(fn) {return function () {var self = this,args = arguments;return new Promise(function (resolve, reject) {var gen = fn.apply(self, args);function _next(value) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);}function _throw(err) {asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);}_next(undefined);});};}var panel = function panel() {__webpack_require__.e(/*! require.ensure | pages/index/components/panel */ "pages/index/components/panel").then((function () {return resolve(__webpack_require__(/*! ./components/panel.vue */ 216));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var tools = function tools() {Promise.all(/*! require.ensure | pages/index/components/tools */[__webpack_require__.e("common/vendor"), __webpack_require__.e("pages/index/components/tools")]).then((function () {return resolve(__webpack_require__(/*! ./components/tools.vue */ 223));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 {
   data: function data() {
     return {
+      rotate: false, //旋转动画
       isLogin: false, //当前是否登录
       timer: null, // 景区设施定时器
       timer2: null, // sos求救信息定时器
@@ -254,7 +255,7 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
   onShow: function onShow() {
     // 恢复标题
     uni.setNavigationBarTitle({
-      title: "途咪导游机" });
+      title: "途咪导游端" });
 
 
     // 查询是否为导游登录
@@ -405,8 +406,8 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                   }} catch (err) {_iterator.e(err);} finally {_iterator.f();}if (!(
 
 
-                JSON.stringify(member) === JSON.stringify(_this3.member))) {_context4.next = 8;break;}return _context4.abrupt("return",
-                console.log('重复数据不予添加'));case 8:
+                JSON.stringify(member) === JSON.stringify(_this3.member))) {_context4.next = 8;break;}return _context4.abrupt("return");case 8:
+
 
 
                 // 清除游客数据
@@ -435,21 +436,40 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
     getScenery: function getScenery() {var _this4 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee5() {var res;return _regenerator.default.wrap(function _callee5$(_context5) {while (1) {switch (_context5.prev = _context5.next) {case 0:_context5.next = 2;return (
                   (0, _api.querySceneryNum)({
                     lat: getApp().globalData.latitude,
-                    lon: getApp().globalData.longitude }));case 2:res = _context5.sent;if (
+                    lon: getApp().globalData.longitude }));case 2:res = _context5.sent;
 
-                res.value) {_context5.next = 5;break;}return _context5.abrupt("return");case 5:
-                _this4.scenery = res.value.name;
-                getApp().globalData.sceneryNo = res.value.no;
-                // 获取到围栏
-                _this4.getFence();
-                // 获取到标记信息
-                _this4.getMarkers(_this4.markerType);case 9:case "end":return _context5.stop();}}}, _callee5);}))();
+                if (!res.value) {
+                  _this4.scenery = "未定位到景区";
+                  console.log(_this4.scenery);
+                  getApp().globalData.sceneryNo = "";
+                  // 判断导游在走出景区的时候是否建团,如果未建团则清除地图上的Marker信息,
+                  if (!getApp().globalData.touristTeamNo) {
+                    // 清除围栏数据
+                    _this4.polygons = [];
+                    // 清除marker数据
+                    _this4.marker = [];
+                    _this4.markerInfo = {};
+                  }
+
+                } else {
+                  _this4.scenery = res.value.name;
+                  console.log(_this4.scenery);
+                  getApp().globalData.sceneryNo = res.value.no;
+                  // 获取到围栏
+                  _this4.getFence();
+                  // 获取到标记信息
+                  _this4.getMarkers(_this4.markerType);
+                }case 4:case "end":return _context5.stop();}}}, _callee5);}))();
     },
 
     // 获取到设施
-    getFacilities: function getFacilities() {var _this5 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6() {var res, _iterator3, _step3, v, _gcoord$transform3, _gcoord$transform4, lon, lat, i;return _regenerator.default.wrap(function _callee6$(_context6) {while (1) {switch (_context6.prev = _context6.next) {case 0:_context6.next = 2;return (
+    getFacilities: function getFacilities() {var _this5 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee6() {var res, _iterator3, _step3, v, _gcoord$transform3, _gcoord$transform4, lon, lat, i;return _regenerator.default.wrap(function _callee6$(_context6) {while (1) {switch (_context6.prev = _context6.next) {case 0:if (
+
+
+                getApp().globalData.sceneryNo) {_context6.next = 2;break;}return _context6.abrupt("return");case 2:_context6.next = 4;return (
+
                   (0, _api.queryFacilities)({
-                    sceniceNo: getApp().globalData.sceneryNo }));case 2:res = _context6.sent;
+                    sceniceNo: getApp().globalData.sceneryNo }));case 4:res = _context6.sent;
 
 
                 // 将设施中的坐标系转换为gjc02坐标系
@@ -463,8 +483,8 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                     v.lat = lat;
                   }} catch (err) {_iterator3.e(err);} finally {_iterator3.f();}if (!(
 
-                JSON.stringify(res.value) === JSON.stringify(_this5.facilitiesData) && !_this5.manual)) {_context6.next = 7;break;}return _context6.abrupt("return",
-                console.log('重复数据不予添加'));case 7:
+                JSON.stringify(res.value) === JSON.stringify(_this5.facilitiesData) && !_this5.manual)) {_context6.next = 9;break;}return _context6.abrupt("return");case 9:
+
 
                 // 恢复自动模式
                 _this5.manual = false;
@@ -487,13 +507,15 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                     longitude: v.lon,
                     width: 65 });
 
-                });case 11:case "end":return _context6.stop();}}}, _callee6);}))();
+                });case 13:case "end":return _context6.stop();}}}, _callee6);}))();
     },
 
     // 获取到景点
-    getScenicSpot: function getScenicSpot() {var _this6 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7() {var res, _iterator4, _step4, v, _gcoord$transform5, _gcoord$transform6, lon, lat, i;return _regenerator.default.wrap(function _callee7$(_context7) {while (1) {switch (_context7.prev = _context7.next) {case 0:_context7.next = 2;return (
+    getScenicSpot: function getScenicSpot() {var _this6 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee7() {var res, _iterator4, _step4, v, _gcoord$transform5, _gcoord$transform6, lon, lat, i;return _regenerator.default.wrap(function _callee7$(_context7) {while (1) {switch (_context7.prev = _context7.next) {case 0:if (
+                getApp().globalData.sceneryNo) {_context7.next = 2;break;}return _context7.abrupt("return");case 2:_context7.next = 4;return (
+
                   (0, _api.queryScenicSpot)({
-                    sceniceNo: getApp().globalData.sceneryNo }));case 2:res = _context7.sent;
+                    sceniceNo: getApp().globalData.sceneryNo }));case 4:res = _context7.sent;
 
 
                 // 将设施中的坐标系转换为gjc02坐标系
@@ -508,8 +530,8 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                   }
 
                   // 和原来的信息进行对比
-                } catch (err) {_iterator4.e(err);} finally {_iterator4.f();}if (!(JSON.stringify(res.value) === JSON.stringify(_this6.scenicSpotData) && !_this6.manual)) {_context7.next = 7;break;}return _context7.abrupt("return",
-                console.log('重复数据不予添加'));case 7:
+                } catch (err) {_iterator4.e(err);} finally {_iterator4.f();}if (!(JSON.stringify(res.value) === JSON.stringify(_this6.scenicSpotData) && !_this6.manual)) {_context7.next = 9;break;}return _context7.abrupt("return");case 9:
+
 
 
                 // 恢复自动模式
@@ -533,7 +555,7 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                     longitude: v.lon,
                     width: 65 });
 
-                });case 11:case "end":return _context7.stop();}}}, _callee7);}))();
+                });case 13:case "end":return _context7.stop();}}}, _callee7);}))();
     },
 
     // 开启定时器
@@ -557,16 +579,16 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                 if (_res.authSetting['scope.userLocation'] === false) {
                   uni.showModal({
                     title: '提示',
-                    content: '检测到您拒绝了地理位置授权，这将无法获取到正确的位置，是否重新进行授权 ?',
-                    success: function () {var _success2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee8(res) {var _yield$uni$openSettin, _yield$uni$openSettin2, _err2, _res2;return _regenerator.default.wrap(function _callee8$(_context8) {while (1) {switch (_context8.prev = _context8.next) {case 0:if (!
-                                res.confirm) {_context8.next = 10;break;}_context8.next = 3;return (
-                                  uni.openSetting());case 3:_yield$uni$openSettin = _context8.sent;_yield$uni$openSettin2 = _slicedToArray(_yield$uni$openSettin, 2);_err2 = _yield$uni$openSettin2[0];_res2 = _yield$uni$openSettin2[1];
-                                _res2.authSetting['scope.userLocation'] && _this8.getLocation();_context8.next = 11;break;case 10:
+                    content: '检测到您拒绝了地理位置授权，这将无法获取到正确的位置，请打开设置界面手动开启权限。 ',
+                    success: function () {var _success2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee8(_ref) {var confirm, _yield$uni$openSettin, _yield$uni$openSettin2, _err2, _res2;return _regenerator.default.wrap(function _callee8$(_context8) {while (1) {switch (_context8.prev = _context8.next) {case 0:confirm = _ref.confirm;if (!
+                                confirm) {_context8.next = 11;break;}_context8.next = 4;return (
+                                  uni.openSetting());case 4:_yield$uni$openSettin = _context8.sent;_yield$uni$openSettin2 = _slicedToArray(_yield$uni$openSettin, 2);_err2 = _yield$uni$openSettin2[0];_res2 = _yield$uni$openSettin2[1];
+                                _res2.authSetting['scope.userLocation'] && _this8.getLocation();_context8.next = 12;break;case 11:
 
                                 uni.showToast({
                                   title: '授权失败',
                                   icon: 'none',
-                                  duration: 1000 });case 11:case "end":return _context8.stop();}}}, _callee8);}));function success(_x2) {return _success2.apply(this, arguments);}return success;}() });
+                                  duration: 1000 });case 12:case "end":return _context8.stop();}}}, _callee8);}));function success(_x2) {return _success2.apply(this, arguments);}return success;}() });
 
 
 
@@ -583,7 +605,7 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                 // 开启实时位置监听
                 uni.startLocationUpdate({
                   success: function success() {
-                    uni.onLocationChange( /*#__PURE__*/function () {var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee9(r) {var _gcoord$transform7, _gcoord$transform8, lon, lat, _JSON$parse, no, imei;return _regenerator.default.wrap(function _callee9$(_context9) {while (1) {switch (_context9.prev = _context9.next) {case 0:if (
+                    uni.onLocationChange( /*#__PURE__*/function () {var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee9(r) {var _gcoord$transform7, _gcoord$transform8, lon, lat, _JSON$parse, no, imei;return _regenerator.default.wrap(function _callee9$(_context9) {while (1) {switch (_context9.prev = _context9.next) {case 0:if (
                                 _this8.isLogin) {_context9.next = 2;break;}return _context9.abrupt("return");case 2:
                                 // 将经纬度转换为BD-09坐标系
                                 _gcoord$transform7 = _gcoord.default.transform(
@@ -591,8 +613,8 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                                 _gcoord.default.GCJ02, // 当前坐标系
                                 _gcoord.default.BD09 // 目标坐标系
                                 ), _gcoord$transform8 = _slicedToArray(_gcoord$transform7, 2), lon = _gcoord$transform8[0], lat = _gcoord$transform8[1];
-                                getApp().globalData.latitude = lon;
-                                getApp().globalData.longitude = lat;
+                                getApp().globalData.latitude = lat;
+                                getApp().globalData.longitude = lon;
                                 // 实时上传导游位置数据
                                 _JSON$parse = JSON.parse(uni.getStorageSync('customerInfo')), no = _JSON$parse.no, imei = _JSON$parse.imei;if (!(
                                 getApp().globalData.sceneryNo && getApp().globalData.touristTeamNo)) {_context9.next = 9;break;}_context9.next = 9;return (
@@ -602,7 +624,7 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                                     imei: imei,
                                     lat: lat,
                                     lon: lon,
-                                    touristTeamNo: getApp().globalData.touristTeamNo }]));case 9:case "end":return _context9.stop();}}}, _callee9);}));return function (_x3) {return _ref.apply(this, arguments);};}());
+                                    touristTeamNo: getApp().globalData.touristTeamNo }]));case 9:case "end":return _context9.stop();}}}, _callee9);}));return function (_x3) {return _ref2.apply(this, arguments);};}());
 
 
 
@@ -647,19 +669,31 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
 
     // 回到中心点
     moveToLocation: function moveToLocation() {
-      var mapContext = uni.createMapContext('map', this);
+      var mapContext = uni.createMapContext('map');
       mapContext.moveToLocation();
     },
 
     // 刷新
-    refresh: function refresh() {
+    refresh: function refresh() {var _this10 = this;
+      this.rotate = true;
       uni.showLoading({
         mask: true,
         title: '更新数据中' });
 
       this.getScenery();
       this.queryGroup();
-      setTimeout(function (_) {return uni.hideLoading();}, 1000);
+      // 关闭定时器
+      // clearInterval(this.timer)
+      // this.timer = null
+      // // 关闭实时位置监听
+      // uni.offLocationChange()
+      // // 重新获取地理位置
+      // this.getLocation()
+      // this.queryGroup()
+      setTimeout(function (_) {
+        _this10.rotate = false;
+        uni.hideLoading();
+      }, 1000);
     },
 
     // 点击地图标记事件
@@ -685,17 +719,17 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
     },
 
     // 生成标记信息
-    createMakerInfo: function createMakerInfo(markerData, markerType, curId) {var _this10 = this;var _iterator5 = _createForOfIteratorHelper(
+    createMakerInfo: function createMakerInfo(markerData, markerType, curId) {var _this11 = this;var _iterator5 = _createForOfIteratorHelper(
       markerData),_step5;try {var _loop = function _loop() {var item = _step5.value;
           var id = parseInt(curId.substr(1));
           if (item.id === id) {
             // 路径规划
             uni.getLocation({
               type: 'gcj02',
-              success: function success(_ref2)
+              success: function success(_ref3)
 
 
-              {var latitude = _ref2.latitude,longitude = _ref2.longitude;
+              {var latitude = _ref3.latitude,longitude = _ref3.longitude;
                 // 计算出距离
                 var qqmapsdk = new _qqmapWxJssdkMin.default({
                   key: '56LBZ-OKVCW-TP3RL-RVH7P-RDRIQ-4EB2T' });
@@ -717,18 +751,19 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
 
                     // 对游客信息单独处理
                     if (markerType === 'y') {
-                      _this10.markerInfo = {
+                      _this11.markerInfo = {
                         type: markerType,
                         nickName: item.nickName,
                         distance: distance,
                         battery: item.battery,
                         no: item.no,
+                        imei: item.imei,
                         phone: item.phone,
                         lon: item.lon,
                         lat: item.lat };
 
                     } else {
-                      _this10.markerInfo = {
+                      _this11.markerInfo = {
                         type: markerType,
                         coverUrl: item.coverUrl,
                         distance: distance,
@@ -741,7 +776,7 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
                   },
                   fail: function fail(res) {
                     if (markerType === 'y') {
-                      _this10.markerInfo = {
+                      _this11.markerInfo = {
                         type: markerType,
                         nickName: item.nickName,
                         distance: -1,
@@ -753,7 +788,7 @@ var _gcoord = _interopRequireDefault(__webpack_require__(/*! ../../utils/gcoord.
 
 
                     } else {
-                      _this10.markerInfo = {
+                      _this11.markerInfo = {
                         type: markerType,
                         coverUrl: item.coverUrl,
                         distance: -1,

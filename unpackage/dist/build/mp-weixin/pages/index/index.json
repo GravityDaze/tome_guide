@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "途咪导游机",
+  "navigationBarTitleText": "途咪导游端",
   "usingComponents": {
     "uni-popup": "/components/uni-popup/uni-popup",
     "tools": "/pages/index/components/tools",

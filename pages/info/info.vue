@@ -4,7 +4,7 @@
 			<view class="avatar" @click="changeAvatar">
 				<text>头像：</text>
 				<view class="right-content">
-					<image class="avatar-img" src="../../static/img_touxiangdaoyou@2x.png" mode=""></image>
+					<image class="avatar-img" src="../../static/guide.png" mode=""></image>
 					<image class="more" src="../../static/个人资料更多@2x.png" mode=""></image>
 				</view>
 			</view>

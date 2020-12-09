@@ -1,6 +1,9 @@
 <template>
 	<view class="message">
-		<view class="message-box" @click="check(item)" v-for="item in msgList" :key="item.id">
+		<view class="msg" v-if="showMsg">
+			<text>消息列表为空！</text>
+		</view>
+		<view class="message-box" @click="check(item)" v-for="item in msgList" :key="item.id" v-else>
 			<image v-if="!item.isRead" :src="require(`../../static/${ iconMap.get(item.sendType) }.png`)"></image>
 			<image v-else :src="require(`../../static/${ iconReadMap.get(item.sendType) }.png`)"></image>
 			<view class="text">
@@ -30,6 +33,7 @@
 		},
 		data() {
 			return {
+				showMsg:false,
 				msgList:[],
 				msgTypeMap:new Map([
 					[1, "平台消息"],
@@ -57,12 +61,16 @@
 						pageNum:1,
 						pageSize:10
 					})
-					this.msgList = value.list
+					if( !value.list ){
+						this.showMsg = true
+					}else{
+						this.showMsg = false
+						this.msgList = value.list
+					}
 				}finally{
 					uni.hideLoading()
 					uni.stopPullDownRefresh()
 				}
-				
 			},
 			async check(params){
 				uni.setStorageSync('msg',JSON.stringify(params))
@@ -82,6 +90,13 @@
 <style lang="scss" scoped>
 	.message{
 		padding:20rpx;
+		
+		.msg{
+			display:flex;
+			justify-content: center;
+			color:#999896;
+			font-size:26rpx;
+		}
 		
 		.message-box{
 			display:flex;

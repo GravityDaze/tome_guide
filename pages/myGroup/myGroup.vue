@@ -45,7 +45,7 @@
 			<!-- 游客 -->
 			<view class="member" @longpress="showMask(item.id)" v-for="item in member" :key="item.id">
 				<image :class="{ani: curId === item.id}" :src="require(`../../static/${ item.phone?'member':'member2' }.png`)"></image>
-				<view class="name">{{item.phone || item.no}}</view>
+				<view class="name">{{item.phone || `***${item.imei.slice(-6)}`}}</view>
 				<view :class="[{ show: curId === item.id }, 'mask']">
 					<view @click.stop="call(item.phone)">
 						<image src="../../static/phone.png" mode=""></image>
@@ -102,7 +102,6 @@
 		},
 		methods: {
 			async getTeamInfo() {
-				console.log(this.timer)
 				const {
 					value
 				} = await queryTeamInfo({
@@ -157,7 +156,7 @@
 							})
 						} catch (err) {
 							uni.showModal({
-								content:'无效的二维码,请检查是否是途咪导游机二维码',
+								content:err.toString() || '无效的二维码,请检查是否是途咪导游机二维码',
 								showCancel:false
 							})
 							uni.hideLoading()
@@ -200,7 +199,8 @@
 			call(phoneNumber) {
 				if (!phoneNumber) {
 					uni.showModal({
-						content: '该游客未记录手机号码，请发送信息'
+						content: '该游客未记录手机号码，请发送信息',
+						showCancel:false
 					})
 				} else {
 					uni.makePhoneCall({
@@ -281,8 +281,8 @@
 <style lang="scss" scoped>
 	.my-group {
 		position: relative;
-		padding: 0 35rpx;
-		height: 100%;
+		padding: 0 35rpx 0rpx;
+		height:100%;
 
 		.bg {
 			position: absolute;
@@ -442,13 +442,13 @@
 
 
 		.tools {
-			position: absolute;
+			position: fixed;
 			right: 15rpx;
 			bottom: 120rpx;
 			display: flex;
 			flex-flow: column;
 			align-items: center;
-
+			z-index:99;
 		}
 
 		.scan {

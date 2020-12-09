@@ -38,16 +38,19 @@
 						电量：<text :style="{ color:markerInfo.battery>50?'#0A98D5':'red'}">{{markerInfo.battery}}%</text>
 					</view>
 					<view>
-						电话：{{markerInfo.phone || ''}}
+						电话：{{markerInfo.phone || '未记录'}}
 					</view>
 					<view>
 						编号：{{markerInfo.no || ''}}
+					</view>
+					<view>
+						imei：{{markerInfo.imei || ''}}
 					</view>
 				</view>
 				
 				<view class="btn-area">
 					<view class="go-there" @click="navigation(markerInfo)"><image src="../../../static/gohere.png" mode=""></image>去这里</view>
-					<view class="go-there" @click="call(markerInfo)">打电话</view>
+					<view v-if="markerInfo.phone" class="go-there" @click="call(markerInfo)">打电话</view>
 					<view class="go-there" @click="msg(markerInfo)">发信息</view>
 				</view>
 			</view>

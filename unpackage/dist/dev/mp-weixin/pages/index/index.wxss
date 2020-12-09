@@ -53,8 +53,10 @@
   width: 88rpx;
   height: 88rpx;
   background: #fff;
-  box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-  border-radius: 50%;
+  -webkit-box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+          box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
   margin-bottom: 20rpx;
 }
 .index .btn .local image.data-v-57280228 {
@@ -74,12 +76,38 @@
   width: 88rpx;
   height: 88rpx;
   background: #fff;
-  box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-  border-radius: 50%;
+  -webkit-box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+          box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+  -webkit-border-radius: 50%;
+          border-radius: 50%;
+}
+@-webkit-keyframes rotate-data-v-57280228 {
+from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+}
+to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+}
+}
+@keyframes rotate-data-v-57280228 {
+from {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+}
+to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+}
 }
 .index .btn .refresh image.data-v-57280228 {
   width: 55%;
   height: 55%;
+}
+.index .btn .refresh .active.data-v-57280228 {
+  -webkit-animation: rotate-data-v-57280228 1s infinite linear;
+          animation: rotate-data-v-57280228 1s infinite linear;
 }
 .index .login-btn.data-v-57280228 {
   position: fixed;
@@ -98,8 +126,10 @@
           transform: translateX(-50%);
   width: 420rpx;
   height: 88rpx;
-  box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
-  border-radius: 44rpx;
+  -webkit-box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
+          box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
+  -webkit-border-radius: 44rpx;
+          border-radius: 44rpx;
   background: #FFCB3E;
 }
 
