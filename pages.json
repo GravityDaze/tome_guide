@@ -76,16 +76,20 @@
             }
         }
         ,{
-            "path" : "pages/list/list",
+            "path" : "pages/admin/admin",
             "style" : {
-                "navigationStyle":"custom"
+               "navigationBarTitleText": "导游管理",
+			   "disableScroll":true
             }
         }
         ,{
-            "path" : "pages/exception/exception",
-            "style" : {
-				"navigationBarTitleText": "异常申报"
-			}
+            "path" : "pages/createGuide/createGuide",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "导游编辑",
+                "enablePullDownRefresh": false
+            }
+            
         }
     ],
 	"globalStyle": {

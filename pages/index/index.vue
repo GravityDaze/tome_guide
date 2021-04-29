@@ -1,9 +1,9 @@
 <template>
 	<view class="index">
-		<tools class="tools" :scenery="scenery" @changeMarker="changeMarker" :menuItems="menuItems" v-if="isLogin" />
+		<tools class="tools" :scenery="scenery" :menuItems="menuItemsRes" v-if="isLogin" />
 		<map id="map" :latitude="latitude" :longitude="longitude" :polygons="polygons" show-location show-compass :markers="markers"
 		 @markertap="markertap"></map>
-		
+
 		<view class="btn">
 			<!-- 定位 -->
 			<view class="local" @click="moveToLocation">
@@ -14,8 +14,8 @@
 				<image :class="rotate?'active':''" src="../../static/refresh.png"></image>
 			</view>
 		</view>
-		
-		
+
+
 		<!-- 登录按钮 -->
 		<view class="login-btn" @click="login" v-if="!isLogin">
 			<text>登录</text>
@@ -44,41 +44,25 @@
 		uploadLocation,
 		getSos,
 		delSos
-	} from '../../api/api.js'
+	}
+	from '../../api/api.js'
 	import gcoord from '../../utils/gcoord.js'
 	export default {
 		data() {
 			return {
-				rotate:false,//旋转动画
+				rotate: false, //旋转动画
 				isLogin: false, //当前是否登录
 				timer: null, // 景区设施定时器
-				timer2:null, // sos求救信息定时器
+				timer2: null, // sos求救信息定时器
 				latitude: 36.026226,
 				longitude: 103.75202,
 				scenery: '未定位到景区', //当前景区
 				polygons: [], //围栏
-				markerType: 'scenicSpot', //当前应当显示哪种类型的type
-				curMarkerId: 0,
 				manual: false, // marker是否处于手动切换模式
 				markerInfo: {}, // marker信息
 				markers: [], // marker数据
-				menuItems: [{
-						name: '景点',
-						icon: 'icon_quanbujingdian@2x',
-						type: 'scenicSpot'
-					},
-					{
-						name: '设施',
-						icon: 'icon_jingdiansheshi@2x',
-						type: 'facilities'
-					},
-
-					// {
-					// 	name: '店铺',
-					// 	icon: 'icon_quanbudianpu@2x',
-					// 	type:'shop'
-					// },
-					{
+				menuItems:[],
+				menuArr: Object.freeze([{
 						name: '消息',
 						icon: 'icon_quanbuxiaoxi@2x',
 						url: '/pages/message/message'
@@ -93,55 +77,39 @@
 						icon: 'icon_quanbugerenzhongxin@2x',
 						url: '/pages/personal/personal'
 					},
-					// {
-					// 	name: '关闭围栏',
-					// 	icon: 'icon_quanbuguanbiweilan@2x'
-					// },
 					{
 						name: '发布消息',
 						icon: 'icon_quanbufabuxiaoxi@2x',
 						url: '/pages/publish/publish'
 					}
-				], //工具栏数据
-				iconPath: new Map([
-					["FAC_ALM", "alm"],
-					["FAC_WC", "toilet"],
-					["FAC_DOOR", "door"],
-					["FAC_SELL", "shop"],
-					["FAC_SERVICE", "servicestation"],
-				]),
-				facilitiesData: [], //设施数据
-				scenicSpotData: [] // 景点数据
-
+				]), //工具栏数据
 			}
 		},
-
+		computed:{
+			menuItemsRes(){
+				// 防止极端情况下网络故障时无法退出
+				return this.menuItems.length?this.menuItems:this.menuArr.filter( v=>v.name==='个人中心' )
+			}
+		},
 		onShow() {
 			// 恢复标题
 			uni.setNavigationBarTitle({
-			      title: "途咪导游端"
+				title: "途咪导游端"
 			})
-			
+
 			// 查询是否为导游登录
 			this.isLogin = uni.getStorageSync('token') && uni.getStorageSync('customerInfo')
 			// 查询是否为管理员登录
-			if(  uni.getStorageSync('token') && !uni.getStorageSync('customerInfo') ){
+			if (uni.getStorageSync('token') && !uni.getStorageSync('customerInfo')) {
 				return uni.redirectTo({
-					url:'/pages/list/list'
+					url: '/pages/admin/admin'
 				})
-			}
-			
+			}   
+
 			// 获取地理位置
 			this.getLocation()
 			// 查询是否建团
 			this.queryGroup()
-		},
-
-		onLoad() {
-			// 实例化API核心类
-			const qqmapsdk = new QQMapWX({
-				key: '56LBZ-OKVCW-TP3RL-RVH7P-RDRIQ-4EB2T'
-			});
 		},
 		onUnload() {
 			// 清除定时器
@@ -160,66 +128,57 @@
 
 			// 进首页时查询是否建团动态切换菜单栏数据
 			async queryGroup() {
-				if( !this.isLogin ) return 
+				if (!this.isLogin) return
 				const {
 					value
 				} = await isCreateTeam()
 				if (value) {
-					this.menuItems = this.menuItems.map(v => {
+					this.menuItems = this.menuArr.map(v => {
 						if (v.name === "组团") {
-							v.name = '我的团'
-							v.url = '/pages/myGroup/myGroup'
+							return {  ...v,name:'我的团',url:'/pages/myGroup/myGroup' }
 						}
 						return v
 					})
 					getApp().globalData.touristTeamNo = value
-					
 					// 已建团时查询游客位置并生成标记
 					this.getTourist()
-					// 已建团时查询是否有新的sos信息
-					this.startTimer2()
+					// 已建团时开启定时器查询是否有新的sos信息
+					this.getNewSos()
 				} else {
 					getApp().globalData.touristTeamNo = ''
-					this.menuItems = this.menuItems.map(v => {
+					this.menuItems = this.menuArr.map(v => {
 						if (v.name === "我的团") {
-							v.name = '组团'
-							v.url = '/pages/group/group'
+							return {  ...v,name:'组团',url:'/pages/group/group' }
 						}
 						return v
-					})
+					}).filter( v=>v.name !== '发布消息' )
 					// 未建团时清除游客标记
-					for (let i = 0; i < this.markers.length; i++) {
-						if (this.markers[i].id.substr(0, 1) === 'y') {
-							this.markers.splice(i, 1)
-							i--
-						}
-					}
-
+					this.markers = []
 				}
 			},
-			
-			
+
+
 			// 开启sos定时器
-			startTimer2() {
-				if( !this.isLogin || this.timer2  ) return
+			getNewSos() {
+				if (!this.isLogin || this.timer2) return
 				const count = () => {
 					this.getSos();
 					return count;
 				};
 				this.timer2 = setInterval(count(), 5000);
 			},
-			
+
 			// 获取新的sos信息
-			async getSos(){
+			async getSos() {
 				const res = await getSos()
-				if(res.value === 1){
+				if (res.value === 1) {
 					await delSos()
 					uni.showModal({
-						content:'您收到一条新的sos消息，请查看',
-						success:async res=>{
-							if(res.confirm){
+						content: '您收到一条新的sos消息，请查看',
+						success: async res => {
+							if (res.confirm) {
 								uni.navigateTo({
-									url:'/pages/sos/sos'
+									url: '/pages/sos/sos'
 								})
 							}
 						}
@@ -227,204 +186,67 @@
 				}
 			},
 
-			// 手动marker的显示状态
-			changeMarker(type) {
-				// 切换toast
-				uni.showToast({
-					icon:'none',
-					title:`当前显示${ type === 'scenicSpot' ? '景点':'设施'}`
-				})
-				this.manual = true;
-				this.markerType = type
-				this.getMarkers(this.markerType)
-			},
-
-			// 手动切换菜单中景区和设施的切换 
-			getMarkers(type) {
-				if (type === 'scenicSpot') {
-					this.getScenicSpot()
-				} else {
-					this.getFacilities()
-				}
-			},
-
-			//  获取到游客
+			//  获取到游客并展示到地图
 			async getTourist() {
-				// 在地图上显示游客数据
 				const res = await queryTeamInfo({
-					customerId:''
+					customerId: ''
 				})
-				const {
-					member
-				} = res.value
-				// 将member中的坐标系转换为gjc02坐标系
-				for( const v of member ){
-					const [ lon,lat ] = gcoord.transform(
-					  [parseFloat(v.lon),parseFloat(v.lat)],    // 经纬度坐标
-					  gcoord.BD09,     // 当前坐标系
-					  gcoord.GCJ02     // 目标坐标系
+				const { member } = res.value
+				// 转换坐标系
+				this.member = member.map(v => {
+					const [lon, lat] = gcoord.transform(
+						[+v.lon, +v.lat], // 经纬度坐标
+						gcoord.BD09, // 当前坐标系
+						gcoord.GCJ02 // 目标坐标系
 					)
-					v.lon = lon
-					v.lat = lat
-					
-				}
-				
-			
-				if (JSON.stringify(member) === JSON.stringify(this.member)) {
-					return
-				}
-				
-				// 清除游客数据
-				for (let i = 0; i < this.markers.length; i++) {
-					if (this.markers[i].id.substr(0, 1) === 'y') {
-						this.markers.splice(i, 1)
-						i--
+					return { 
+						...v,
+						lon,
+						lat
 					}
-				}
-				
-				this.member = member
-				for (const v of member) {
-					if (!v.lon || !v.lat) continue
-					this.markers.push({
+				})
+				// 生成标记
+				this.markers = this.member.map(v => {
+					return {
 						height: 71,
 						iconPath: `/static/youke@2x.png`,
-						id: 'y' + v.id,
+						id: v.id,
 						latitude: v.lat,
 						longitude: v.lon,
 						width: 54
-					})
-				}
+					}
+				})
 			},
-			
+
 			// 获取到景区
 			async getScenery() {
 				const res = await querySceneryNum({
-					lat:  getApp().globalData.latitude,
-					lon:  getApp().globalData.longitude
+					lat: getApp().globalData.latitude,
+					lon: getApp().globalData.longitude
 				})
-				if(!res.value){
+				if (!res.value) {
 					this.scenery = "未定位到景区"
-					console.log(this.scenery)
 					getApp().globalData.sceneryNo = ""
 					// 判断导游在走出景区的时候是否建团,如果未建团则清除地图上的Marker信息,
-					if(!getApp().globalData.touristTeamNo){
+					if (!getApp().globalData.touristTeamNo) {
 						// 清除围栏数据
 						this.polygons = []
 						// 清除marker数据
 						this.marker = []
 						this.markerInfo = {}
 					}
-					
-				}else{
+
+				} else {
 					this.scenery = res.value.name
-					console.log(this.scenery)
 					getApp().globalData.sceneryNo = res.value.no
 					// 获取到围栏
 					this.getFence()
-					// 获取到标记信息
-					this.getMarkers(this.markerType)
 				}
-			},
-
-			// 获取到设施
-			async getFacilities() {
-				
-				// 未定位到景区时 不进行查询
-				if(!getApp().globalData.sceneryNo) return
-				
-				const res = await queryFacilities({
-					sceniceNo: getApp().globalData.sceneryNo
-				})
-				
-				// 将设施中的坐标系转换为gjc02坐标系
-				for( const v of res.value ){
-					const [ lon,lat ] = gcoord.transform(
-					  [parseFloat(v.lon),parseFloat(v.lat)],    // 经纬度坐标
-					  gcoord.BD09,               // 当前坐标系
-					  gcoord.GCJ02                 // 目标坐标系
-					)
-					v.lon = lon
-					v.lat = lat
-				}
-
-				if (JSON.stringify(res.value) === JSON.stringify(this.facilitiesData) && !this.manual) {
-					return
-				}
-				// 恢复自动模式
-				this.manual = false
-				// 先清除markers中除游客以外的所有数据
-				for (let i = 0; i < this.markers.length; i++) {
-					if (this.markers[i].id.substr(0, 1) !== 'y') {
-						this.markers.splice(i, 1)
-						i--
-					}
-				}
-
-				// 储存标记点信息
-				this.facilitiesData = res.value
-				res.value.forEach(v => {
-					this.markers.push({
-						height: 78,
-						iconPath: `/static/${this.iconPath.get(v.type)}.png`,
-						id: 's' + v.id,
-						latitude: v.lat,
-						longitude: v.lon,
-						width: 65
-					})
-				})
-			},
-
-			// 获取到景点
-			async getScenicSpot() {
-				if(!getApp().globalData.sceneryNo) return
-				
-				const res = await queryScenicSpot({
-					sceniceNo: getApp().globalData.sceneryNo
-				})
-				
-				// 将设施中的坐标系转换为gjc02坐标系
-				for( const v of res.value ){
-					const [ lon,lat ] = gcoord.transform(
-					  [parseFloat(v.lon),parseFloat(v.lat)],    // 经纬度坐标
-					  gcoord.BD09,               // 当前坐标系
-					  gcoord.GCJ02                 // 目标坐标系
-					)
-					v.lon = lon
-					v.lat = lat
-				}
-
-				// 和原来的信息进行对比
-				if (JSON.stringify(res.value) === JSON.stringify(this.scenicSpotData) && !this.manual) {
-					return
-				}
-				
-				// 恢复自动模式
-				this.manual = false
-				// 先清除markers中除了游客以外的所有数据
-				for (let i = 0; i < this.markers.length; i++) {
-					if (this.markers[i].id.substr(0, 1) !== 'y') {
-						this.markers.splice(i, 1)
-						i--
-					}
-				}
-
-				// 储存标记点信息
-				this.scenicSpotData = res.value
-				res.value.forEach(v => {
-					this.markers.push({
-						height: 78,
-						iconPath: `/static/scenery.png`,
-						id: 'j' + v.id,
-						latitude: v.lat,
-						longitude: v.lon,
-						width: 65
-					})
-				})
 			},
 
 			// 开启定时器
 			startTimer() {
-				if( !this.isLogin || this.timer  ) return
+				if (!this.isLogin || this.timer) return
 				const count = () => {
 					this.getScenery();
 					return count;
@@ -444,10 +266,12 @@
 						uni.showModal({
 							title: '提示',
 							content: '检测到您拒绝了地理位置授权，这将无法获取到正确的位置，请打开设置界面手动开启权限。 ',
-							success: async ({confirm}) => {
+							success: async ({
+								confirm
+							}) => {
 								if (confirm) {
 									const [err, res] = await uni.openSetting()
-									res.authSetting['scope.userLocation'] && this.getLocation()									
+									res.authSetting['scope.userLocation'] && this.getLocation()
 								} else {
 									uni.showToast({
 										title: '授权失败',
@@ -468,27 +292,32 @@
 					this.startTimer()
 					// 开启实时位置监听
 					uni.startLocationUpdate({
-						success:()=> {
-							uni.onLocationChange(async r => {
-								if( !this.isLogin  ) return
+						success: () => {
+							uni.onLocationChange(async r => { 
+								if (!this.isLogin) return
 								// 将经纬度转换为BD-09坐标系
-								const [ lon,lat ] = gcoord.transform(
-								  [r.longitude,r.latitude],    // 经纬度坐标
-								  gcoord.GCJ02,               // 当前坐标系
-								  gcoord.BD09                 // 目标坐标系
+								const [lon, lat] = gcoord.transform(
+									[r.longitude, r.latitude], // 经纬度坐标
+									gcoord.GCJ02, // 当前坐标系
+									gcoord.BD09 // 目标坐标系
 								)
 								getApp().globalData.latitude = lat
 								getApp().globalData.longitude = lon
 								// 实时上传导游位置数据
-								const { no,imei }  = JSON.parse( uni.getStorageSync('customerInfo') ) 
-								if( getApp().globalData.sceneryNo && getApp().globalData.touristTeamNo ){
+								const {
+									no,
+									imei,
+									phone
+								} = JSON.parse(uni.getStorageSync('customerInfo'))
+								if (getApp().globalData.sceneryNo && getApp().globalData.touristTeamNo) {
+									console.log('uploading...') 
 									await uploadLocation([{
-										sceneryNo:getApp().globalData.sceneryNo,
-										customerNo:no,
-										imei,
+										sceneryNo: getApp().globalData.sceneryNo,
+										customerNo: no,
+										imei: imei || phone,
 										lat,
 										lon,
-										touristTeamNo:getApp().globalData.touristTeamNo
+										touristTeamNo: getApp().globalData.touristTeamNo
 									}])
 								}
 							})
@@ -509,14 +338,13 @@
 				this.polygons = list.map(v => {
 					const latLng = v.scope.split(';')
 					const points = latLng.map(v => {
-						const [ lon , lat ] = v.split(',')
+						const [lon, lat] = v.split(',')
 						// 将经纬度转换为GCJ02坐标系
-						const [ longitude , latitude ] = gcoord.transform(
-						  [parseFloat(lon),parseFloat(lat)],    // 经纬度坐标
-						  gcoord.BD09,               // 当前坐标系
-						  gcoord.GCJ02                 // 目标坐标系
+						const [longitude, latitude] = gcoord.transform(
+							[+lon, +lat], // 经纬度坐标
+							gcoord.BD09, // 当前坐标系
+							gcoord.GCJ02 // 目标坐标系
 						)
-				
 						return {
 							latitude,
 							longitude
@@ -536,56 +364,33 @@
 				const mapContext = uni.createMapContext('map')
 				mapContext.moveToLocation()
 			},
-			
+
 			// 刷新
-			refresh(){
+			refresh() {
 				this.rotate = true
 				uni.showLoading({
-					mask:true,
-					title:'更新数据中'
+					mask: true,
+					title: '更新数据中'
 				})
 				this.getScenery()
 				this.queryGroup()
-				// 关闭定时器
-				// clearInterval(this.timer)
-				// this.timer = null
-				// // 关闭实时位置监听
-				// uni.offLocationChange()
-				// // 重新获取地理位置
-				// this.getLocation()
-				// this.queryGroup()
-				setTimeout( _=>{
+				setTimeout(_ => {
 					this.rotate = false
 					uni.hideLoading()
-				},1000 )
+				}, 1000)
 			},
 
 			// 点击地图标记事件
-			markertap(data) {
+			markertap(e) {
 				// 消除原标记
 				this.markerInfo = {}
 				this.$refs.popup.open()
-				this.curMarkerId = data.markerId
-				/** 判断标记点类型
-					s => 设施
-					j => 景区
-					y => 游客
-				**/
-				const markerType = this.curMarkerId.substr(0, 1)
-				if (markerType === 'j') {
-					// 根据类型生成markerInfo
-					this.createMakerInfo(this.scenicSpotData, markerType, this.curMarkerId)
-				} else if (markerType === 's') {
-					this.createMakerInfo(this.facilitiesData, markerType, this.curMarkerId)
-				} else if (markerType === 'y') {
-					this.createMakerInfo(this.member, markerType, this.curMarkerId)
-				}
+				this.$nextTick( _=> this.createMakerInfo(e.detail.markerId) )
 			},
 
-			// 生成标记信息
-			createMakerInfo(markerData, markerType, curId) {
-				for (const item of markerData) {
-					const id = parseInt(curId.substr(1))
+			// 生成游客标记信息
+			createMakerInfo(id) {
+				for (const item of this.member) {
 					if (item.id === id) {
 						// 路径规划
 						uni.getLocation({
@@ -598,6 +403,18 @@
 								const qqmapsdk = new QQMapWX({
 									key: '56LBZ-OKVCW-TP3RL-RVH7P-RDRIQ-4EB2T'
 								});
+								// 创建对象
+								const createMarkerObj = (item,distance)=> ({
+										nickName: item.nickName,
+										distance,
+										battery: item.battery,
+										no: item.no,
+										imei: item.imei,
+										phone: item.phone,
+										lon: item.lon,
+										lat: item.lat
+								})
+								
 								qqmapsdk.direction({
 									mode: 'walking',
 									from: {
@@ -612,56 +429,10 @@
 										const {
 											distance
 										} = res.result.routes[0]
-
-										// 对游客信息单独处理
-										if (markerType === 'y') {
-											this.markerInfo = {
-												type: markerType,
-												nickName: item.nickName,
-												distance,
-												battery:item.battery,
-												no: item.no,
-												imei:item.imei,
-												phone: item.phone,
-												lon: item.lon,
-												lat: item.lat
-											}
-										} else {
-											this.markerInfo = {
-												type: markerType,
-												coverUrl: item.coverUrl,
-												distance,
-												describe: item.describe,
-												name: item.name || item.location,
-												lon: item.lon,
-												lat: item.lat
-											}
-										}
+										this.markerInfo = createMarkerObj( item,distance )
 									},
 									fail: res => {
-										if (markerType === 'y') {
-											this.markerInfo = {
-												type: markerType,
-												nickName: item.nickName,
-												distance:-1,
-												battery:item.battery,
-												no: item.no,
-												phone: item.phone,
-												lon: item.lon,
-												lat: item.lat
-												
-											}
-										} else {
-											this.markerInfo = {
-												type: markerType,
-												coverUrl: item.coverUrl,
-												distance: -1,
-												describe: item.describe,
-												name: item.name || item.location,
-												lon: item.lon,
-												lat: item.lat
-											}
-										}
+										this.markerInfo = createMarkerObj( item,-1 )
 									}
 								})
 							}
@@ -691,35 +462,17 @@
 			z-index: 99;
 			width: 100%;
 		}
-		
-		.btn{
-			
+
+		.btn {
+
 			position: fixed;
 			bottom: 160rpx;
 			right: 15rpx;
 			z-index: 10;
-			
-		// 定位按钮
-		.local {
-			
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			width: 88rpx;
-			height: 88rpx;
-			background: #fff;
-			box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-			border-radius: 50%;
-			margin-bottom:20rpx;
-		
-			image {
-				width: 65%;
-				height: 65%;
-			}
-		
-			}	
-			
-			.refresh{
+
+			// 定位按钮
+			.local {
+
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -728,33 +481,52 @@
 				background: #fff;
 				box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
 				border-radius: 50%;
-				
-				@keyframes rotate{
-					from{
-						transform:rotate(0);
-						
+				margin-bottom: 20rpx;
+
+				image {
+					width: 65%;
+					height: 65%;
+				}
+
+			}
+
+			.refresh {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 88rpx;
+				height: 88rpx;
+				background: #fff;
+				box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+				border-radius: 50%;
+
+				@keyframes rotate {
+					from {
+						transform: rotate(0);
+
 					}
-					to{
-						transform:rotate(360deg);
-						
+
+					to {
+						transform: rotate(360deg);
+
 					}
 				}
-				
-				image{
+
+				image {
 					width: 55%;
 					height: 55%;
 				}
-				
-				.active{
-					animation:rotate 1s infinite linear;
+
+				.active {
+					animation: rotate 1s infinite linear;
 				}
-				
+
 			}
-			
-			
+
+
 		}
-		
-		
+
+
 
 		// 登录按钮
 		.login-btn {

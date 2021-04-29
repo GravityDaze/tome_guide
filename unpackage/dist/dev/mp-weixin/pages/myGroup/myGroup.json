@@ -2,7 +2,5 @@
   "navigationBarTitleText": "我的团(1)",
   "enablePullDownRefresh": true,
   "backgroundColorTop": "#FFCB3E",
-  "usingComponents": {
-    "neil-modal": "/components/neil-modal/neil-modal"
-  }
+  "usingComponents": {}
 }

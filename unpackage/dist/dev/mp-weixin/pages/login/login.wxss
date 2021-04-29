@@ -40,9 +40,23 @@
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
   margin-top: 20rpx;
   color: #666666;
   font-size: 24rpx;
+}
+.login .wxlogin view.data-v-b237504c {
+  position: relative;
+}
+.login .wxlogin view .btn.data-v-b237504c {
+  position: absolute;
+  opacity: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 .login .login-btn.data-v-b237504c {
   display: -webkit-box;

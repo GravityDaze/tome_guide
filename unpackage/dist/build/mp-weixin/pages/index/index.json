@@ -1,7 +1,7 @@
 {
   "navigationBarTitleText": "途咪导游端",
   "usingComponents": {
-    "uni-popup": "/components/uni-popup/uni-popup",
+    "uni-popup": "/uni_modules/uni-popup/components/uni-popup/uni-popup",
     "tools": "/pages/index/components/tools",
     "panel": "/pages/index/components/panel"
   }

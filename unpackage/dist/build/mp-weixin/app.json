@@ -12,8 +12,8 @@
     "pages/sosDetail/sosDetail",
     "pages/message/message",
     "pages/msgDetail/msgDetail",
-    "pages/list/list",
-    "pages/exception/exception"
+    "pages/admin/admin",
+    "pages/createGuide/createGuide"
   ],
   "subPackages": [],
   "window": {

@@ -15,7 +15,7 @@
 		<!-- 工具栏菜单 -->
 		<uni-popup ref="popup" type="top">
 			<view class="menu">
-				<view class="menu-item" v-for="(item,index) in menuItems" :key="index" @click="navigate(item.url,item.type)">
+				<view class="menu-item" v-for="(item,index) in menuItems" :key="index" @click="navigate(item.url)">
 					<image :src="require(`../../../static/${item.icon}.png`)"></image>
 					<text>{{item.name}}</text>
 				</view>
@@ -25,12 +25,12 @@
 </template>
 
 <script>
-	import uniPopup from '@/components/uni-popup/uni-popup.vue'
+	// import uniPopup from '@/components/uni-popup/uni-popup.vue'
 	// import uniPopupMessage from '@/components/uni-popup/uni-popup-message.vue'
 	// import uniPopupDialog from '@/components/uni-popup/uni-popup-dialog.vue'
 	export default {
 		components: {
-			uniPopup,
+			// uniPopup,
 			// uniPopupMessage,
 			// uniPopupDialog
 		},
@@ -53,14 +53,12 @@
 				this.$refs.popup.open()
 			},
 			
-			navigate(url,type){
+			navigate(url){
 				if(url){
 					return uni.navigateTo({
 						url
 					})
 				}
-				
-				this.$emit('changeMarker',type)
 			},
 			
 			sos(){
@@ -114,10 +112,10 @@
 		}
 
 		.menu {
-			height: 350rpx;
+			height: 200rpx;
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
-			grid-template-rows: repeat(2, 1fr);
+			// grid-template-rows: repeat(1, 1fr);
 			background: #fff;
 
 			.menu-item {

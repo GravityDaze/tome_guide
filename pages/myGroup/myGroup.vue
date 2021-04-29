@@ -1,12 +1,5 @@
 <template>
 	<view class="my-group clearfix" @click="hideMask">
-		<!-- 解散弹框 -->
-		<neil-modal :show="show" title="通知" @cancel="bindBtn('cancel')" @confirm="bindBtn('confirm')"  @close="closeModal" >
-			 <view style="min-height: 90rpx;padding: 32rpx 24rpx;">
-			    <view>解散旅行团时请确认设备数量准确无误并且无损坏情况，否则请点击<text @click="exception" style="color:red;font-weight:bold;text-decoration: underline;">异常申报</text></view>
-			</view>
-		</neil-modal>
-
 		<view class="bg">
 			<image src="../../static/bg.png" mode=""></image>
 		</view>
@@ -44,7 +37,8 @@
 
 			<!-- 游客 -->
 			<view class="member" @longpress="showMask(item.id)" v-for="item in member" :key="item.id">
-				<image :class="{ani: curId === item.id}" :src="require(`../../static/${ item.phone?'member':'member2' }.png`)"></image>
+				<image :class="{ani: curId === item.id}"
+					:src="require(`../../static/${ item.phone?'member':'member2' }.png`)"></image>
 				<view class="name">{{item.phone || `***${item.imei.slice(-6)}`}}</view>
 				<view :class="[{ show: curId === item.id }, 'mask']">
 					<view @click.stop="call(item.phone)">
@@ -76,9 +70,7 @@
 		dismiss,
 		delMember,
 		joinTeamQr,
-		getCount
 	} from '@/api/api.js'
-	import neilModal from '@/components/neil-modal/neil-modal.vue';
 	import { parseQueryString } from "@/utils/parseQs.js"
 	export default {
 		data() {
@@ -87,11 +79,10 @@
 				travelAgency: '',
 				curId: '',
 				member: [],
-				show: false, // 解散提示框状态
 				id: null
 			};
 		},
-		onShow(){
+		onShow() {
 			// 查询团信息
 			this.getTeamInfo();
 		},
@@ -141,30 +132,30 @@
 					success: async res => {
 						// 从url中解析出参数
 						uni.showLoading({
-							mask:true
+							mask: true
 						})
 						const params = parseQueryString(res.result)
 						try {
 							await joinTeamQr({
-								imei:(params && params.imei) || '',
+								imei: (params && params.imei) || '',
 								code: this.code
 							})
 							this.getTeamInfo()
 							uni.hideLoading()
 							uni.showToast({
-								title:'加团成功'
+								title: '加团成功'
 							})
 						} catch (err) {
 							uni.showModal({
-								content:err.toString() || '无效的二维码,请检查是否是途咪导游机二维码',
-								showCancel:false
+								content: err.toString() || '无效的二维码,请检查是否是途咪导游机二维码',
+								showCancel: false
 							})
 							uni.hideLoading()
 						}
 
 					},
 					fail: _ => {
-						
+
 					}
 				})
 
@@ -185,7 +176,7 @@
 								})
 							} catch (err) {
 								uni.showModal({
-									content:err.toString()
+									content: err.toString()
 								})
 							} finally {
 								this.getTeamInfo()
@@ -200,7 +191,7 @@
 				if (!phoneNumber) {
 					uni.showModal({
 						content: '该游客未记录手机号码，请发送信息',
-						showCancel:false
+						showCancel: false
 					})
 				} else {
 					uni.makePhoneCall({
@@ -217,59 +208,36 @@
 
 			// 解散团队
 			dismiss() {
-				this.show = true
-			},
-			async bindBtn(status) {
-				if (status === 'confirm') {
-					uni.showLoading({
-						mask:true
-					})
-					try {
-						// 解散前获取到导游机的数量
-						const {value} = await getCount({
-							customerId:this.id || '',
-						})
-						await dismiss({
-							customerId: this.id || '',
-							faultCount:0,
-							readyCount:value.memberCount,
-							remark:''
-						})
-						// this.getTeamInfo()
-						// 
-						if (this.id !== null) {
-							uni.reLaunch({
-								url: '/pages/list/list'
+				uni.showModal({
+					content: '解散旅行团时请确认设备数量准确无误并且无损坏情况，是否立即解散旅行团？',
+					success: async (res) => {
+						if (res.confirm) {
+							uni.showLoading({
+								mask: true
 							})
-						} else {
-							uni.navigateBack()
-						}
+							try {
+								await dismiss({
+									customerId: this.id || '',
+								})
+								if (this.id !== null) {
+									uni.reLaunch({
+										url: '/pages/admin/admin'
+									})
+								} else {
+									uni.navigateBack()
+								}
 
-					} catch (err) {
-						uni.showModal({
-							content:err.toString()
-						})
-					}finally{
-						uni.hideLoading()
+							} catch (err) {
+								uni.showModal({
+									content: err.toString()
+								})
+							} finally {
+								uni.hideLoading()
+							}
+						}
 					}
-				}else{
-					this.show = false
-				}
-			},
-			
-			closeModal(){
-				this.show = false
-			},
-			// 异常申报
-			exception(){
-				uni.navigateTo({
-					url:`/pages/exception/exception?id=${this.id || ''}`
 				})
 			},
-
-		},
-		components: {
-			neilModal
 		},
 		onPullDownRefresh: function() {
 			uni.showLoading()
@@ -282,7 +250,7 @@
 	.my-group {
 		position: relative;
 		padding: 0 35rpx 0rpx;
-		height:100%;
+		height: 100%;
 
 		.bg {
 			position: absolute;
@@ -448,7 +416,7 @@
 			display: flex;
 			flex-flow: column;
 			align-items: center;
-			z-index:99;
+			z-index: 99;
 		}
 
 		.scan {

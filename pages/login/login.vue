@@ -1,12 +1,12 @@
 <template>
 	<view class="login">
 		
-		<neil-modal :show="show" title="登录提示" confirm-text="取消" :show-cancel="false" @close="show = false" >
-			 <view style="padding:20rpx 30rpx">
-				 为确认您的微信绑定手机号和后台认证的导游手机号一致，请点击下方的按钮进行验证。
-				<button open-type="getPhoneNumber" @getphonenumber="getphonenumber" style="margin-top:20rpx">验证手机号码</button>
-			 </view>
-		</neil-modal>
+		<!-- <neil-modal :show="show" title="登录提示" confirm-text="取消" :show-cancel="false" @close="show = false" > -->
+			 <!-- <view style="padding:20rpx 30rpx"> -->
+				 <!-- 为确认您的微信绑定手机号和后台认证的导游手机号一致，请点击下方的按钮进行验证。 -->
+				<!-- <button open-type="getPhoneNumber" @getphonenumber="getphonenumber" style="margin-top:20rpx">验证手机号码</button> -->
+			 <!-- </view> -->
+		<!-- </neil-modal> -->
 
 		<!-- 导游登录 -->
 		<view class="tourist" v-if="!loginAsAdmin">
@@ -39,13 +39,17 @@
 			</view>
 		<view class="login-btn" @click="submit">登录</view>
 		<view class="wxlogin" v-if="!loginAsAdmin">
-			<view>收不到验证码？<text @click="wxlogin" style="text-decoration: underline;color:#FFCB3E">点此使用微信登录</text></view>
+			<text>收不到验证码？</text>
+			<view>
+				<text style="color:#FFCB3E;text-decoration:underline">点此使用微信登录</text>
+				<button class="btn" open-type="getPhoneNumber" @getphonenumber="getphonenumber"></button>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
-	import neilModal from '@/components/neil-modal/neil-modal.vue';
+	// import neilModal from '@/components/neil-modal/neil-modal.vue';
 	import {
 		login,
 		getCode,
@@ -70,7 +74,7 @@
 			}
 		},
 		components:{
-			neilModal
+			// neilModal
 		},
 		computed: {
 			disabled() {
@@ -144,7 +148,8 @@
 			async adminLogin() {
 				try{
 					uni.showLoading({
-						mask:true
+						mask:true,
+						title:'登录中'
 					})
 					const res = await loginAdmin({
 						name: this.account,
@@ -164,7 +169,7 @@
 								getApp().globalData.latitude = latitude
 							// 跳转至导游列表
 							uni.redirectTo({
-								url: '../list/list'
+								url: '../admin/admin'
 							})
 						}
 					})
@@ -221,10 +226,6 @@
 
 			},
 			
-			wxlogin(){
-				this.show=true
-			},
-			
 			async getphonenumber(e){
 				if( e.detail.errMsg !== "getPhoneNumber:ok" ) return 
 						const {
@@ -265,16 +266,6 @@
 				}
 						
 		},
-		watch: {
-			// count(num) {
-			// 	if (num < 0) {
-			// 		clearInterval(this.timer)
-			// 		this.sendMsg = false
-			// 		this.count = 60
-			// 		this.btnText = '重新获取'
-			// 	}
-			// }
-		}
 	}
 </script>
 
@@ -294,9 +285,23 @@
 		.wxlogin{
 			display:flex;
 			justify-content: center;
+			align-items: center;
 			margin-top:20rpx;
 			color:#666666;
 			font-size:24rpx;
+			
+			view{
+				position:relative;
+				
+				.btn{
+					position:absolute;
+					opacity:0;
+					left:0;
+					right:0;
+					top:0;
+					bottom:0;
+				}
+			}
 		}
 		
 		.login-btn {

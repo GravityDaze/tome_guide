@@ -84,5 +84,14 @@ export const getSos = data => http.post('/guider/sos/newSos',data)
 // 消除sos信息
 export const delSos = data => http.post('/guider/sos/readSosmessage',data)
 
-// 获取导游机总数
-export const getCount = data => http.post('/guider/touristTeam/beforeDissTeam',{},{ params:data })
+// 查询导游
+export const queryGuideList = data => http.post('/mis/guide/query',data)
+
+// 编辑导游
+export const editGuide = data => http.post('/mis/guide/edit',data)
+
+// 新增导游
+export const addGuide = data => http.post('/mis/guide/add',data)
+
+// 清除全部团
+export const clearTeam = data => http.post('/guider/touristTeam/clearTouristTeam',data)

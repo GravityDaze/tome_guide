@@ -2,8 +2,9 @@ import Request from '@/libs/luch-request/index.js'
 export const http = new Request()
 // 全局配置
 http.setConfig(config => {
-	config.baseURL = 'https://tome3pay.zhihuiquanyu.com',
-		// config.baseURL = 'http://192.168.0.117:8088',
+	config.baseURL = 'http://i42hdi.natappfree.cc',
+	// config.baseURL = 'http://dfv88q.natappfree.cc',
+	config.custom.retryCount = 0
 	config.timeout = 10000
 	return config
 })
@@ -22,6 +23,8 @@ http.interceptors.response.use(res => {
 	const {
 		resultCode
 	} = res.data.resultStatus
+	const token = uni.getStorageSync('token') 
+	token && (res.config.custom.retryCount = 0)
 	// 请求成功
 	if (resultCode === '0000') {
 		return res.data
@@ -34,16 +37,25 @@ http.interceptors.response.use(res => {
 	} = err.data.resultStatus
 	if (resultCode === '0007') {
 		const token = uni.getStorageSync('token')
-		token && uni.redirectTo({
-			url: '../login/login',
-			success: () => {
-				uni.showToast({
-					title: '登录失效',
-					icon: 'none'
-				})
-			}
-		})
-		uni.clearStorageSync()
+		// 0007超过两次直接跳出
+		if( err.config.custom.retryCount >= 2 && token ){
+			err.config.custom.retryCount = 0
+			uni.redirectTo({
+				url: '../login/login',
+				success: () => {
+					uni.showToast({
+						title: '登录失效',
+						icon: 'none'
+					})
+				}
+			 })
+			uni.clearStorageSync()
+		}else{
+			// 增加错误计次
+			err.config.custom.retryCount++ 
+			// 重新请求
+			http.request(err.config)
+		}
 	} else {
 		return Promise.reject(new Error(err.data.resultStatus.resultMessage))
 	}
