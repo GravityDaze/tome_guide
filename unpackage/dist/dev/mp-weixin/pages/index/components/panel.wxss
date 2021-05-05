@@ -34,10 +34,8 @@
 .panel .tourist.data-v-8110c5be {
   min-width: 100rpx;
   background: white;
-  -webkit-box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-          box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-  -webkit-border-radius: 0 0 15rpx 15rpx;
-          border-radius: 0 0 15rpx 15rpx;
+  box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+  border-radius: 0 0 15rpx 15rpx;
   padding: 25rpx;
 }
 .panel .tourist .header.data-v-8110c5be {
@@ -85,10 +83,8 @@
           justify-content: center;
   padding: 12rpx 20rpx;
   background: #ffcb3e;
-  -webkit-box-shadow: 0px 4rpx 9rpx 1rpx rgba(246, 191, 42, 0.39);
-          box-shadow: 0px 4rpx 9rpx 1rpx rgba(246, 191, 42, 0.39);
-  -webkit-border-radius: 29rpx;
-          border-radius: 29rpx;
+  box-shadow: 0px 4rpx 9rpx 1rpx rgba(246, 191, 42, 0.39);
+  border-radius: 29rpx;
   color: #4D4C4B;
   font-size: 28rpx;
   margin-right: 20rpx;

@@ -27,6 +27,5 @@
       "desc": "需要获取您的位置"
     }
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "usingComponents": {}
 }

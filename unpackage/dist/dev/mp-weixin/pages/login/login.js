@@ -343,7 +343,7 @@ var _api = __webpack_require__(/*! @/api/api.js */ 21);function _interopRequireD
                 uni.setStorageSync('token', r.value.tokenInfo.access_token);
                 // 保存用户信息
                 uni.setStorageSync('customerInfo', JSON.stringify(r.value.customerInfo));
-                uni.redirectTo({
+                uni.reLaunch({
                   url: '../index/index' });_context4.next = 23;break;case 20:_context4.prev = 20;_context4.t0 = _context4["catch"](3);
 
 
@@ -383,7 +383,7 @@ var _api = __webpack_require__(/*! @/api/api.js */ 21);function _interopRequireD
                 uni.setStorageSync('token', r.value.tokenInfo.access_token);
                 // 保存用户信息
                 uni.setStorageSync('customerInfo', JSON.stringify(r.value.customerInfo));
-                uni.redirectTo({
+                uni.reLaunch({
                   url: '../index/index' });_context5.next = 17;break;case 13:_context5.prev = 13;_context5.t0 = _context5["catch"](3);
 
 

@@ -206,7 +206,7 @@
 						uni.setStorageSync('token', r.value.tokenInfo.access_token)
 						// 保存用户信息
 						uni.setStorageSync('customerInfo', JSON.stringify(r.value.customerInfo))
-						uni.redirectTo({
+						uni.reLaunch({
 							url: '../index/index'
 						})
 					} catch (err) {
@@ -246,7 +246,7 @@
 							uni.setStorageSync('token', r.value.tokenInfo.access_token)
 							// 保存用户信息
 							uni.setStorageSync('customerInfo', JSON.stringify(r.value.customerInfo))
-							uni.redirectTo({
+							uni.reLaunch({
 								url: '../index/index'
 							})
 						}catch(err){

@@ -117,6 +117,7 @@
 			clearInterval(this.timer2)
 			this.timer = null
 			this.timer2 = null
+			uni.offLocationChange()
 		},
 		methods: {
 			// 登录

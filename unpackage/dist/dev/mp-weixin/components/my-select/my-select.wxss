@@ -38,10 +38,8 @@
   -webkit-align-items: center;
           align-items: center;
   background: white;
-  -webkit-box-shadow: 0px 6rpx 12rpx 0px rgba(36, 36, 35, 0.08);
-          box-shadow: 0px 6rpx 12rpx 0px rgba(36, 36, 35, 0.08);
-  -webkit-border-radius: 20rpx;
-          border-radius: 20rpx;
+  box-shadow: 0px 6rpx 12rpx 0px rgba(36, 36, 35, 0.08);
+  border-radius: 20rpx;
   padding: 0 25rpx;
   font-size: 32rpx;
   font-weight: 500;
@@ -71,10 +69,8 @@
   background: #FFFFFF;
   font-size: 32rpx;
   font-weight: 500;
-  -webkit-box-shadow: 0px 6rpx 12rpx 0px rgba(48, 48, 48, 0.06);
-          box-shadow: 0px 6rpx 12rpx 0px rgba(48, 48, 48, 0.06);
-  -webkit-border-radius: 20rpx;
-          border-radius: 20rpx;
+  box-shadow: 0px 6rpx 12rpx 0px rgba(48, 48, 48, 0.06);
+  border-radius: 20rpx;
   overflow: hidden;
 }
 .select-box .select-item {

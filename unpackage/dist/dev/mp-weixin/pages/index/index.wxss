@@ -53,10 +53,8 @@
   width: 88rpx;
   height: 88rpx;
   background: #fff;
-  -webkit-box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-          box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
+  box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+  border-radius: 50%;
   margin-bottom: 20rpx;
 }
 .index .btn .local image.data-v-57280228 {
@@ -76,10 +74,8 @@
   width: 88rpx;
   height: 88rpx;
   background: #fff;
-  -webkit-box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-          box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
-  -webkit-border-radius: 50%;
-          border-radius: 50%;
+  box-shadow: 0px 6rpx 13rpx 3rpx rgba(33, 33, 32, 0.18);
+  border-radius: 50%;
 }
 @-webkit-keyframes rotate-data-v-57280228 {
 from {
@@ -126,10 +122,8 @@ to {
           transform: translateX(-50%);
   width: 420rpx;
   height: 88rpx;
-  -webkit-box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
-          box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
-  -webkit-border-radius: 44rpx;
-          border-radius: 44rpx;
+  box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
+  border-radius: 44rpx;
   background: #FFCB3E;
 }
 

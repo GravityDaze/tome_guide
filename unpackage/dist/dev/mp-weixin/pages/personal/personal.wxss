@@ -58,10 +58,8 @@
   width: 642rpx;
   height: 226rpx;
   background: rgba(255, 255, 255, 0.95);
-  -webkit-box-shadow: 0px 6rpx 24rpx 0px rgba(36, 36, 35, 0.08);
-          box-shadow: 0px 6rpx 24rpx 0px rgba(36, 36, 35, 0.08);
-  -webkit-border-radius: 30rpx;
-          border-radius: 30rpx;
+  box-shadow: 0px 6rpx 24rpx 0px rgba(36, 36, 35, 0.08);
+  border-radius: 30rpx;
 }
 .personal .guide-panel .guide-avatar.data-v-3df0de86 {
   margin: 0 25rpx;
@@ -101,10 +99,8 @@
   width: 88rpx;
   height: 37rpx;
   background: #ffcb3e;
-  -webkit-box-shadow: 0px 6rpx 11rpx 1rpx rgba(229, 176, 32, 0.21);
-          box-shadow: 0px 6rpx 11rpx 1rpx rgba(229, 176, 32, 0.21);
-  -webkit-border-radius: 19rpx;
-          border-radius: 19rpx;
+  box-shadow: 0px 6rpx 11rpx 1rpx rgba(229, 176, 32, 0.21);
+  border-radius: 19rpx;
   font-size: 24rpx;
   font-weight: 400;
   color: #333333;

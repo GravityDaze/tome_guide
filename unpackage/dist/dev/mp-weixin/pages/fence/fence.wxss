@@ -39,10 +39,8 @@
   padding-bottom: 60rpx;
   width: 700rpx;
   margin: auto;
-  -webkit-box-shadow: 0px 1rpx 23rpx 1rpx rgba(36, 36, 35, 0.08);
-          box-shadow: 0px 1rpx 23rpx 1rpx rgba(36, 36, 35, 0.08);
-  -webkit-border-radius: 30rpx;
-          border-radius: 30rpx;
+  box-shadow: 0px 1rpx 23rpx 1rpx rgba(36, 36, 35, 0.08);
+  border-radius: 30rpx;
   background: #fff;
 }
 .fence .swiper .swiper-item .num.data-v-98bf492c {
@@ -111,18 +109,15 @@
   width: 160rpx;
   color: #fff;
   background: #ffcb3e;
-  -webkit-box-shadow: 0px 4rpx 21rpx 0px rgba(255, 203, 62, 0.48);
-          box-shadow: 0px 4rpx 21rpx 0px rgba(255, 203, 62, 0.48);
-  -webkit-border-radius: 8rpx;
-          border-radius: 8rpx;
+  box-shadow: 0px 4rpx 21rpx 0px rgba(255, 203, 62, 0.48);
+  border-radius: 8rpx;
   font-size: 28rpx;
   margin-top: 40rpx;
   margin-right: 45rpx;
 }
 .fence .swiper .swiper-item .btn .delete.data-v-98bf492c {
   background: #FA491D;
-  -webkit-box-shadow: 0px 4px 21px 0px rgba(250, 73, 29, 0.48);
-          box-shadow: 0px 4px 21px 0px rgba(250, 73, 29, 0.48);
+  box-shadow: 0px 4px 21px 0px rgba(250, 73, 29, 0.48);
 }
 .fence .swiper .swiper-item .btn image.data-v-98bf492c {
   width: 35rpx;
@@ -163,10 +158,8 @@
           transform: translateX(-50%);
   width: 420rpx;
   height: 88rpx;
-  -webkit-box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
-          box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
-  -webkit-border-radius: 44rpx;
-          border-radius: 44rpx;
+  box-shadow: 0px 8rpx 16rpx 0px rgba(239, 181, 22, 0.48);
+  border-radius: 44rpx;
   background: #FFCB3E;
 }
 .fence .add-panel.data-v-98bf492c {
@@ -178,31 +171,25 @@
   top: 20rpx;
   z-index: 99;
   width: 718rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   background: white;
-  -webkit-box-shadow: 0px 1rpx 23rpx 1rpx rgba(36, 36, 35, 0.08);
-          box-shadow: 0px 1rpx 23rpx 1rpx rgba(36, 36, 35, 0.08);
-  -webkit-border-radius: 30rpx;
-          border-radius: 30rpx;
+  box-shadow: 0px 1rpx 23rpx 1rpx rgba(36, 36, 35, 0.08);
+  border-radius: 30rpx;
 }
 .fence .add-panel .title.data-v-98bf492c {
   width: 100%;
   height: 80rpx;
   background: rgba(255, 0, 42, 0);
   border: 1rpx solid #cbcbcb;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-  -webkit-border-radius: 3rpx;
-          border-radius: 3rpx;
+  box-sizing: border-box;
+  border-radius: 3rpx;
   margin-bottom: 20rpx;
 }
 .fence .add-panel .title input.data-v-98bf492c {
   width: 100%;
   height: 100%;
   padding: 0 20rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .fence .add-panel .type.data-v-98bf492c {
   display: -webkit-box;
@@ -224,13 +211,11 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
   padding: 0 20rpx;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   width: 300rpx;
   height: 80rpx;
   border: 1rpx solid #cbcbcb;
-  -webkit-border-radius: 3rpx;
-          border-radius: 3rpx;
+  border-radius: 3rpx;
   color: #999996;
   font-size: 30rpx;
 }

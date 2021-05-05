@@ -29,11 +29,9 @@
 }
 .msg-detail .msg-box.data-v-04d23b2c {
   background: #fff;
-  -webkit-border-radius: 25rpx;
-          border-radius: 25rpx;
+  border-radius: 25rpx;
   padding: 25rpx 40rpx 35rpx;
-  -webkit-box-shadow: 1rpx 1rpx 23rpx 2rpx rgba(36, 36, 35, 0.08);
-          box-shadow: 1rpx 1rpx 23rpx 2rpx rgba(36, 36, 35, 0.08);
+  box-shadow: 1rpx 1rpx 23rpx 2rpx rgba(36, 36, 35, 0.08);
 }
 .msg-detail .msg-box .title.data-v-04d23b2c {
   display: -webkit-box;

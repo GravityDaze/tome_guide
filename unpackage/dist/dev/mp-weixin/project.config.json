@@ -4,13 +4,13 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": false,
-    "es6": false,
-    "enhance": true,
-    "postcss": false,
+    "urlCheck": true,
+    "es6": true,
+    "enhance": false,
+    "postcss": true,
     "preloadBackgroundData": false,
-    "minified": false,
-    "newFeature": true,
+    "minified": true,
+    "newFeature": false,
     "coverView": true,
     "nodeModules": false,
     "autoAudits": false,
@@ -29,6 +29,7 @@
       "disablePlugins": [],
       "outputPath": ""
     },
+    "enableEngineNative": false,
     "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,

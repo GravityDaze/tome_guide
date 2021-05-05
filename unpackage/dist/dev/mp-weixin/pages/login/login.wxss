@@ -72,8 +72,7 @@
   background: #FFCB3E;
   color: #fff;
   margin-top: 25rpx;
-  -webkit-border-radius: 8rpx;
-          border-radius: 8rpx;
+  border-radius: 8rpx;
 }
 .login .admin > view.data-v-b237504c,
 .login .tourist > view.data-v-b237504c {
@@ -85,8 +84,7 @@
           align-items: center;
   height: 80rpx;
   margin-bottom: 25rpx;
-  -webkit-border-radius: 0 8rpx 8rpx 0;
-          border-radius: 0 8rpx 8rpx 0;
+  border-radius: 0 8rpx 8rpx 0;
 }
 .login .admin > view input.data-v-b237504c,
 .login .tourist > view input.data-v-b237504c {
@@ -108,8 +106,7 @@
   font-size: 24rpx;
   height: 100%;
   background: #f2f2f2;
-  -webkit-border-radius: 8rpx 0 0 8rpx;
-          border-radius: 8rpx 0 0 8rpx;
+  border-radius: 8rpx 0 0 8rpx;
 }
 .login .admin .phone.data-v-b237504c,
 .login .admin .account.data-v-b237504c,
@@ -145,8 +142,7 @@
           flex: 1;
   color: #fff;
   margin-left: 12rpx;
-  -webkit-border-radius: 8rpx;
-          border-radius: 8rpx;
+  border-radius: 8rpx;
   font-size: 28rpx;
 }
 .login .admin .code .send.data-v-b237504c,
@@ -159,8 +155,7 @@
   -webkit-box-flex: 2;
   -webkit-flex: 2;
           flex: 2;
-  -webkit-border-radius: 0 8rpx 8rpx 0;
-          border-radius: 0 8rpx 8rpx 0;
+  border-radius: 0 8rpx 8rpx 0;
 }
 .login .change.data-v-b237504c {
   display: -webkit-box;
