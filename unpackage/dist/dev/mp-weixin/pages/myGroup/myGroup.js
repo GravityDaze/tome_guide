@@ -97,25 +97,36 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var m0 = __webpack_require__(155)("./" +
+    (!_vm.scanMode ? "scan" : "guanbi@2x") +
+    ".png")
+
   var l0 = _vm.__map(_vm.member, function(item, __i0__) {
     var $orig = _vm.__get_orig(item)
 
-    var m0 = __webpack_require__(155)("./" +
+    var m1 = __webpack_require__(155)("./" +
       (item.phone ? "member" : "member2") +
       ".png")
 
     var g0 = item.imei.slice(-6)
     return {
       $orig: $orig,
-      m0: m0,
+      m1: m1,
       g0: g0
     }
   })
+
+  if (!_vm._isMounted) {
+    _vm.e0 = function($event) {
+      _vm.scanMode = !_vm.scanMode
+    }
+  }
 
   _vm.$mp.data = Object.assign(
     {},
     {
       $root: {
+        m0: m0,
         l0: l0
       }
     }
@@ -220,6 +231,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
+
+
+
 var _api = __webpack_require__(/*! @/api/api.js */ 21);
 
 
@@ -234,7 +250,9 @@ var _parseQs = __webpack_require__(/*! @/utils/parseQs.js */ 158);function _inte
       travelAgency: '',
       curId: '',
       member: [],
-      id: null };
+      id: null,
+      scanMode: false,
+      arr: [] };
 
   },
   onShow: function onShow() {
@@ -280,38 +298,31 @@ var _parseQs = __webpack_require__(/*! @/utils/parseQs.js */ 158);function _inte
     },
 
     // 扫描二维码
-    scanCode: function scanCode() {var _this2 = this;
-      uni.scanCode({
-        onlyFromCamera: true,
-        scanType: ['qrCode'],
-        success: function () {var _success = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2(res) {var params;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
-                    // 从url中解析出参数
-                    uni.showLoading({
-                      mask: true });
-
-                    params = (0, _parseQs.parseQueryString)(res.result);_context2.prev = 2;_context2.next = 5;return (
-
-                      (0, _api.joinTeamQr)({
-                        imei: params && params.imei || '',
-                        code: _this2.code }));case 5:
-
-                    _this2.getTeamInfo();
-                    uni.hideLoading();
-                    uni.showToast({
-                      title: '加团成功' });_context2.next = 14;break;case 10:_context2.prev = 10;_context2.t0 = _context2["catch"](2);
+    scanCode: function scanCode(res) {var _this2 = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee2() {var params;return _regenerator.default.wrap(function _callee2$(_context2) {while (1) {switch (_context2.prev = _context2.next) {case 0:
+                params = (0, _parseQs.parseQueryString)(res.detail.result);if (!(
+                _this2.resloveCodeInfo || (params === null || params === void 0 ? void 0 : params.imei) === _this2.resloveRes)) {_context2.next = 3;break;}return _context2.abrupt("return");case 3:
+                _this2.resloveCodeInfo = true;
+                _this2.resloveRes = params.imei;
+                uni.showLoading({
+                  mask: true });_context2.prev = 6;_context2.next = 9;return (
 
 
-                    uni.showModal({
-                      content: _context2.t0.toString() || '无效的二维码,请检查是否是途咪导游机二维码',
-                      showCancel: false });
+                  (0, _api.joinTeamQr)({
+                    imei: params && params.imei || '',
+                    code: _this2.code }));case 9:
 
-                    uni.hideLoading();case 14:case "end":return _context2.stop();}}}, _callee2, null, [[2, 10]]);}));function success(_x) {return _success.apply(this, arguments);}return success;}(),
+                _this2.getTeamInfo();
+                uni.showToast({
+                  title: '加团成功' });
+
+                _this2.resloveCodeInfo = false;_context2.next = 18;break;case 14:_context2.prev = 14;_context2.t0 = _context2["catch"](6);
 
 
-
-        fail: function fail(_) {
-
-        } });
+                uni.hideLoading();
+                uni.showModal({
+                  content: _context2.t0.toString() || '无效的二维码,请检查是否是途咪导游机二维码',
+                  showCancel: false,
+                  success: function success(_) {return _this2.resloveCodeInfo = false;} });case 18:case "end":return _context2.stop();}}}, _callee2, null, [[6, 14]]);}))();
 
 
     },
@@ -319,7 +330,7 @@ var _parseQs = __webpack_require__(/*! @/utils/parseQs.js */ 158);function _inte
     del: function del(id) {var _this3 = this;
       uni.showModal({
         content: '是否删除团员',
-        success: function () {var _success2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(res) {return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:if (!
+        success: function () {var _success = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee3(res) {return _regenerator.default.wrap(function _callee3$(_context3) {while (1) {switch (_context3.prev = _context3.next) {case 0:if (!
                     res.confirm) {_context3.next = 13;break;}_context3.prev = 1;_context3.next = 4;return (
 
                       (0, _api.delMember)({
@@ -334,7 +345,7 @@ var _parseQs = __webpack_require__(/*! @/utils/parseQs.js */ 158);function _inte
                       content: _context3.t0.toString() });case 10:_context3.prev = 10;
 
 
-                    _this3.getTeamInfo();return _context3.finish(10);case 13:case "end":return _context3.stop();}}}, _callee3, null, [[1, 7, 10, 13]]);}));function success(_x2) {return _success2.apply(this, arguments);}return success;}() });
+                    _this3.getTeamInfo();return _context3.finish(10);case 13:case "end":return _context3.stop();}}}, _callee3, null, [[1, 7, 10, 13]]);}));function success(_x) {return _success.apply(this, arguments);}return success;}() });
 
 
 
@@ -365,7 +376,7 @@ var _parseQs = __webpack_require__(/*! @/utils/parseQs.js */ 158);function _inte
     dismiss: function dismiss() {var _this4 = this;
       uni.showModal({
         content: '解散旅行团时请确认设备数量准确无误并且无损坏情况，是否立即解散旅行团？',
-        success: function () {var _success3 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(res) {return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:if (!
+        success: function () {var _success2 = _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee4(res) {return _regenerator.default.wrap(function _callee4$(_context4) {while (1) {switch (_context4.prev = _context4.next) {case 0:if (!
                     res.confirm) {_context4.next = 14;break;}
                     uni.showLoading({
                       mask: true });_context4.prev = 2;_context4.next = 5;return (
@@ -387,7 +398,7 @@ var _parseQs = __webpack_require__(/*! @/utils/parseQs.js */ 158);function _inte
                       content: _context4.t0.toString() });case 11:_context4.prev = 11;
 
 
-                    uni.hideLoading();return _context4.finish(11);case 14:case "end":return _context4.stop();}}}, _callee4, null, [[2, 8, 11, 14]]);}));function success(_x3) {return _success3.apply(this, arguments);}return success;}() });
+                    uni.hideLoading();return _context4.finish(11);case 14:case "end":return _context4.stop();}}}, _callee4, null, [[2, 8, 11, 14]]);}));function success(_x2) {return _success2.apply(this, arguments);}return success;}() });
 
 
 

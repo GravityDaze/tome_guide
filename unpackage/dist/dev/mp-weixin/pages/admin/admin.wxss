@@ -24,17 +24,6 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.change_scenery_box {
-  height: 100vh;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column;
-  /* overflow: hidden; */
-}
 .top-area {
   display: -webkit-box;
   display: -webkit-flex;
@@ -65,6 +54,15 @@
   -webkit-box-pack: end;
   -webkit-justify-content: flex-end;
           justify-content: flex-end;
+}
+.top-area .search .icons {
+  /* border:1px solid red; */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
 }
 .top-area .search input {
   -webkit-box-flex: 1;
@@ -125,94 +123,11 @@
   font-weight: 400;
   color: #999999;
 }
-.icons {
-  /* border:1px solid red; */
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-.content_title {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  height: 173rpx;
-  font-size: 34rpx;
-  font-weight: 700;
-  box-sizing: border-box;
-  padding: 0 56rpx;
-}
-.all_single_box .single_box:first-child {
-  margin-top: 30rpx;
-  /* background-color: red; */
-}
-.single_box {
-  border-bottom: 1px solid #c8c8c8;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-}
-.single_left {
-  /* border: 1px solid red; */
-  height: 128rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
-}
-.single_top {
-  font-size: 30rpx;
-  color: #323232;
-}
-.single_bottom {
-  font-size: 26rpx;
-  color: #999;
-  margin-top: 18rpx;
-}
-.single_location_icon {
-  width: 22rpx;
-  height: 22rpx;
-  /* background:rgba(205,205,205,1); */
-  /* background-size: 100% 100%; */
-  margin-right: 10rpx;
-}
-.right_gouxuan1 {
-  /* border:1px solid #999; */
-  border-radius: 18rpx;
-  width: 36rpx;
-  height: 36rpx;
-  background-size: 100% 100%;
-}
-.right_gouxuan2 {
-  border: 1px solid #999;
-  border-radius: 18rpx;
-  width: 28rpx;
-  height: 28rpx;
-  background-size: 100% 100%;
-}
-.btn_box {
-  width: 700rpx;
+.btn {
+  position: fixed;
+  bottom: 20rpx;
+  left: 25rpx;
+  right: 25rpx;
   height: 88rpx;
   border-radius: 44rpx;
   font-size: 30rpx;
@@ -227,24 +142,10 @@
   -webkit-align-items: center;
           align-items: center;
   box-shadow: 10rpx 0 100rpx gainsboro;
-  margin: 0 auto;
-  margin-bottom: 20rpx;
 }
-.collectHeadDialog_outbox {
-  /* border:1px solid red; */
-  width: 100%;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  z-index: 999;
-}
-/* 景区选择区域 */
+/* 选择区域 */
 .around-scenery {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
-  padding: 0 56rpx;
-  height: 1px;
+  padding: 0 56rpx 108rpx;
   box-sizing: border-box;
 }
 .item {

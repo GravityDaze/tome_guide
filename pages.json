@@ -79,15 +79,16 @@
             "path" : "pages/admin/admin",
             "style" : {
                "navigationBarTitleText": "导游管理",
-			   "disableScroll":true
+			   "enablePullDownRefresh":true,
+			   "backgroundColorTop":"rgba(247,246,242,1)"
             }
         }
         ,{
-            "path" : "pages/createGuide/createGuide",
+            "path" : "pages/edit/edit",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "导游编辑",
-                "enablePullDownRefresh": false
+                "navigationBarTitleText": "导游编辑"
+                
             }
             
         }

@@ -4,11 +4,16 @@
 			<image src="../../static/bg.png" mode=""></image>
 		</view>
 
-		<view class="panel">
+		<view class="panel" v-if="scanMode">
+			<camera style="height:100%" mode="scanCode" @scancode="scanCode"></camera>
+		</view>
+
+		<view class="panel" v-else>
 			<image src="../../static/info.png" mode=""></image>
 			<text>当前组团码</text>
 			<view>{{code}}</view>
 		</view>
+
 
 		<view class="header">
 			<view>
@@ -18,8 +23,8 @@
 		</view>
 
 		<view class="tools">
-			<view class="scan" @click="scanCode">
-				<image src="../../static/scan.png"></image>
+			<view class="scan" @click="scanMode = !scanMode">
+				<image :src="require( `../../static/${ !scanMode ? 'scan':'guanbi@2x' }.png` )"></image>
 			</view>
 			<view class="dismiss" @click="dismiss">
 				<image src="../../static/dismiss.png"></image>
@@ -79,7 +84,9 @@
 				travelAgency: '',
 				curId: '',
 				member: [],
-				id: null
+				id: null,
+				scanMode: false,
+				arr:[]
 			};
 		},
 		onShow() {
@@ -125,40 +132,33 @@
 			},
 
 			// 扫描二维码
-			scanCode() {
-				uni.scanCode({
-					onlyFromCamera: true,
-					scanType: ['qrCode'],
-					success: async res => {
-						// 从url中解析出参数
-						uni.showLoading({
-							mask: true
-						})
-						const params = parseQueryString(res.result)
-						try {
-							await joinTeamQr({
-								imei: (params && params.imei) || '',
-								code: this.code
-							})
-							this.getTeamInfo()
-							uni.hideLoading()
-							uni.showToast({
-								title: '加团成功'
-							})
-						} catch (err) {
-							uni.showModal({
-								content: err.toString() || '无效的二维码,请检查是否是途咪导游机二维码',
-								showCancel: false
-							})
-							uni.hideLoading()
-						}
-
-					},
-					fail: _ => {
-
-					}
+			async scanCode(res) {
+				const params = parseQueryString(res.detail.result)
+				if( this.resloveCodeInfo || params?.imei === this.resloveRes  ) return 
+				this.resloveCodeInfo = true
+				this.resloveRes =  params.imei
+				uni.showLoading({
+					mask: true
 				})
-
+				try {
+					await joinTeamQr({
+						imei: (params && params.imei) || '',
+						code: this.code
+					})
+					this.getTeamInfo()
+					uni.showToast({
+						title: '加团成功'
+					})
+					this.resloveCodeInfo = false
+					
+				} catch (err) {
+					uni.hideLoading()
+					uni.showModal({
+						content: err.toString() || '无效的二维码,请检查是否是途咪导游机二维码',
+						showCancel: false,
+						success:_=> this.resloveCodeInfo = false
+					})
+				}
 			},
 
 			del(id) {

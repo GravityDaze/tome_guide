@@ -260,8 +260,11 @@ var _deepCompare = __webpack_require__(/*! ../../utils/deepCompare.js */ 191);fu
           this.status = '';
         }
       },
-      deep: true } },
+      deep: true },
 
+    name: function name() {
+      this.getGuides();
+    } },
 
   data: function data() {
     return {
@@ -269,11 +272,12 @@ var _deepCompare = __webpack_require__(/*! ../../utils/deepCompare.js */ 191);fu
       triggered: false,
       status: '',
       id: '', // 导游id
+      name: '',
       query: '', // 查询条件
       menuItems: [{
         name: '添加导游',
         icon: 'icon_quanbugerenzhongxin@2x',
-        url: '/pages/createGuide/createGuide' },
+        url: '/pages/edit/edit' },
 
       {
         name: '一键散团',
@@ -295,26 +299,22 @@ var _deepCompare = __webpack_require__(/*! ../../utils/deepCompare.js */ 191);fu
 
   },
   methods: {
-    getGuides: function getGuides() {var _arguments = arguments,_this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var name, res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:name = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : "";
+    getGuides: function getGuides() {var _this = this;return _asyncToGenerator( /*#__PURE__*/_regenerator.default.mark(function _callee() {var res;return _regenerator.default.wrap(function _callee$(_context) {while (1) {switch (_context.prev = _context.next) {case 0:
                 uni.showLoading({
                   mask: true,
-                  title: '加载中' });_context.prev = 2;_context.next = 5;return (
+                  title: '加载中' });_context.prev = 1;_context.next = 4;return (
 
 
                   (0, _api.queryGuide)({
-                    name: name }));case 5:res = _context.sent;
+                    name: _this.name }));case 4:res = _context.sent;
 
                 _this.guides = res.value;
                 // 重新查询是否建团
-                _this.status = _this.guides.some(function (v) {return _this.id === v.id && v.haveTeam === 0;});case 8:_context.prev = 8;
+                _this.status = _this.guides.some(function (v) {return _this.id === v.id && v.haveTeam === 0;});case 7:_context.prev = 7;
 
-                _this.triggered = false;
-                uni.hideLoading();return _context.finish(8);case 12:case "end":return _context.stop();}}}, _callee, null, [[2,, 8, 12]]);}))();
+                uni.stopPullDownRefresh();
+                uni.hideLoading();return _context.finish(7);case 11:case "end":return _context.stop();}}}, _callee, null, [[1,, 7, 11]]);}))();
 
-    },
-    refresh: function refresh() {
-      this.triggered = true;
-      this.getGuides();
     },
     click: function click(item) {
       if (item.url) {
@@ -325,7 +325,6 @@ var _deepCompare = __webpack_require__(/*! ../../utils/deepCompare.js */ 191);fu
         item.handle();
       }
     },
-
     // 注销
     logout: function logout() {
       uni.showModal({
@@ -340,10 +339,6 @@ var _deepCompare = __webpack_require__(/*! ../../utils/deepCompare.js */ 191);fu
           }
         } });
 
-    },
-    // 查询导游
-    search: function search(e) {
-      this.getGuides(e.detail.value);
     },
     radioChange: function radioChange(e) {var _this2 = this;var
 
@@ -437,15 +432,15 @@ var _deepCompare = __webpack_require__(/*! ../../utils/deepCompare.js */ 191);fu
     },
 
     // 编辑导游
-    edit: function edit(item) {var _this5 = this;
-      // _lock变量保证该方法每次点击只执行一次
-      if (this._lock) return;
-      this._lock = true;
+    edit: function edit(item) {
       uni.navigateTo({
-        url: "/pages/createGuide/createGuide?name=".concat(item.realName, "&phone=").concat(item.customerPhone, "&id=").concat(item.id),
-        success: function success(_) {return _this5._lock = false;} });
+        url: "/pages/edit/edit?name=".concat(item.realName, "&phone=").concat(item.customerPhone, "&id=").concat(item.id) });
 
-    } } };exports.default = _default;
+    } },
+
+  onPullDownRefresh: function onPullDownRefresh() {
+    this.getGuides();
+  } };exports.default = _default;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),

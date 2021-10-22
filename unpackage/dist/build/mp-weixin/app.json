@@ -13,7 +13,7 @@
     "pages/message/message",
     "pages/msgDetail/msgDetail",
     "pages/admin/admin",
-    "pages/createGuide/createGuide"
+    "pages/edit/edit"
   ],
   "subPackages": [],
   "window": {

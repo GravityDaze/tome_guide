@@ -125,6 +125,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
  * @tutorial https://ext.dcloud.net.cn/plugin?id=181
  */var _default =
 {
+  name: "UniSwipeAction",
   data: function data() {
     return {};
   },

@@ -1,8 +1,8 @@
 <template>
-	<view class="change_scenery_box">
+	<view>
 		<view class="top-area">
 			<view class="search">
-				<input type='text' placeholder='请输入您要搜索的导游姓名或手机号' @input="search" />
+				<input type='text' placeholder='请输入您要搜索的导游姓名或手机号' v-model="name" />
 				<icon type='search' class='icons'></icon>
 			</view>
 			<view class="add" @click="$refs.popup.open()">
@@ -18,7 +18,7 @@
 			</uni-popup>
 		</view>
 
-		<scroll-view class="around-scenery" scroll-y refresher-enabled @refresherrefresh="refresh"
+		<view class="around-scenery"   @refresherrefresh="refresh"
 			:refresher-triggered="triggered">
 			<radio-group @change="radioChange">
 				<uni-swipe-action>
@@ -45,9 +45,9 @@
 					</template>
 				</uni-swipe-action>
 			</radio-group>
-		</scroll-view>
+		</view>
 
-		<view class="btn_box" @click="skip">
+		<view class="btn" @click="skip">
 			<text>{{ status?'编辑旅行团':'创建旅行团' }}</text>
 		</view>
 	</view>
@@ -65,7 +65,7 @@
 			uni.hideHomeButton()
 			this.getGuides()
 		},
-		watch:{
+		watch:{   
 			guides:{
 				handler(newVal,oldVal){
 					// 执行深比较
@@ -75,7 +75,10 @@
 					}
 				},
 				deep:true
-			}
+			},
+			name(){
+				this.getGuides()
+			},
 		},
 		data() {
 			return {
@@ -83,11 +86,12 @@
 				triggered: false,
 				status: '',
 				id: '', // 导游id
+				name:'',
 				query: '', // 查询条件
 				menuItems: [{
 						name: '添加导游',
 						icon: 'icon_quanbugerenzhongxin@2x',
-						url: '/pages/createGuide/createGuide'
+						url: '/pages/edit/edit'
 					},
 					{
 						name: '一键散团',
@@ -109,26 +113,22 @@
 			};
 		},
 		methods: {
-			async getGuides(name = "") {
+			async getGuides() {
 				uni.showLoading({
 					mask: true,
 					title: '加载中'
 				})
 				try {
 					const res = await queryGuide({
-						name
+						name:this.name
 					})
 					this.guides = res.value
 					// 重新查询是否建团
 					this.status = this.guides.some( v=>  this.id === v.id && v.haveTeam === 0 )
 				} finally {
-					this.triggered = false
+					uni.stopPullDownRefresh()
 					uni.hideLoading()
 				}
-			},
-			refresh() {
-				this.triggered = true
-				this.getGuides()
 			},
 			click(item) {
 				if (item.url) {
@@ -139,7 +139,6 @@
 					item.handle()
 				}
 			},
-
 			// 注销
 			logout() {
 				uni.showModal({
@@ -154,10 +153,6 @@
 						}
 					}
 				})
-			},
-			// 查询导游
-			search(e) {
-				this.getGuides(e.detail.value)
 			},
 			radioChange(e) {
 				const {
@@ -252,26 +247,18 @@
 			
 			// 编辑导游
 			edit(item) {
-				// _lock变量保证该方法每次点击只执行一次
-				if( this._lock ) return 
-				this._lock = true
 				uni.navigateTo({
-					url: `/pages/createGuide/createGuide?name=${item.realName}&phone=${item.customerPhone}&id=${item.id}`,
-					success:_=>this._lock = false
+					url: `/pages/edit/edit?name=${item.realName}&phone=${item.customerPhone}&id=${item.id}`
 				})
 			}
+		},
+		onPullDownRefresh(){
+			this.getGuides()
 		}
 	}
 </script>
 
 <style lang="scss">
-	.change_scenery_box {
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-		/* overflow: hidden; */
-	}
-
 	.top-area {
 		display: flex;
 		margin: 20rpx 26rpx;
@@ -289,6 +276,13 @@
 			flex-direction: row-reverse;
 			align-items: center;
 			justify-content: flex-end;
+			
+			.icons {
+				/* border:1px solid red; */
+				display: flex;
+				align-items: center;
+			}
+			
 
 			input {
 				flex-grow: 1;
@@ -343,82 +337,11 @@
 
 	}
 
-
-
-	.icons {
-		/* border:1px solid red; */
-		display: flex;
-		align-items: center;
-	}
-
-	.content_title {
-		display: flex;
-		align-items: center;
-		height: 173rpx;
-		font-size: 34rpx;
-		font-weight: 700;
-		box-sizing: border-box;
-		padding: 0 56rpx;
-	}
-
-	.all_single_box .single_box:first-child {
-		margin-top: 30rpx;
-		/* background-color: red; */
-	}
-
-	.single_box {
-		border-bottom: 1px solid rgba(200, 200, 200, 1);
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
-
-	.single_left {
-		/* border: 1px solid red; */
-		height: 128rpx;
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
-
-	.single_top {
-		font-size: 30rpx;
-		color: rgba(50, 50, 50, 1);
-	}
-
-	.single_bottom {
-		font-size: 26rpx;
-		color: #999;
-		margin-top: 18rpx;
-	}
-
-	.single_location_icon {
-		width: 22rpx;
-		height: 22rpx;
-		/* background:rgba(205,205,205,1); */
-		/* background-size: 100% 100%; */
-		margin-right: 10rpx;
-	}
-
-	.right_gouxuan1 {
-		/* border:1px solid #999; */
-		border-radius: 18rpx;
-		width: 36rpx;
-		height: 36rpx;
-		background-size: 100% 100%;
-	}
-
-	.right_gouxuan2 {
-		border: 1px solid #999;
-		border-radius: 18rpx;
-		width: 28rpx;
-		height: 28rpx;
-		background-size: 100% 100%;
-	}
-
-	.btn_box {
-		width: 700rpx;
+	.btn {
+		position: fixed;
+		bottom:20rpx;
+		left:25rpx;
+		right:25rpx;
 		height: 88rpx;
 		border-radius: 44rpx;
 		font-size: 30rpx;
@@ -427,27 +350,12 @@
 		justify-content: center;
 		align-items: center;
 		box-shadow: 10rpx 0 100rpx rgb(220, 220, 220);
-		margin: 0 auto;
-		margin-bottom: 20rpx;
 	}
 
-	.collectHeadDialog_outbox {
-		/* border:1px solid red; */
-		width: 100%;
-		position: fixed;
-		top: 0;
-		bottom: 0;
-		z-index: 999;
-	}
 
-	/* 景区选择区域 */
+	/* 选择区域 */
 	.around-scenery {
-		// position: absolute;
-		// top: 220rpx;
-		// bottom: 120rpx;
-		flex: 1;
-		padding: 0 56rpx;
-		height: 1px;
+		padding: 0 56rpx 108rpx;
 		box-sizing: border-box;
 	}
 

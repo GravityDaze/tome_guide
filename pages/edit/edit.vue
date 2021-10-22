@@ -37,13 +37,20 @@
 		},
 		methods: {
 			async submit() {
-				// 创建参数
+				if( !(/^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/.test(parseInt(this.phone))) ){
+					return uni.showModal({
+						showCancel: false,
+						content: '手机号码格式不正确'
+					})
+				}
+
+				// 创建请求参数
 				const params = {
-					phone: this.phone,
+					phone: this.phone.trim(),
 					realName: this.name,
-					sosPhone: this.phone,
+					sosPhone: this.phone.trim(),
 					isCreateTeam: 1,
-					guideCard: this.phone
+					guideCard: this.phone.trim()
 				}
 				// 新增
 				try {

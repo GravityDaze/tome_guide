@@ -13,7 +13,7 @@
     "pages/message/message",
     "pages/msgDetail/msgDetail",
     "pages/admin/admin",
-    "pages/createGuide/createGuide"
+    "pages/edit/edit"
   ],
   "subPackages": [],
   "window": {
@@ -27,5 +27,6 @@
       "desc": "需要获取您的位置"
     }
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }
